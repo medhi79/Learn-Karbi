@@ -1,30 +1,12 @@
 @JavascriptInterface
-        fun loadJsonFile(filename: String): String {
-            val localFile = File(filesDir, filename)
-            if (localFile.exists() && localFile.length() > 5) {
-                return localFile.readText()
-            }
-            return try {
-                assets.open("www/data/$filename").bufferedReader().use { it.readText() }
-            } catch (e: Exception) {
-                "[]"
-            }
+    fun loadJsonFile(filename: String): String {
+        val localFile = File(filesDir, filename)
+        if (localFile.exists() && localFile.length() > 5) {
+            return localFile.readText()
         }
-
-        @JavascriptInterface
-        fun saveJsonFile(filename: String, content: String) {
-            try {
-                File(filesDir, filename).writeText(content)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-
-        @JavascriptInterface
-        fun exitApp() {
-            runOnUiThread {
-                finishAffinity()
-            }
+        return try {
+            assets.open("www/data/$filename").bufferedReader().use { it.readText() }
+        } catch (e: Exception) {
+            "[]"
         }
     }
-}
