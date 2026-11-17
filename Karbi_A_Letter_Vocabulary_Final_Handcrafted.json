@@ -1,0 +1,80 @@
+[
+  {
+    "english": "I / Me",
+    "assamese": "মই (Moi)",
+    "karbi": "Ne",
+    "note": "First-person singular subject pronoun (SOV start)."
+  },
+  {
+    "english": "You (singular)",
+    "assamese": "তুমি (Tumi)",
+    "karbi": "Nang",
+    "note": "Second-person singular pronoun."
+  },
+  {
+    "english": "He / She",
+    "assamese": "সি / তাই (Xi / Tai)",
+    "karbi": "Alang",
+    "note": "Third-person singular pronoun."
+  },
+  {
+    "english": "Rice (cooked)",
+    "assamese": "ভাত (Bhat)",
+    "karbi": "An",
+    "note": "Core object noun. Example: Ne an cho (I eat rice)."
+  },
+  {
+    "english": "Water",
+    "assamese": "পানী (Pani)",
+    "karbi": "Lang",
+    "note": "Core noun. Example: Ne lang jun (I drink water)."
+  },
+  {
+    "english": "Tea",
+    "assamese": "চাহ (Sah)",
+    "karbi": "Sangho",
+    "note": "Common daily noun. Example: Sangho jun-ik-nang (Let's drink tea)."
+  },
+  {
+    "english": "Pork meat",
+    "assamese": "গাহৰি মাংস (Gahori mangxo)",
+    "karbi": "Phak-ok",
+    "note": "Phak (pig) + ok (meat)."
+  },
+  {
+    "english": "House / Home",
+    "assamese": "ঘৰ (Ghor)",
+    "karbi": "Hem",
+    "note": "Core noun. Example: Nang hem kopi-si? (Where is your home?)"
+  },
+  {
+    "english": "Maternal Uncle",
+    "assamese": "মামা (Mama)",
+    "karbi": "Ongsar",
+    "note": "Traditional Karbi respectful kinship term for mother's brother."
+  },
+  {
+    "english": "Paternal Uncle (elder)",
+    "assamese": "বৰদেউতা (Bordeuta)",
+    "karbi": "Po-sar",
+    "note": "Traditional Karbi kinship term for father's elder brother."
+  },
+  {
+    "english": "Elder Brother",
+    "assamese": "দাদা (Dada)",
+    "karbi": "Ik-sar",
+    "note": "Respectful Karbi kinship term for elder brother."
+  },
+  {
+    "english": "Father",
+    "assamese": "দেউতা (Deuta)",
+    "karbi": "Po",
+    "note": "Root kinship noun; Ne-po means 'my father'."
+  },
+  {
+    "english": "Mother",
+    "assamese": "মা (Ma)",
+    "karbi": "Pei",
+    "note": "Root kinship noun; Ne-pei means 'my mother'."
+  }
+]
