@@ -66,11 +66,8 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Setup Android SDK & Accept Licenses
+      - name: Setup Android SDK
         uses: android-actions/setup-android@v3
-
-      - name: Accept SDK Licenses
-        run: yes | sdkmanager --licenses || true
 
       - name: Install Gradle 8.6 & Build Debug APK
         working-directory: ./android
