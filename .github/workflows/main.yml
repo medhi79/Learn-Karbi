@@ -13,6 +13,15 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Verify Required App Files
+        run: |
+          ls -la
+          ls -la android/app/
+          test -f index.html || (echo "ERROR: index.html missing!" && exit 1)
+          test -f android/app/build.gradle || (echo "ERROR: android/app/build.gradle missing!" && exit 1)
+          test -f android/app/src/main/AndroidManifest.xml || (echo "ERROR: AndroidManifest.xml missing!" && exit 1)
+          test -f android/app/src/main/java/com/talkaurelia/learnkarbi/MainActivity.kt || (echo "ERROR: MainActivity.kt missing!" && exit 1)
+
       - name: Sync Web Assets to Android WWW
         run: |
           mkdir -p android/app/src/main/assets/www/data
@@ -62,14 +71,12 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.7'
-
-      - name: Build Debug APK
+      - name: Install Gradle 8.7 & Build Debug APK
         working-directory: ./android
-        run: gradle assembleDebug
+        run: |
+          curl -sL https://services.gradle.org/distributions/gradle-8.7-bin.zip -o gradle.zip
+          unzip -q gradle.zip
+          ./gradle-8.7/bin/gradle assembleDebug --no-daemon
 
       - name: Upload New App APK
         uses: actions/upload-artifact@v4
