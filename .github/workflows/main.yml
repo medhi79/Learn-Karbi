@@ -13,21 +13,18 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Verify Required App Files
-        run: |
-          test -f index.html || (echo "ERROR: index.html missing!" && exit 1)
-          test -f android/app/build.gradle || (echo "ERROR: android/app/build.gradle missing!" && exit 1)
-          test -f android/app/src/main/AndroidManifest.xml || (echo "ERROR: AndroidManifest.xml missing!" && exit 1)
-          test -f android/app/src/main/java/com/talkaurelia/learnkarbi/MainActivity.kt || (echo "ERROR: MainActivity.kt missing!" && exit 1)
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
 
-      - name: Sync Web Assets to Android WWW
+      - name: Prepare Android Project & Sync Assets
         run: |
           mkdir -p android/app/src/main/assets/www/data
           cp index.html android/app/src/main/assets/www/index.html
           cp -f *.json android/app/src/main/assets/www/data/ 2>/dev/null || true
 
-      - name: Create Root Gradle Project Files
-        run: |
           cat << 'EOF' > android/settings.gradle
           pluginManagement {
               repositories {
@@ -49,7 +46,7 @@ jobs:
 
           cat << 'EOF' > android/build.gradle
           plugins {
-              id 'com.android.application' version '8.3.2' apply false
+              id 'com.android.application' version '8.2.2' apply false
               id 'org.jetbrains.kotlin.android' version '1.9.22' apply false
           }
           EOF
@@ -60,21 +57,10 @@ jobs:
           kotlin.code.style=official
           EOF
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install Gradle 8.6 & Build Debug APK
-        working-directory: ./android
+      - name: Build Debug APK
         run: |
-          curl -fSL https://services.gradle.org/distributions/gradle-8.6-bin.zip -o gradle.zip
-          unzip -q gradle.zip
-          ./gradle-8.6/bin/gradle assembleDebug --no-daemon --stacktrace
+          cd android
+          gradle assembleDebug --no-daemon --stacktrace
 
       - name: Upload New App APK
         uses: actions/upload-artifact@v4
