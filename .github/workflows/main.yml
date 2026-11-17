@@ -19,6 +19,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Accept Android SDK Licenses
+        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null 2>&1 || true
+
       - name: Prepare Android Project & Sync Assets
         run: |
           mkdir -p android/app/src/main/assets/www/data
@@ -34,7 +37,6 @@ jobs:
               }
           }
           dependencyResolutionManagement {
-              repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
               repositories {
                   google()
                   mavenCentral()
@@ -60,7 +62,7 @@ jobs:
       - name: Build Debug APK
         run: |
           cd android
-          gradle assembleDebug --no-daemon --stacktrace
+          gradle assembleDebug --no-daemon
 
       - name: Upload New App APK
         uses: actions/upload-artifact@v4
