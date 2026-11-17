@@ -5,6 +5,9 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -64,8 +67,18 @@ jobs:
           cd android
           gradle assembleDebug --no-daemon
 
+      - name: Rename APK
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk Talk-Aurelia-Learn-Karbi-v1.0.apk
+
       - name: Upload New App APK
         uses: actions/upload-artifact@v4
         with:
           name: Talk-Aurelia-Learn-Karbi-v1-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: Talk-Aurelia-Learn-Karbi-v1.0.apk
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: Talk Aurelia • Learn Karbi v1.0.${{ github.run_number }}
+          files: Talk-Aurelia-Learn-Karbi-v1.0.apk
