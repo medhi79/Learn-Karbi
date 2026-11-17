@@ -1,0 +1,92 @@
+[
+  {
+    "english": "Hello / Greetings",
+    "assamese": "নমস্কাৰ (Nomoskar)",
+    "karbi": "Kardom",
+    "note": "Standard respectful Karbi greeting."
+  },
+  {
+    "english": "Goodbye / See you later",
+    "assamese": "আহোঁ / বিদায় (Ahon / Biday)",
+    "karbi": "Chorolo",
+    "note": "Standard Karbi farewell expression."
+  },
+  {
+    "english": "Thank you",
+    "assamese": "ধন্যবাদ (Dhonyobad)",
+    "karbi": "Kardom",
+    "note": "Used both for respectful greeting and gratitude."
+  },
+  {
+    "english": "I eat rice",
+    "assamese": "মই ভাত খাওঁ (Moi bhat khaon)",
+    "karbi": "Ne an cho",
+    "note": "SOV Breakdown: Ne (Subject: I) + an (Object: rice) + cho (Verb: eat)."
+  },
+  {
+    "english": "I am cooking Pork Meat",
+    "assamese": "মই গাহৰি মাংস ৰান্ধি আছো (Moi gahori mangxo randhi aso)",
+    "karbi": "Ne phak-ok thok-lo",
+    "note": "SOV Breakdown: Ne (I) + phak-ok (pork meat) + thok-lo (am cooking)."
+  },
+  {
+    "english": "Lets go for tea",
+    "assamese": "বলক চাহ খাবলৈ যাওঁ (Bolok sah khaboloi jaon)",
+    "karbi": "Sangho jun-ik-nang",
+    "note": "SOV Hortative: Sangho (tea) + jun-ik-nang (let's drink together)."
+  },
+  {
+    "english": "Where are you going?",
+    "assamese": "তুমি ক'লৈ গৈছা? (Tumi koloi goisa?)",
+    "karbi": "Nang kopi-si dam-lo?",
+    "note": "SOV Interrogative: Nang (you) + kopi-si (where) + dam-lo (going)."
+  },
+  {
+    "english": "Where is your home?",
+    "assamese": "তোমাৰ ঘৰ ক'ত? (Tomar ghor kot?)",
+    "karbi": "Nang hem kopi-si?",
+    "note": "SOV Interrogative: Nang hem (your home) + kopi-si (where is)."
+  },
+  {
+    "english": "I am going to the market",
+    "assamese": "মই বজাৰলৈ গৈ আছো (Moi bojaroloi goi aso)",
+    "karbi": "Ne bazar dam-lo",
+    "note": "SOV Motion: Ne (I) + bazar (market) + dam-lo (am going)."
+  },
+  {
+    "english": "I am going home",
+    "assamese": "মই ঘৰলৈ গৈ আছো (Moi ghoroloi goi aso)",
+    "karbi": "Ne hem dam-lo",
+    "note": "SOV Motion: Ne (I) + hem (home) + dam-lo (am going)."
+  },
+  {
+    "english": "I drink water",
+    "assamese": "মই পানী খাওঁ (Moi pani khaon)",
+    "karbi": "Ne lang jun",
+    "note": "SOV Breakdown: Ne (I) + lang (water) + jun (drink)."
+  },
+  {
+    "english": "What is your name?",
+    "assamese": "তোমাৰ নাম কি? (Tomar nam ki?)",
+    "karbi": "Nang men kopi-ma?",
+    "note": "SOV Interrogative: Nang men (your name) + kopi-ma (what)."
+  },
+  {
+    "english": "My name is Bikash",
+    "assamese": "মোৰ নাম বিকাশ (Mur nam Bikash)",
+    "karbi": "Ne men Bikash",
+    "note": "SOV Statement: Ne men (my name) + Bikash."
+  },
+  {
+    "english": "How are you?",
+    "assamese": "তুমি কেনে আছা? (Tumi kene asa?)",
+    "karbi": "Nang mesen-ma?",
+    "note": "Literally 'Are you well/good?' (mesen = good/well, -ma = question marker)."
+  },
+  {
+    "english": "I am fine",
+    "assamese": "মই ভালে আছো (Moi bhale aso)",
+    "karbi": "Ne mesen-lo",
+    "note": "SOV Response: Ne (I) + mesen-lo (am well)."
+  }
+]
