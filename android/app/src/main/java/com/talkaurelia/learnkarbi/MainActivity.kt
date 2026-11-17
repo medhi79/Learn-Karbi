@@ -10,3 +10,21 @@
                 "[]"
             }
         }
+
+        @JavascriptInterface
+        fun saveJsonFile(filename: String, content: String) {
+            try {
+                File(filesDir, filename).writeText(content)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        @JavascriptInterface
+        fun exitApp() {
+            runOnUiThread {
+                finishAffinity()
+            }
+        }
+    }
+}
