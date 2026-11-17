@@ -30,6 +30,9 @@ jobs:
           mkdir -p android/app/src/main/assets/www/data
           cp index.html android/app/src/main/assets/www/index.html
           cp -f *.json android/app/src/main/assets/www/data/ 2>/dev/null || true
+          echo "=== Bundled Assets Verification ==="
+          ls -lh android/app/src/main/assets/www/
+          ls -lh android/app/src/main/assets/www/data/
 
           cat << 'EOF' > android/settings.gradle
           pluginManagement {
@@ -70,15 +73,16 @@ jobs:
       - name: Rename APK
         run: cp android/app/build/outputs/apk/debug/app-debug.apk Talk-Aurelia-Learn-Karbi-v1.0.apk
 
-      - name: Upload New App APK
+      - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Talk-Aurelia-Learn-Karbi-v1-APK
           path: Talk-Aurelia-Learn-Karbi-v1.0.apk
 
       - name: Publish GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: v1.0.${{ github.run_number }}
           name: Talk Aurelia • Learn Karbi v1.0.${{ github.run_number }}
           files: Talk-Aurelia-Learn-Karbi-v1.0.apk
+          fail_on_unmatched_files: true
