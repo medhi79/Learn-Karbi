@@ -28,7 +28,7 @@
       overflow: hidden;
     }
 
-    /* Fixed Non-Overlapping Smart Auto-Hide Header */
+    /* Non-Overlapping Smart Auto-Hide Header */
     header {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -98,7 +98,7 @@
       background: rgba(255,255,255,0.16);
       border: 1px solid rgba(255,255,255,0.28);
       color: #fff;
-      padding: 5px 7px;
+      padding: 5px 8px;
       border-radius: 7px;
       font-size: 11px;
       font-weight: 600;
@@ -645,31 +645,764 @@
 
 <script>
 const BUNDLED_JSON_FILES = [
-  'Karbi_A_Letter_Vocabulary_Final_Handcrafted.json',
-  'Karbi_Full_Vocabulary_Substitution_Drills.json',
-  'karbi_corrections.json',
-  'karbi_custom_lessons.json'
+  "Karbi_A_Letter_Vocabulary_Final_Handcrafted.json",
+  "Karbi_Full_Vocabulary_Substitution_Drills.json",
+  "karbi_corrections.json",
+  "karbi_custom_lessons.json"
 ];
 
 const FALLBACK_SEEDS = {
-  'Karbi_A_Letter_Vocabulary_Final_Handcrafted.json': [
-    { english: 'I / Me', assamese: 'মই (Moi)', karbi: 'Ne', note: 'First-person singular subject pronoun (SOV start).' },
-    { english: 'You', assamese: 'তুমি (Tumi)', karbi: 'Nang', note: 'Second-person singular pronoun.' },
-    { english: 'Rice', assamese: 'ভাত (Bhat)', karbi: 'An', note: 'Object noun. Example: Ne an cho (I eat rice).' },
-    { english: 'Water', assamese: 'পানী (Pani)', karbi: 'Lang', note: 'Core noun. Example: Ne lang jun (I drink water).' },
-    { english: 'Tea', assamese: 'চাহ (Sah)', karbi: 'Sangho', note: 'Common daily noun.' },
-    { english: 'Pork meat', assamese: 'গাহৰি মাংস (Gahori mangxo)', karbi: 'Phak-ok', note: 'Phak (pig) + ok (meat).' },
-    { english: 'House / Home', assamese: 'ঘৰ (Ghor)', karbi: 'Hem', note: 'Core noun.' },
-    { english: 'Maternal Uncle', assamese: 'মামা (Mama)', karbi: 'Ongsar', note: 'Respectful Karbi kinship term.' },
-    { english: 'Paternal Uncle', assamese: 'বৰদেউতা (Bordeuta)', karbi: 'Po-sar', note: 'Father’s elder brother.' },
-    { english: 'Elder Brother', assamese: 'দাদা (Dada)', karbi: 'Ik-sar', note: 'Respectful kinship term.' }
+  "Karbi_A_Letter_Vocabulary_Final_Handcrafted.json": [
+    { english: "I / Me", assamese: "মই (Moi)", karbi: "Ne", note: "First-person singular subject pronoun (SOV start)." },
+    { english: "You", assamese: "তুমি (Tumi)", karbi: "Nang", note: "Second-person singular pronoun." },
+    { english: "Rice", assamese: "ভাত (Bhat)", karbi: "An", note: "Object noun. Example: Ne an cho (I eat rice)." },
+    { english: "Water", assamese: "পানী (Pani)", karbi: "Lang", note: "Core noun. Example: Ne lang jun (I drink water)." },
+    { english: "Tea", assamese: "চাহ (Sah)", karbi: "Sangho", note: "Common daily noun." },
+    { english: "Pork meat", assamese: "গাহৰি মাংস (Gahori mangxo)", karbi: "Phak-ok", note: "Phak (pig) + ok (meat)." },
+    { english: "House / Home", assamese: "ঘৰ (Ghor)", karbi: "Hem", note: "Core noun." },
+    { english: "Maternal Uncle", assamese: "মামা (Mama)", karbi: "Ongsar", note: "Respectful Karbi kinship term." },
+    { english: "Paternal Uncle", assamese: "বৰদেউতা (Bordeuta)", karbi: "Po-sar", note: "Father's elder brother." },
+    { english: "Elder Brother", assamese: "দাদা (Dada)", karbi: "Ik-sar", note: "Respectful kinship term." }
   ],
-  'Karbi_Full_Vocabulary_Substitution_Drills.json': [
-    { english: 'Hello', assamese: 'নমস্কাৰ (Nomoskar)', karbi: 'Kardom', note: 'Standard respectful Karbi greeting.' },
-    { english: 'Kardom', assamese: 'নমস্কাৰ (Nomoskar)', karbi: 'Kardom', note: 'Respectful Karbi greeting / thank you.' },
-    { english: 'Goodbye', assamese: 'আহোঁ / বিদায় (Ahon / Biday)', karbi: 'Chorolo', note: 'Standard Karbi farewell expression.' },
-    { english: 'I eat rice', assamese: 'মই ভাত খাওঁ (Moi bhat khaon)', karbi: 'Ne an cho', note: 'SOV Breakdown: Ne (I) + an (rice) + cho (eat).' },
-    { english: 'I am cooking Pork Meat', assamese: 'মই গাহৰি মাংস ৰান্ধি আছো (Moi gahori mangxo randhi aso)', karbi: 'Ne phak-ok thok-lo', note: 'SOV Breakdown: Ne (I) + phak-ok (pork meat) + thok-lo (cooking).' },
-    { english: 'Lets go for tea', assamese: 'বলক চাহ খাবলৈ যাওঁ (Bolok sah khaboloi jaon)', karbi: 'Sangho jun-ik-nang', note: 'SOV Hortative: Sangho (tea) + jun-ik-nang (let us drink).' },
-    { english: 'Where are you going?', assamese: 'তুমি ক\'লৈ গৈছা? (Tumi koloi goisa?)', karbi: 'Nang kopi-si dam-lo?', note: 'SOV Interrogative: Nang (you) + kopi-si (where) + dam-lo (going).' },
-    { english: 'Where is your home', assamese: 'তোমাৰ ঘৰ ক\'ত? (Tomar ghor kot?)', karbi: 'Nang hem kopi-si?', note: 'SOV Interrogative: Nang hem (your home) + kopi-si (where
+  "Karbi_Full_Vocabulary_Substitution_Drills.json": [
+    { english: "Hello", assamese: "নমস্কাৰ (Nomoskar)", karbi: "Kardom", note: "Standard respectful Karbi greeting." },
+    { english: "Kardom", assamese: "নমস্কাৰ (Nomoskar)", karbi: "Kardom", note: "Respectful Karbi greeting / thank you." },
+    { english: "Goodbye", assamese: "আহোঁ / বিদায় (Ahon / Biday)", karbi: "Chorolo", note: "Standard Karbi farewell expression." },
+    { english: "I eat rice", assamese: "মই ভাত খাওঁ (Moi bhat khaon)", karbi: "Ne an cho", note: "SOV Breakdown: Ne (I) + an (rice) + cho (eat)." },
+    { english: "I am cooking Pork Meat", assamese: "মই গাহৰি মাংস ৰান্ধি আছো (Moi gahori mangxo randhi aso)", karbi: "Ne phak-ok thok-lo", note: "SOV Breakdown: Ne (I) + phak-ok (pork meat) + thok-lo (cooking)." },
+    { english: "Lets go for tea", assamese: "বলক চাহ খাবলৈ যাওঁ (Bolok sah khaboloi jaon)", karbi: "Sangho jun-ik-nang", note: "SOV Hortative: Sangho (tea) + jun-ik-nang (let us drink)." },
+    { english: "Where are you going?", assamese: "তুমি ক'লৈ গৈছা? (Tumi koloi goisa?)", karbi: "Nang kopi-si dam-lo?", note: "SOV Interrogative: Nang (you) + kopi-si (where) + dam-lo (going)." },
+    { english: "Where is your home", assamese: "তোমাৰ ঘৰ ক'ত? (Tomar ghor kot?)", karbi: "Nang hem kopi-si?", note: "SOV Interrogative: Nang hem (your home) + kopi-si (where is)." },
+    { english: "I am going to the market", assamese: "মই বজাৰলৈ গৈ আছো (Moi bojaroloi goi aso)", karbi: "Ne bazar dam-lo", note: "SOV Motion: Ne (I) + bazar (market) + dam-lo (am going)." },
+    { english: "I am going home", assamese: "মই ঘৰলৈ গৈ আছো (Moi ghoroloi goi aso)", karbi: "Ne hem dam-lo", note: "SOV Motion: Ne (I) + hem (home) + dam-lo (am going)." },
+    { english: "I am going to school", assamese: "মই স্কুললৈ গৈ আছো (Moi schoololoi goi aso)", karbi: "Ne school dam-lo", note: "SOV Motion: Ne (I) + school (destination) + dam-lo (am going)." },
+    { english: "How are you?", assamese: "তুমি কেনে আছা? (Tumi kene asa?)", karbi: "Nang mesen-ma?", note: "mesen (well/good) + -ma (interrogative suffix)." },
+    { english: "How are you", assamese: "তুমি কেনে আছা? (Tumi kene asa?)", karbi: "Nang mesen-ma?", note: "mesen (well/good) + -ma (interrogative suffix)." },
+    { english: "I am fine", assamese: "মই ভালে আছো (Moi bhale aso)", karbi: "Ne mesen-lo", note: "SOV Response: Ne (I) + mesen-lo (am well)." },
+    { english: "What is your name?", assamese: "তোমাৰ নাম কি? (Tomar nam ki?)", karbi: "Nang men kopi-ma?", note: "Nang men (your name) + kopi-ma (what)." }
+  ],
+  "karbi_corrections.json": [],
+  "karbi_custom_lessons.json": []
+};
+
+let DB = {};
+let activeDbFile = BUNDLED_JSON_FILES[0];
+let chatHistory = [];
+let selectedCalDate = "";
+const memoryFallbackStore = {};
+
+function safeSaveStorage(key, val) {
+  memoryFallbackStore[key] = val;
+  try { localStorage.setItem(key, val); } catch (e) {}
+}
+
+function safeGetStorage(key, fallback) {
+  try {
+    const v = localStorage.getItem(key);
+    if (v !== null) return v;
+  } catch (e) {}
+  return Object.prototype.hasOwnProperty.call(memoryFallbackStore, key) ? memoryFallbackStore[key] : fallback;
+}
+
+function safeParseArray(raw) {
+  try {
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) return parsed;
+    if (parsed && typeof parsed === "object") {
+      for (const k of Object.keys(parsed)) {
+        if (Array.isArray(parsed[k])) return parsed[k];
+      }
+    }
+  } catch (e) {}
+  return [];
+}
+
+function normalizeEntry(item) {
+  if (!item || typeof item !== "object") return null;
+  const english = String(item.english || item.en || item.English || item.word || item.sentence || item.prompt || "").trim();
+  const assamese = String(item.assamese || item.as || item.Assamese || "").trim();
+  const karbi = String(item.karbi || item.kar || item.Karbi || item.translation || item.target || "").trim();
+  const note = String(item.note || item.grammar || item.meaning || item.notes || "").trim();
+  if (!english && !karbi) return null;
+  return { english, assamese, karbi, note };
+}
+
+function formatTimestamp(dateObj = new Date()) {
+  let hours = dateObj.getHours();
+  const mins = String(dateObj.getMinutes()).padStart(2, "0");
+  const ampm = hours >= 12 ? "pm" : "am";
+  hours = hours % 12 || 12;
+  const hh = String(hours).padStart(2, "0");
+  const dd = String(dateObj.getDate()).padStart(2, "0");
+  const mm = String(dateObj.getMonth() + 1).padStart(2, "0");
+  const yyyy = dateObj.getFullYear();
+  return {
+    full: `${hh}:${mins} ${ampm}, ${dd}-${mm}-${yyyy}`,
+    dateKey: `${dd}-${mm}-${yyyy}`
+  };
+}
+
+async function hydrateBundledDatabases() {
+  let totalEntries = 0;
+  for (const fileName of BUNDLED_JSON_FILES) {
+    const savedLocal = safeParseArray(safeGetStorage(`aurelia_db_${fileName}`, "[]"));
+    const seeds = FALLBACK_SEEDS[fileName] || [];
+    let merged = [...seeds];
+
+    savedLocal.map(normalizeEntry).filter(Boolean).forEach(item => {
+      const k = item.english.toLowerCase();
+      if (!merged.some(m => (m.english || "").toLowerCase() === k)) {
+        merged.push(item);
+      }
+    });
+
+    try {
+      let raw = "[]";
+      if (window.AndroidBridge && typeof window.AndroidBridge.loadJsonFile === "function") {
+        raw = window.AndroidBridge.loadJsonFile(fileName);
+      } else {
+        const res = await fetch(`./data/${fileName}`);
+        if (res.ok) raw = await res.text();
+      }
+      safeParseArray(raw).map(normalizeEntry).filter(Boolean).forEach(item => {
+        const k = item.english.toLowerCase();
+        if (!merged.some(m => (m.english || "").toLowerCase() === k)) {
+          merged.push(item);
+        }
+      });
+    } catch (e) {}
+
+    DB[fileName] = merged;
+    totalEntries += merged.length;
+    safeSaveStorage(`aurelia_db_${fileName}`, JSON.stringify(merged));
+  }
+  const statusEl = document.getElementById("dbStatusText");
+  if (statusEl) statusEl.textContent = `Offline SOV • ${totalEntries} Entries Ready`;
+}
+
+function synthesizeKarbiSovTranslation(query) {
+  const clean = query.trim();
+  const lower = clean.toLowerCase().replace(/[?.!,]/g, "").trim();
+
+  const priorityOrder = [
+    "karbi_corrections.json",
+    "karbi_custom_lessons.json",
+    "Karbi_Full_Vocabulary_Substitution_Drills.json",
+    "Karbi_A_Letter_Vocabulary_Final_Handcrafted.json"
+  ];
+
+  for (const file of priorityOrder) {
+    const list = DB[file] || [];
+    const exact = list.find(e =>
+      (e.english || "").toLowerCase().replace(/[?.!,]/g, "").trim() === lower ||
+      (e.karbi || "").toLowerCase().replace(/[?.!,]/g, "").trim() === lower
+    );
+    if (exact) {
+      return {
+        source: `VERIFIED DATASET (${file})`,
+        karbi: exact.karbi,
+        assamese: exact.assamese || "—",
+        english: exact.english || clean,
+        note: exact.note || "Verified SOV Karbi entry."
+      };
+    }
+  }
+
+  for (const file of priorityOrder) {
+    const list = DB[file] || [];
+    const partial = list.find(e => {
+      const eng = (e.english || "").toLowerCase().replace(/[?.!,]/g, "").trim();
+      return eng.length > 3 && (lower.includes(eng) || eng.includes(lower));
+    });
+    if (partial) {
+      return {
+        source: `MATCHED DATASET (${file})`,
+        karbi: partial.karbi,
+        assamese: partial.assamese || "—",
+        english: clean,
+        note: `${partial.note || ""} (Closest match: "${partial.english}")`.trim()
+      };
+    }
+  }
+
+  const lex = {
+    "i": { k: "Ne", a: "মই" },
+    "my": { k: "Ne", a: "মোৰ" },
+    "we": { k: "Netum", a: "আমি" },
+    "you": { k: "Nang", a: "তুমি" },
+    "your": { k: "Nang", a: "তোমাৰ" },
+    "he": { k: "Alang", a: "সি" },
+    "she": { k: "Alang", a: "তাই" },
+    "home": { k: "hem", a: "ঘৰ" },
+    "house": { k: "hem", a: "ঘৰ" },
+    "market": { k: "bazar", a: "বজাৰ" },
+    "school": { k: "school", a: "স্কুল" },
+    "rice": { k: "an", a: "ভাত" },
+    "water": { k: "lang", a: "পানী" },
+    "tea": { k: "sangho", a: "চাহ" },
+    "meat": { k: "ok", a: "মাংস" },
+    "pork": { k: "phak-ok", a: "গাহৰি মাংস" },
+    "fish": { k: "ok-lang", a: "মাছ" },
+    "book": { k: "kitap", a: "কিতাপ" },
+    "name": { k: "men", a: "নাম" },
+    "father": { k: "po", a: "দেউতা" },
+    "mother": { k: "pei", a: "মা" },
+    "good": { k: "mesen", a: "ভাল" },
+    "fine": { k: "mesen", a: "ভাল" },
+    "today": { k: "pini", a: "আজি" },
+    "tomorrow": { k: "penap", a: "কাইলৈ" },
+    "now": { k: "non", a: "এতিয়া" },
+    "here": { k: "ladak", a: "ইয়াত" },
+    "there": { k: "haladak", a: "তাত" }
+  };
+
+  if (lower.startsWith("where is ")) {
+    const target = lower.replace("where is ", "").trim();
+    const kTarget = target.split(" ").map(w => lex[w]?.k || w).join(" ");
+    const aTarget = target.split(" ").map(w => lex[w]?.a || w).join(" ");
+    return {
+      source: "OFFLINE SOV GRAMMAR ENGINE",
+      karbi: `${capitalize(kTarget)} kopi-si?`,
+      assamese: `${aTarget} ক'ত?`,
+      english: clean,
+      note: `SOV Interrogative rule: [Subject: ${capitalize(kTarget)}] + [Interrogative: kopi-si (where is)].`
+    };
+  }
+
+  if (lower.includes("going to ")) {
+    const place = lower.split("going to ")[1].replace(/^the\s+/, "").trim();
+    const kPlace = lex[place]?.k || place;
+    const aPlace = lex[place]?.a || place;
+    const subj = lower.startsWith("we") ? "Netum" : (lower.startsWith("you") ? "Nang" : "Ne");
+    const aSubj = subj === "Netum" ? "আমি" : (subj === "Nang" ? "তুমি" : "মই");
+    return {
+      source: "OFFLINE SOV GRAMMAR ENGINE",
+      karbi: `${subj} ${kPlace} dam-lo`,
+      assamese: `${aSubj} ${aPlace}লৈ গৈ আছো`,
+      english: clean,
+      note: `SOV Motion rule: ${subj} (Subject) + ${kPlace} (Destination) + dam-lo (am/are going).`
+    };
+  }
+
+  const verbMap = {
+    "eat": { k: "cho", a: "খাওঁ" },
+    "eating": { k: "cho-lo", a: "খাই আছো" },
+    "drink": { k: "jun", a: "খাওঁ" },
+    "drinking": { k: "jun-lo", a: "খাই আছো" },
+    "cook": { k: "thok", a: "ৰান্ধো" },
+    "cooking": { k: "thok-lo", a: "ৰান্ধি আছো" },
+    "want": { k: "nang-ji", a: "লাগে" },
+    "need": { k: "nang-ji", a: "প্ৰয়োজন" },
+    "read": { k: "porhi", a: "পঢ়োঁ" },
+    "reading": { k: "porhi-lo", a: "পঢ়ি আছো" },
+    "come": { k: "vang", a: "আহোঁ" },
+    "coming": { k: "vang-lo", a: "আহি আছো" }
+  };
+
+  const words = lower.split(/\s+/);
+  let subj = "Ne", aSubj = "মই";
+  if (words[0] === "you") { subj = "Nang"; aSubj = "তুমি"; }
+  else if (words[0] === "we") { subj = "Netum"; aSubj = "আমি"; }
+  else if (words[0] === "he" || words[0] === "she") { subj = "Alang"; aSubj = "সি/তাই"; }
+
+  let foundVerb = null;
+  let objWords = [];
+  for (let i = 0; i < words.length; i++) {
+    if (verbMap[words[i]]) {
+      foundVerb = verbMap[words[i]];
+      objWords = words.slice(i + 1).filter(w => !["a", "an", "the", "to", "for"].includes(w));
+      break;
+    }
+  }
+
+  if (foundVerb) {
+    const kObj = objWords.map(w => lex[w]?.k || w).join(" ");
+    const aObj = objWords.map(w => lex[w]?.a || w).join(" ");
+    const kSentence = [subj, kObj, foundVerb.k].filter(Boolean).join(" ");
+    const aSentence = [aSubj, aObj, foundVerb.a].filter(Boolean).join(" ");
+    return {
+      source: "OFFLINE SOV GRAMMAR ENGINE",
+      karbi: kSentence,
+      assamese: aSentence,
+      english: clean,
+      note: `SOV Construction: ${subj} (Subject)${kObj ? ` + ${kObj} (Object)` : ""} + ${foundVerb.k} (Verb).`
+    };
+  }
+
+  const glossed = words.map(w => lex[w]?.k || w).join(" ");
+  const aGlossed = words.map(w => lex[w]?.a || w).join(" ");
+  return {
+    source: "OFFLINE LEXICAL SOV",
+    karbi: capitalize(glossed),
+    assamese: aGlossed,
+    english: clean,
+    note: "Offline lexical mapping. Tap Edit below to refine and save to karbi_corrections.json."
+  };
+}
+
+function capitalize(s) {
+  return s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
+}
+
+function speakKarbiThenAssamese(karbiText, assameseText) {
+  try {
+    const cleanK = String(karbiText || "").replace(/[*#_`~>|]/g, " ").trim();
+    const cleanA = String(assameseText || "").replace(/\(.*?\)/g, "").replace(/[*#_`~>|]/g, " ").trim();
+    const combined = `${cleanK}. ${cleanA}`;
+    if (window.AndroidBridge && typeof window.AndroidBridge.speak === "function") {
+      window.AndroidBridge.speak(combined);
+    } else if ("speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(combined);
+      u.lang = "en-IN";
+      window.speechSynthesis.speak(u);
+    }
+  } catch (e) {}
+}
+
+function sendQuick(text) {
+  const input = document.getElementById("userInput");
+  if (input) input.value = text;
+  handleSend();
+}
+
+function handleSend() {
+  const input = document.getElementById("userInput");
+  if (!input) return;
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = "";
+
+  const ts = formatTimestamp();
+  chatHistory.push({ role: "user", text, timestamp: ts.full, dateKey: ts.dateKey });
+
+  const result = synthesizeKarbiSovTranslation(text);
+  const botTs = formatTimestamp();
+  chatHistory.push({
+    role: "bot",
+    source: result.source,
+    karbi: result.karbi,
+    assamese: result.assamese,
+    english: result.english,
+    note: result.note,
+    timestamp: botTs.full,
+    dateKey: botTs.dateKey
+  });
+
+  saveChatHistory();
+  renderChatHistory();
+  speakKarbiThenAssamese(result.karbi, result.assamese);
+}
+
+function saveChatHistory() {
+  safeSaveStorage("aurelia_chat_history_v2", JSON.stringify(chatHistory));
+}
+
+function renderChatHistory() {
+  const box = document.getElementById("chatBox");
+  if (!box) return;
+  box.innerHTML = "";
+
+  chatHistory.forEach((msg, idx) => {
+    const row = document.createElement("div");
+    row.className = `msg-row ${msg.role}`;
+
+    if (msg.role === "user") {
+      row.innerHTML = `
+        <div class="user-bubble" id="msg-body-${idx}">
+          <div>${escapeHtml(msg.text)}</div>
+          <div class="user-meta">
+            <button onclick="openInlineEdit(${idx})">Edit</button>
+            <span class="ts-link" onclick="openCalendarForDate('${msg.dateKey}')">${msg.timestamp}</span>
+          </div>
+        </div>
+      `;
+    } else {
+      row.innerHTML = `
+        <div class="bot-card" id="msg-body-${idx}">
+          <div class="badge-src">${escapeHtml(msg.source || "KARBI SOV")}</div>
+          <div class="lang-block karbi">
+            <div class="lang-tag">KARBI (SOV STANDARD — 1ST VOICE)</div>
+            <div class="lang-val">${escapeHtml(msg.karbi)}</div>
+          </div>
+          <div class="lang-block">
+            <div class="lang-tag">ASSAMESE (অসমীয়া — 2ND VOICE)</div>
+            <div class="lang-val">${escapeHtml(msg.assamese)}</div>
+          </div>
+          <div class="lang-block">
+            <div class="lang-tag">ENGLISH</div>
+            <div class="lang-val" style="font-size:14px;font-weight:500;">${escapeHtml(msg.english)}</div>
+          </div>
+          <div class="grammar-note">${escapeHtml(msg.note || "")}</div>
+          <div class="card-footer">
+            <button class="speak-btn" onclick="speakHistoryItem(${idx})">🔊 Speak (Karbi → As)</button>
+            <button class="ts-pill" onclick="openCalendarForDate('${msg.dateKey}')">${msg.timestamp}</button>
+            <button class="action-link" onclick="openInlineEdit(${idx})">Edit</button>
+            <button class="action-link copy" onclick="copyMessageText(${idx})">Copy</button>
+          </div>
+        </div>
+      `;
+    }
+    box.appendChild(row);
+  });
+
+  box.scrollTop = box.scrollHeight;
+}
+
+function speakHistoryItem(idx) {
+  const m = chatHistory[idx];
+  if (m) speakKarbiThenAssamese(m.karbi, m.assamese);
+}
+
+function openInlineEdit(idx) {
+  const msg = chatHistory[idx];
+  const container = document.getElementById(`msg-body-${idx}`);
+  if (!msg || !container) return;
+
+  if (msg.role === "user") {
+    container.innerHTML = `
+      <div class="inline-edit-box">
+        <input type="text" id="edit-user-${idx}" value="${escapeHtml(msg.text)}" />
+        <div class="inline-edit-actions">
+          <button class="btn-save-sm" onclick="saveInlineEdit(${idx})">Save & Re-translate</button>
+          <button class="btn-cancel-sm" onclick="renderChatHistory()">Cancel</button>
+        </div>
+      </div>
+    `;
+  } else {
+    container.innerHTML = `
+      <div class="inline-edit-box">
+        <label style="font-size:11px;font-weight:700;">Karbi (SOV):</label>
+        <input type="text" id="edit-kar-${idx}" value="${escapeHtml(msg.karbi)}" />
+        <label style="font-size:11px;font-weight:700;">Assamese:</label>
+        <input type="text" id="edit-asm-${idx}" value="${escapeHtml(msg.assamese)}" />
+        <label style="font-size:11px;font-weight:700;">English:</label>
+        <input type="text" id="edit-eng-${idx}" value="${escapeHtml(msg.english)}" />
+        <label style="font-size:11px;font-weight:700;">Grammar Note:</label>
+        <input type="text" id="edit-note-${idx}" value="${escapeHtml(msg.note || "")}" />
+        <div class="inline-edit-actions">
+          <button class="btn-save-sm" onclick="saveInlineEdit(${idx})">Save Correction</button>
+          <button class="btn-cancel-sm" onclick="renderChatHistory()">Cancel</button>
+        </div>
+      </div>
+    `;
+  }
+}
+
+function saveInlineEdit(idx) {
+  const msg = chatHistory[idx];
+  if (!msg) return;
+
+  if (msg.role === "user") {
+    const newText = document.getElementById(`edit-user-${idx}`).value.trim();
+    if (newText) {
+      msg.text = newText;
+      if (chatHistory[idx + 1] && chatHistory[idx + 1].role === "bot") {
+        const updated = synthesizeKarbiSovTranslation(newText);
+        Object.assign(chatHistory[idx + 1], updated);
+      }
+    }
+  } else {
+    msg.karbi = document.getElementById(`edit-kar-${idx}`).value.trim();
+    msg.assamese = document.getElementById(`edit-asm-${idx}`).value.trim();
+    msg.english = document.getElementById(`edit-eng-${idx}`).value.trim();
+    msg.note = document.getElementById(`edit-note-${idx}`).value.trim();
+    msg.source = "USER VERIFIED (karbi_corrections.json)";
+
+    const list = DB["karbi_corrections.json"] || [];
+    const existingIdx = list.findIndex(e => (e.english || "").toLowerCase() === msg.english.toLowerCase());
+    const entry = { english: msg.english, assamese: msg.assamese, karbi: msg.karbi, note: msg.note };
+    if (existingIdx >= 0) list[existingIdx] = entry;
+    else list.unshift(entry);
+    DB["karbi_corrections.json"] = list;
+    persistDbFile("karbi_corrections.json");
+  }
+
+  saveChatHistory();
+  renderChatHistory();
+}
+
+function copyMessageText(idx) {
+  const m = chatHistory[idx];
+  if (!m) return;
+  const txt = `Karbi: ${m.karbi}\nAssamese: ${m.assamese}\nEnglish: ${m.english}\n(${m.timestamp})`;
+  try { navigator.clipboard.writeText(txt); } catch (e) {}
+}
+
+function openJsonDbModal() {
+  renderDbTabs();
+  selectDbTab(activeDbFile);
+  openModal("jsonDbModal");
+}
+
+function renderDbTabs() {
+  const container = document.getElementById("dbTabs");
+  if (!container) return;
+  container.innerHTML = BUNDLED_JSON_FILES.map(f => `
+    <button class="db-tab ${f === activeDbFile ? "active" : ""}" onclick="selectDbTab('${f}')">${f}</button>
+  `).join("");
+}
+
+function selectDbTab(fileName) {
+  activeDbFile = fileName;
+  renderDbTabs();
+  const list = DB[fileName] || [];
+  document.getElementById("activeDbLabel").textContent = fileName;
+  document.getElementById("dbCountLabel").textContent = `Loaded Entries (${list.length})`;
+  document.getElementById("jsonPreview").textContent = JSON.stringify(list, null, 2);
+}
+
+function addDbEntry() {
+  const english = document.getElementById("dbEng").value.trim();
+  const assamese = document.getElementById("dbAsm").value.trim();
+  const karbi = document.getElementById("dbKar").value.trim();
+  const note = document.getElementById("dbNote").value.trim();
+  if (!english || !karbi) return;
+
+  const list = DB[activeDbFile] || [];
+  list.unshift({ english, assamese, karbi, note });
+  DB[activeDbFile] = list;
+  persistDbFile(activeDbFile);
+
+  document.getElementById("dbEng").value = "";
+  document.getElementById("dbAsm").value = "";
+  document.getElementById("dbKar").value = "";
+  document.getElementById("dbNote").value = "";
+  selectDbTab(activeDbFile);
+}
+
+function persistDbFile(fileName) {
+  const content = JSON.stringify(DB[fileName] || [], null, 2);
+  safeSaveStorage(`aurelia_db_${fileName}`, content);
+  if (window.AndroidBridge && typeof window.AndroidBridge.saveJsonFile === "function") {
+    try { window.AndroidBridge.saveJsonFile(fileName, content); } catch (e) {}
+  }
+}
+
+function importJsonFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const normalized = safeParseArray(e.target.result).map(normalizeEntry).filter(Boolean);
+    if (normalized.length > 0) {
+      DB[activeDbFile] = normalized;
+      persistDbFile(activeDbFile);
+      selectDbTab(activeDbFile);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function downloadActiveJson() {
+  const content = JSON.stringify(DB[activeDbFile] || [], null, 2);
+  triggerDownload(activeDbFile, content);
+}
+
+function openCalendarForDate(dateKey) {
+  selectedCalDate = dateKey || formatTimestamp().dateKey;
+  renderCalendar();
+  openModal("calendarModal");
+}
+
+function renderCalendar() {
+  const parts = selectedCalDate.split("-");
+  const monthIdx = parseInt(parts[1], 10) - 1;
+  const year = parseInt(parts[2], 10);
+  const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  document.getElementById("calMonthTitle").textContent = `📅 ${monthNames[monthIdx]} ${year}`;
+
+  const daysInMonth = new Date(year, monthIdx + 1, 0).getDate();
+  const activeDates = new Set(chatHistory.map(m => m.dateKey));
+  const grid = document.getElementById("calGrid");
+  grid.innerHTML = "";
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dk = `${String(d).padStart(2,"0")}-${String(monthIdx+1).padStart(2,"0")}-${year}`;
+    const cell = document.createElement("div");
+    cell.className = `cal-day ${activeDates.has(dk) ? "has-chat" : ""} ${dk === selectedCalDate ? "selected" : ""}`;
+    cell.textContent = d;
+    cell.onclick = () => { selectedCalDate = dk; renderCalendar(); };
+    grid.appendChild(cell);
+  }
+
+  document.getElementById("calSelectedDateLabel").textContent = `Chats on ${selectedCalDate}`;
+  const dayChats = chatHistory.filter(m => m.dateKey === selectedCalDate);
+  const listEl = document.getElementById("calDateChats");
+  if (!dayChats.length) {
+    listEl.innerHTML = `<div style="color:var(--muted);">No conversations recorded on this date.</div>`;
+  } else {
+    listEl.innerHTML = dayChats.map(m => `
+      <div style="background:var(--bg);padding:8px 10px;border-radius:10px;border:1px solid var(--border);">
+        <div style="font-size:11px;color:var(--muted);">${m.timestamp}</div>
+        ${m.role === "user"
+          ? `<strong>You:</strong> ${escapeHtml(m.text)}`
+          : `<strong>Karbi:</strong> ${escapeHtml(m.karbi)}<br><strong>Assamese:</strong> ${escapeHtml(m.assamese)}<br><strong>English:</strong> ${escapeHtml(m.english)}`
+        }
+      </div>
+    `).join("");
+  }
+}
+
+function formatChatsAsTxt(list) {
+  return list.map(m => {
+    if (m.role === "user") return `[${m.timestamp}] You: ${m.text}`;
+    return `[${m.timestamp}] Talk Aurelia:\n  Karbi: ${m.karbi}\n  Assamese: ${m.assamese}\n  English: ${m.english}\n  Note: ${m.note || ""}`;
+  }).join("\n\n----------------------------------------\n\n");
+}
+
+function exportSelectedDateTxt() {
+  const dayChats = chatHistory.filter(m => m.dateKey === selectedCalDate);
+  triggerDownload(`Talk_Aurelia_Chat_${selectedCalDate}.txt`, formatChatsAsTxt(dayChats));
+}
+
+function exportAllChatTxt() {
+  triggerDownload("Talk_Aurelia_Full_Chat_History.txt", formatChatsAsTxt(chatHistory));
+}
+
+function triggerDownload(filename, text) {
+  const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function clearChatHistory() {
+  chatHistory = [];
+  saveChatHistory();
+  renderChatHistory();
+  closeModal("settingsModal");
+}
+
+function startVoiceInput() {
+  const btn = document.getElementById("micBtn");
+  btn.classList.add("listening");
+  if (window.AndroidBridge && typeof window.AndroidBridge.startListening === "function") {
+    window.AndroidBridge.startListening();
+    setTimeout(() => btn.classList.remove("listening"), 5000);
+  } else if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const rec = new SR();
+    rec.lang = "en-IN";
+    rec.onresult = e => {
+      document.getElementById("userInput").value = e.results[0][0].transcript;
+      handleSend();
+    };
+    rec.onend = () => btn.classList.remove("listening");
+    rec.start();
+  } else {
+    btn.classList.remove("listening");
+  }
+}
+
+window.onVoiceResult = function(text) {
+  const btn = document.getElementById("micBtn");
+  if (btn) btn.classList.remove("listening");
+  if (text) {
+    document.getElementById("userInput").value = text;
+    handleSend();
+  }
+};
+
+function toggleVoiceGreetings(enabled) {
+  safeSaveStorage("aurelia_voice_greetings", enabled ? "1" : "0");
+}
+
+function handleExit() {
+  const greetOn = safeGetStorage("aurelia_voice_greetings", "1") === "1";
+  if (greetOn) speakKarbiThenAssamese("Chorolo", "আহোঁ");
+  setTimeout(() => {
+    if (window.AndroidBridge && typeof window.AndroidBridge.exitApp === "function") {
+      window.AndroidBridge.exitApp();
+    } else {
+      window.close();
+    }
+  }, greetOn ? 900 : 100);
+}
+
+window.onAndroidBackPressed = function() {
+  const openModals = document.querySelectorAll(".modal-backdrop.open");
+  if (openModals.length > 0) {
+    openModals.forEach(m => m.classList.remove("open"));
+    return;
+  }
+  handleExit();
+};
+
+function openModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.add("open");
+}
+
+function closeModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.remove("open");
+}
+
+function escapeHtml(str) {
+  return String(str || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+let lastScrollTop = 0;
+const chatBoxEl = document.getElementById("chatBox");
+if (chatBoxEl) {
+  chatBoxEl.addEventListener("scroll", function() {
+    const st = this.scrollTop;
+    const header = document.getElementById("appHeader");
+    if (header) {
+      if (st > lastScrollTop && st > 40) header.classList.add("header-hidden");
+      else if (st < lastScrollTop) header.classList.remove("header-hidden");
+    }
+    lastScrollTop = Math.max(0, st);
+  });
+}
+
+async function initApp() {
+  try {
+    document.querySelectorAll(".modal-backdrop").forEach(m => m.classList.remove("open"));
+
+    const greetOn = safeGetStorage("aurelia_voice_greetings", "1") === "1";
+    const toggleEl = document.getElementById("voiceGreetingToggle");
+    if (toggleEl) toggleEl.checked = greetOn;
+
+    await hydrateBundledDatabases();
+
+    chatHistory = safeParseArray(safeGetStorage("aurelia_chat_history_v2", "[]"));
+    if (chatHistory.length === 0) {
+      const ts = formatTimestamp();
+      chatHistory.push({
+        role: "bot",
+        source: "BUNDLED KARBI SOV DATABASE",
+        karbi: "Kardom! Nang kopi-si dam-lo?",
+        assamese: "নমস্কাৰ! তুমি ক'লৈ গৈছা? (Nomoskar! Tumi koloi goisa?)",
+        english: "Greetings! Where are you going?",
+        note: "SOV Interrogative pattern: Nang (you) + kopi-si (where) + dam-lo (going).",
+        timestamp: ts.full,
+        dateKey: ts.dateKey
+      });
+      saveChatHistory();
+    }
+
+    renderChatHistory();
+    if (greetOn) {
+      setTimeout(() => speakKarbiThenAssamese("Kardom", "নমস্কাৰ"), 500);
+    }
+  } catch (err) {
+    console.error("Init error:", err);
+    renderChatHistory();
+  }
+}
+
+initApp();
+</script>
+</body>
+</html>
