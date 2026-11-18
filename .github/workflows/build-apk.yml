@@ -34,13 +34,18 @@ jobs:
 
       - name: Unpack Any Uploaded Project Zip & Prepare Clean Android Project
         run: |
-          # 1. Unzip any uploaded project zip (even if renamed with (1).zip by mobile browser)
+          # 1. Unzip any uploaded project zip (even if renamed by a mobile browser)
           for z in *.zip; do
             if [ -f "$z" ]; then
               echo "Unpacking $z..."
               unzip -o "$z"
             fi
           done
+
+          # Flatten if the zip unpacked into a talk_aurelia_github_project/ subfolder
+          if [ -d "talk_aurelia_github_project" ]; then
+            cp -rf talk_aurelia_github_project/* . 2>/dev/null || true
+          fi
 
           # 2. Prepare clean android directory structure (remove any stale/conflicting files from older runs)
           rm -rf android/app/src/main/java android/app/src/main/kotlin android/app/src/main/res/layout android/app/src/main/res/drawable* android/app/src/main/res/mipmap-anydpi*
@@ -313,38 +318,41 @@ jobs:
           }
           EOF
 
-          # 4. Ensure launcher icons exist in all mipmap folders (extracting from app_icon.png or index.html base64 icon)
+          # 4. Ensure launcher icons exist in all mipmap folders without requiring PIL/Pillow
           python3 - << 'PY'
-          import base64, os, re
-          from PIL import Image
-          from io import BytesIO
+          import base64, os, re, shutil, subprocess
 
-          img = None
+          src_icon = None
           for candidate in ["app_icon.png", "icon-512.png", "48409.png", "android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png"]:
               if os.path.exists(candidate):
-                  try:
-                      img = Image.open(candidate).convert("RGBA")
-                      break
-                  except Exception:
-                      pass
+                  src_icon = candidate
+                  break
 
-          if img is None and os.path.exists("android/app/src/main/assets/www/index.html"):
+          if src_icon is None and os.path.exists("android/app/src/main/assets/www/index.html"):
               html = open("android/app/src/main/assets/www/index.html", "r", encoding="utf-8", errors="ignore").read()
               m = re.search(r"data:image/png;base64,([A-Za-z0-9+/=]+)", html)
               if m:
-                  img = Image.open(BytesIO(base64.b64decode(m.group(1)))).convert("RGBA")
-
-          if img is None:
-              img = Image.new("RGBA", (192, 192), (5, 150, 105, 255))
+                  with open("app_icon_extracted.png", "wb") as f:
+                      f.write(base64.b64decode(m.group(1)))
+                  src_icon = "app_icon_extracted.png"
 
           sizes = {"mipmap-mdpi": 48, "mipmap-hdpi": 72, "mipmap-xhdpi": 96, "mipmap-xxhdpi": 144, "mipmap-xxxhdpi": 192}
+          has_convert = shutil.which("convert") is not None
+
           for folder, px in sizes.items():
               d = os.path.join("android/app/src/main/res", folder)
               os.makedirs(d, exist_ok=True)
-              r = img.resize((px, px), Image.LANCZOS)
-              r.save(os.path.join(d, "ic_launcher.png"), "PNG")
-              r.save(os.path.join(d, "ic_launcher_round.png"), "PNG")
-          print("Verified all mipmap launcher icons.")
+              out_main = os.path.join(d, "ic_launcher.png")
+              out_round = os.path.join(d, "ic_launcher_round.png")
+              if not os.path.exists(out_main) and src_icon:
+                  if has_convert:
+                      subprocess.run(["convert", src_icon, "-resize", f"{px}x{px}", out_main], check=False)
+                  if not os.path.exists(out_main):
+                      shutil.copyfile(src_icon, out_main)
+              if not os.path.exists(out_round) and os.path.exists(out_main):
+                  shutil.copyfile(out_main, out_round)
+
+          print("Verified all mipmap launcher icons (zero-PIL mode).")
           PY
 
       - name: Generate Release Signing Keystore
