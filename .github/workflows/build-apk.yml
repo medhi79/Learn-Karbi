@@ -1,11 +1,17 @@
-name: Build Talk Aurelia APK
+name: Build Talk Aurelia APK (Debug & Release-Signed)
 
 on:
+  push:
+    branches: [ "main", "master" ]
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -16,23 +22,65 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.7'
+      - name: Set up Android SDK & Gradle
+        uses: android-actions/setup-android@v3
 
-      - name: Verify Android Files Exist
+      - name: Unpack Project Zip (if uploaded as ZIP) & Sync Web Assets
         run: |
-          ls -la android/
-          ls -la android/app/
+          if [ -f "talk_aurelia_github_project.zip" ]; then
+            unzip -o talk_aurelia_github_project.zip
+          fi
+          mkdir -p android/app/src/main/assets/www
+          if [ -f "index.html" ]; then
+            cp -f index.html android/app/src/main/assets/www/index.html
+          fi
 
-      - name: Build Debug APK
-        working-directory: android
-        run: gradle clean assembleDebug --no-daemon
+      - name: Generate Release Signing Keystore
+        run: |
+          cd android/app
+          rm -f release-key.jks
+          keytool -genkeypair -v \
+            -keystore release-key.jks \
+            -alias talkaurelia \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -storepass talkaurelia123 \
+            -keypass talkaurelia123 \
+            -dname "CN=Talk Aurelia, OU=Karbi Language, O=LearnKarbi, L=Dokmoka, ST=Assam, C=IN"
 
-      - name: Upload APK Artifact
+      - name: Build debug.apk and release-signed.apk
+        run: |
+          cd android
+          gradle assembleDebug assembleRelease --no-daemon --stacktrace
+          mkdir -p ../dist
+          DEBUG_APK=$(find app/build/outputs/apk/debug -name "*.apk" | head -n 1)
+          RELEASE_APK=$(find app/build/outputs/apk/release -name "*.apk" | head -n 1)
+          cp "$DEBUG_APK" ../dist/debug.apk
+          cp "$RELEASE_APK" ../dist/release-signed.apk
+          ls -lh ../dist/
+
+      - name: Upload debug.apk Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Talk-Aurelia-Karbi-v2-debug
-          path: android/app/build/outputs/apk/debug/app-debug.apk
-          retention-days: 30
+          name: debug.apk
+          path: dist/debug.apk
+          if-no-files-found: error
+
+      - name: Upload release-signed.apk Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-signed.apk
+          path: dist/release-signed.apk
+          if-no-files-found: error
+
+      - name: Publish debug.apk and release-signed.apk to GitHub Releases
+        uses: softprops/action-gh-release@v2
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        with:
+          tag_name: v2026.11.18-run${{ github.run_number }}
+          name: "Talk Aurelia v2026.11.18 (Build #${{ github.run_number }})"
+          body: "Automated build containing both **debug.apk** and **release-signed.apk** with the updated Karbi-Assamese-English app icon, offline TTS voice engine, persistent Recent Translations, and Teach/Fix JSON import/export."
+          files: |
+            dist/debug.apk
+            dist/release-signed.apk
