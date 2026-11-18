@@ -1,1 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Talk Aurelia • Learn Karbi Language</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <style>
+    :root {
+      --bg: #f4f7f6;
+      --surface: #ffffff;
+      --primary: #0f766e;
+      --primary-dark: #115e59;
+      --primary-light: #ccfbf1;
+      --accent: #0284c7;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --verified-bg: #dcfce7;
+      --verified-text: #166534;
+      --doc-bg: #e0f2fe;
+      --doc-text: #075985;
+      --warn-bg: #fef3c7;
+      --warn-text: #92400e;
+      --danger-bg: #fee2e2;
+      --danger-text: #991b1b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: var(--bg); color: var(--text); height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
 
+    /* Auto-Hide Header */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 40;
+      transition: transform 0.25s ease;
+    }
+    header.nav-hidden { transform: translateY(-105%); }
+    .brand { display: flex; align-items: center; gap: 8px; min-width: 0; }
+    .brand-title { font-size: 14px; font-weight: 700; color: var(--primary-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .brand-sub { font-size: 11px; color: var(--primary); font-weight: 500; }
+    .header-actions { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
+    .btn-top {
+      background: #f8fafc; border: 1px solid var(--border); color: var(--text);
+      padding: 6px 8px; border-radius: 8px; font-size: 11px; font-weight: 600; cursor: pointer;
+    }
+    .btn-zip { background: #ecfdf5; border-color: #6ee7b7; color: #065f46; }
+    .btn-exit { background: #fef2f2; border-color: #fecaca; color: #b91c1c; }
+
+    /* Try Bar */
+    .try-bar {
+      margin-top: 56px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 7px 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: margin-top 0.25s ease;
+    }
+    header.nav-hidden + .try-bar { margin-top: 0; }
+    .try-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; }
+    .chip {
+      background: #f1f5f9; border: 1px solid var(--border); color: var(--text);
+      padding: 5px 10px; border-radius: 999px; font-size: 12px; cursor: pointer; flex-shrink: 0;
+    }
+    .chip:hover { background: var(--primary-light); border-color: var(--primary); }
+
+    /* Chat Area */
+    #chatBox {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      scroll-behavior: smooth;
+    }
+    .msg-row { display: flex; flex-direction: column; max-width: 94%; }
+    .msg-row.user { align-self: flex-end; }
+    .msg-row.bot { align-self: flex-start; width: 100%; max-width: 540px; }
+
+    .user-bubble {
+      background: var(--primary); color: #fff;
+      padding: 10px 14px; border-radius: 16px 16px 4px 16px;
+      font-size: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    }
+    .user-meta {
+      display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+      margin-top: 5px; font-size: 10px; color: #ccfbf1;
+    }
+
+    .bot-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 12px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .badge-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px; }
+    .badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 6px; letter-spacing: 0.3px; }
+    .badge-verified { background: var(--verified-bg); color: var(--verified-text); }
+    .badge-doc { background: var(--doc-bg); color: var(--doc-text); }
+    .badge-warn { background: var(--warn-bg); color: var(--warn-text); }
+    .badge-danger { background: var(--danger-bg); color: var(--danger-text); }
+
+    .lang-box { border: 1px solid var(--border); border-radius: 10px; padding: 9px 11px; background: #fafafa; }
+    .lang-box.karbi { background: #f0fdf4; border-color: #bbf7d0; }
+    .lang-tag { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 2px; }
+    .karbi .lang-tag { color: #15803d; }
+    .lang-val { font-size: 16px; font-weight: 700; color: var(--text); }
+    .lang-val.sm { font-size: 14px; font-weight: 600; }
+
+    /* Tokenized English -> Karbi & Assamese Grid */
+    .token-box { background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px; }
+    .token-title { font-size: 10px; font-weight: 700; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; }
+    .token-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(125px, 1fr)); gap: 6px; }
+    .token-item { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; }
+    .tok-en { font-size: 12px; font-weight: 700; color: #0f172a; border-bottom: 1px dashed var(--border); padding-bottom: 3px; margin-bottom: 3px; }
+    .tok-kb { font-size: 12px; font-weight: 700; color: var(--primary-dark); }
+    .tok-as { font-size: 11px; color: #475569; }
+    .tok-role { font-size: 9px; color: var(--muted); margin-top: 2px; }
+
+    /* Slot Disambiguation Buttons */
+    .slot-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 10px; }
+    .slot-q { font-size: 12px; font-weight: 700; color: #92400e; margin-bottom: 8px; }
+    .slot-opts { display: flex; flex-wrap: wrap; gap: 6px; }
+    .slot-btn {
+      background: #fff; border: 1px solid #f59e0b; color: #78350f;
+      padding: 6px 10px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;
+    }
+    .slot-btn:hover { background: #fef3c7; }
+
+    .note-text { font-size: 11px; color: var(--muted); line-height: 1.45; }
+    .caveat-box { background: #fefce8; border-left: 3px solid #eab308; padding: 6px 8px; font-size: 11px; color: #854d0e; border-radius: 4px; }
+
+    /* Card Footer Controls */
+    .card-footer {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      gap: 6px; padding-top: 6px; border-top: 1px solid var(--border); font-size: 11px;
+    }
+    .speak-group { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+    .btn-speak {
+      background: #f0fdfa; border: 1px solid #99f6e4; color: var(--primary-dark);
+      padding: 5px 9px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer;
+    }
+    .voice-select {
+      border: 1px solid var(--border); border-radius: 8px; padding: 4px 6px;
+      font-size: 11px; background: #fff; color: var(--text); max-width: 175px;
+    }
+    .ts-link { color: var(--accent); font-weight: 600; cursor: pointer; text-decoration: underline; font-size: 11px; }
+    .card-links { display: flex; gap: 10px; }
+    .link-btn { background: none; border: none; color: var(--primary); font-size: 11px; font-weight: 600; cursor: pointer; }
+
+    /* Input Bar */
+    .input-bar {
+      background: var(--surface); border-top: 1px solid var(--border);
+      padding: 8px 10px; display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+    }
+    .mic-btn {
+      width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--border);
+      background: #f8fafc; font-size: 18px; cursor: pointer; flex-shrink: 0;
+    }
+    .mic-btn.recording { background: #fee2e2; border-color: #ef4444; }
+    #userInput {
+      flex: 1; border: 1px solid var(--border); border-radius: 12px;
+      padding: 10px 12px; font-size: 14px; outline: none;
+    }
+    #userInput:focus { border-color: var(--primary); }
+    .send-btn {
+      background: var(--primary); color: #fff; border: none;
+      padding: 10px 16px; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer;
+    }
+
+    /* Modals */
+    .modal-backdrop {
+      display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.55);
+      z-index: 60; align-items: center; justify-content: center; padding: 14px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: var(--surface); border-radius: 16px; width: 100%; max-width: 480px;
+      max-height: 86dvh; display: flex; flex-direction: column; overflow: hidden;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);
+    }
+    .modal-head {
+      padding: 12px 16px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; font-weight: 700; font-size: 15px;
+    }
+    .modal-body { padding: 14px 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; font-size: 13px; }
+    .close-x { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted); }
+    .setting-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+    .cal-day { padding: 8px 4px; border-radius: 8px; border: 1px solid var(--border); font-size: 12px; cursor: pointer; }
+    .cal-day.has-data { background: var(--primary-light); border-color: var(--primary); font-weight: 700; color: var(--primary-dark); }
+    .cal-day.active { background: var(--primary); color: #fff; }
+    textarea, .form-input { width: 100%; border: 1px solid var(--border); border-radius: 8px; padding: 8px; font-size: 13px; }
+    pre.test-out { background: #0f172a; color: #e2e8f0; padding: 10px; border-radius: 8px; font-size: 11px; overflow-x: auto; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+
+<header id="mainHeader">
+  <div class="brand">
+    <div class="brand-title">🧚‍♀️ Talk Aurelia • Learn Karbi Language</div>
+  </div>
+  <div class="header-actions">
+    <button class="btn-top btn-zip" onclick="downloadFullGitHubZip()">📦 .zip</button>
+    <button class="btn-top" onclick="openModal('settingsModal')">⚙️ Settings</button>
+    <button class="btn-top" onclick="openModal('aboutModal')">About</button>
+    <button class="btn-top btn-exit" onclick="handleExit()">Exit</button>
+  </div>
+</header>
+
+<div class="try-bar">
+  <span class="try-label">Try:</span>
+  <button class="chip" onclick="quickAsk('I am not going to school today')">I am not going to school today</button>
+  <button class="chip" onclick="quickAsk('not going school today')">not going school today</button>
+  <button class="chip" onclick="quickAsk('we are not going to school today')">we are not going to school today</button>
+  <button class="chip" onclick="quickAsk('I eat rice')">I eat rice</button>
+  <button class="chip" onclick="quickAsk('Rainbow')">Rainbow</button>
+</div>
+
+<main id="chatBox"></main>
+
+<div class="input-bar">
+  <button id="micBtn" class="mic-btn" title="Speak English" onclick="toggleMic()">🎙️</button>
+  <input id="userInput" type="text" placeholder="Type or speak in English (e.g., I am not going to school today)..." onkeydown="if(event.key==='Enter') sendMessage()" />
+  <button class="send-btn" onclick="sendMessage()">Send</button>
+</div>
+
+<!-- Settings Modal -->
+<div id="settingsModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <span>⚙️ Settings &amp; Verified Database</span>
+      <button class="close-x" onclick="closeTopModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="setting-row">
+        <div>
+          <strong>Opening &amp; Closing Voice</strong>
+          <div class="note-text">Speak "Kardom" on open &amp; "Chorolo" on exit</div>
+        </div>
+        <input type="checkbox" id="voiceGreetToggle" checked onchange="saveSettings()" />
+      </div>
+      <div class="setting-row">
+        <div>
+          <strong>Default Voice Output Mode</strong>
+          <div class="note-text">English input defaults to Karbi Only</div>
+        </div>
+        <select id="defaultVoiceMode" class="voice-select" onchange="saveSettings()">
+          <option value="kb_only">En Input: Speak Karbi Only</option>
+          <option value="kb_as">En Input: Speak Karbi + Assamese</option>
+        </select>
+      </div>
+      <div class="setting-row">
+        <div>
+          <strong>Assume Casual Register ("ne/nang")</strong>
+          <div class="note-text">Off = Ask between Casual (friends) vs Respect (elders)</div>
+        </div>
+        <input type="checkbox" id="assumeCasualToggle" onchange="saveSettings()" />
+      </div>
+      <div>
+        <strong>Optional Gemini API Key (for online open-ended phrases)</strong>
+        <input type="password" id="geminiKeyInput" class="form-input" placeholder="Paste Gemini API key (optional)..." onchange="saveSettings()" />
+      </div>
+      <div style="display:flex; flex-wrap:wrap; gap:8px;">
+        <button class="btn-top btn-zip" onclick="runSchemaAndTests()">✅ Run validate_data.py &amp; Tests</button>
+        <button class="btn-top" onclick="exportAllHistoryTxt()">📄 Export Chat (.txt)</button>
+        <button class="btn-top" onclick="openJsonDbManager()">🗄️ JSON DB Manager</button>
+        <button class="btn-top btn-zip" onclick="downloadFullGitHubZip()">📦 Download Complete .zip</button>
+      </div>
+      <pre id="validatorOutput" class="test-out" style="display:none;"></pre>
+    </div>
+  </div>
+</div>
+
+<!-- JSON DB Modal -->
+<div id="jsonModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <span>🗄️ JSON Databases (karbi_data_2.json)</span>
+      <button class="close-x" onclick="closeTopModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="note-text">Active speaker-verified dataset signed by P. Ronghang (Dengaon, Karbi Anglong, 2026-11-18) + custom corrections:</div>
+      <textarea id="jsonDbViewer" rows="12" readonly></textarea>
+      <div style="display:flex; gap:8px;">
+        <button class="btn-top" onclick="exportCorrectionsJson()">⬇️ Export karbi_corrections.json</button>
+        <button class="btn-top btn-exit" onclick="clearCustomCache()">🗑️ Reset Custom Cache</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Calendar History Modal -->
+<div id="calendarModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <span id="calTitle">📅 Chat History Calendar</span>
+      <button class="close-x" onclick="closeTopModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <button class="btn-top" onclick="shiftCalMonth(-1)">◀ Prev</button>
+        <strong id="calMonthLabel">November 2026</strong>
+        <button class="btn-top" onclick="shiftCalMonth(1)">Next ▶</button>
+      </div>
+      <div id="calGrid" class="cal-grid"></div>
+      <div id="calDatePreview" style="display:flex; flex-direction:column; gap:6px;"></div>
+      <button id="exportDateBtn" class="btn-top btn-zip" onclick="exportSelectedDateTxt()">📄 Export This Date (.txt)</button>
+    </div>
+  </div>
+</div>
+
+<!-- Inline Edit Modal -->
+<div id="editModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <span>✏️ Edit &amp; Save Verified Translation</span>
+      <button class="close-x" onclick="closeTopModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="editMsgIndex" />
+      <label><strong>English</strong><input id="editEn" class="form-input" /></label>
+      <label><strong>Karbi (SOV)</strong><input id="editKb" class="form-input" /></label>
+      <label><strong>Assamese (অসমীয়া)</strong><input id="editAs" class="form-input" /></label>
+      <label><strong>Grammar / Speaker Note</strong><textarea id="editNote" rows="3"></textarea></label>
+      <button class="send-btn" onclick="saveInlineEdit()">Save Correction to Database</button>
+    </div>
+  </div>
+</div>
+
+<!-- About Modal -->
+<div id="aboutModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <span>ℹ️ About Talk Aurelia</span>
+      <button class="close-x" onclick="closeTopModal()">×</button>
+    </div>
+    <div class="modal-body" style="line-height:1.55;">
+      <p>This application has been developed for personal learning and educational purposes, particularly to facilitate learning the Karbi language at one's own convenience and pace.</p>
+      <p>It is not intended for commercial use, promotion or any purpose that may harm, offend, disrespect or discriminate against any individual, community or group.</p>
+      <div class="caveat-box" style="font-size:12px; padding:10px;">
+        <strong>⚠️ Accuracy Disclaimer</strong><br><br>
+        Every effort has been made to ensure the accuracy and reliability of the information, translations, meanings and pronunciations provided in this application. However, some information may be incomplete, inaccurate or misleading. Variations in local dialects, expressions, meanings and pronunciation may also exist.<br><br>
+        Users are advised to verify important information with native Karbi speakers, language experts or other reliable sources before relying on it.<br><br>
+        This application is intended solely as a learning aid and should not be considered an authoritative or definitive source of the Karbi language.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================================
+   1. SPEAKER-VERIFIED DATASET (karbi_data_2.json — P. Ronghang, 2026-11-18)
+   ============================================================================ */
+const KARBI_DATA_V2 = {
+  schemaVersion: 1,
+  lexemes: [
+    { id: "lex.pron1sg", gloss: "I (friends / casual)", english_forms: ["i"], pos: "pronoun", surface: "ne", assamese: "মই", status: "verified", register: "casual", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.pron1sg_hon", gloss: "I (elders / respectful)", english_forms: ["i"], pos: "pronoun", surface: "neli", assamese: "মই", status: "verified", register: "respect", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.pron2sg", gloss: "you (friends / casual)", english_forms: ["you"], pos: "pronoun", surface: "nang", assamese: "তুমি", status: "verified", register: "casual", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.pron2sg_hon", gloss: "you (elders / respectful)", english_forms: ["you"], pos: "pronoun", surface: "nangli", assamese: "আপুনি", status: "verified", register: "respect", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.pron3sg", gloss: "he / she (friends / casual)", english_forms: ["he", "she"], pos: "pronoun", surface: "alang", assamese: "সি / তাই", status: "verified", register: "casual", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.pron3sg_hon", gloss: "he / she (elders / respectful)", english_forms: ["he", "she"], pos: "pronoun", surface: "alangli", assamese: "তেওঁ", status: "verified", register: "respect", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.pron3pl", gloss: "they (friends / casual)", english_forms: ["they"], pos: "pronoun", surface: "latum", assamese: "সিহঁত", status: "verified", register: "casual", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.pron3pl_hon", gloss: "they (respectful)", english_forms: ["they"], pos: "pronoun", surface: "alanglitum", assamese: "তেওঁলোক", status: "verified", register: "respect", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.pron1pl", gloss: "we (friends — candidate)", english_forms: ["we"], pos: "pronoun", surface: "itum", assamese: "আমি", status: "candidate", register: "casual", hint: "Open Question oq1: Sheet A4 gives itum, B3 gives nelitum, C4/D7 write alanglitum. Held back until clarified." },
+    { id: "lex.pron1pl_hon", gloss: "we (respectful — candidate)", english_forms: ["we"], pos: "pronoun", surface: "nelitum", assamese: "আমি", status: "candidate", register: "respect", hint: "Open Question oq1: B3 gives nelitum, C4/D7 write alanglitum." },
+    { id: "lex.school", gloss: "school", english_forms: ["school"], pos: "place", surface: "skul", assamese: "স্কুললৈ", status: "verified", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.today", gloss: "today", english_forms: ["today", "to-day"], pos: "time", surface: "pini", assamese: "আজি", status: "verified", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.go", gloss: "go", english_forms: ["go"], pos: "verb", surface: "dam", assamese: "যোৱা", status: "verified", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } }
+  ],
+  forms: [
+    { id: "form.go.neg_bare", lexeme: "lex.go", features: ["NEG"], surface: "damde", status: "verified", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" }, hint: "Verified invariant negative stem across all persons (B1-B4)." },
+    { id: "form.go.neg_future", lexeme: "lex.go", features: ["NEG", "FUTURE"], surface: "damde lo", status: "candidate", hint: "Open Question oq7: Confirm future 'will not go'." }
+  ],
+  templates: [
+    {
+      id: "tpl.neg_go_dest_time.v1",
+      status: "validated",
+      english_patterns: [
+        "^(?:(?<SUBJ>i|you|he|she|they) )?(?:(?:am|is|are) )?not going (?<TO>to )?(?<DEST>school) (?<TIME>today|to-day)$",
+        "^(?<TIME>today|to-day) (?:(?<SUBJ>i|you|he|she|they) )?(?:(?:am|is|are) )?not going (?<TO>to )?(?<DEST>school)$"
+      ],
+      slots: {
+        SUBJ: { required: true, values: ["lex.pron1sg", "lex.pron1sg_hon", "lex.pron2sg", "lex.pron2sg_hon", "lex.pron3sg", "lex.pron3sg_hon", "lex.pron3pl", "lex.pron3pl_hon"] },
+        DEST: { required: true, values: ["lex.school"] },
+        TIME: { required: true, values: ["lex.today"] }
+      },
+      order: ["SUBJ", "TIME", "DEST", "VERB"],
+      verb_form: "form.go.neg_bare",
+      tests: [
+        { input: "I am not going to school today", expect: "built", register: "casual", karbi: "ne pini skul damde" },
+        { input: "I am not going to school today", expect: "built", register: "respect", karbi: "neli pini skul damde" },
+        { input: "I'm not going to school today", expect: "built", register: "casual", karbi: "ne pini skul damde" },
+        { input: "not going school today", expect: "ask_subject_then_built", register: "casual", karbi: "ne pini skul damde" },
+        { input: "not going to school today", expect: "ask_subject" },
+        { input: "today I am not going to school", expect: "built", register: "respect", karbi: "neli pini skul damde" },
+        { input: "he is not going to school today", expect: "built", register: "respect", karbi: "alangli pini skul damde" },
+        { input: "I don't go to school today", expect: "no_match" }
+      ]
+    }
+  ]
+};
+
+/* ============================================================================
+   2. ENGLISH-INDEXED VOCABULARY & PHRASE LEXICON (ENGLISH -> KARBI & ASSAMESE)
+   ============================================================================ */
+const ENGLISH_VOCAB_DB = [
+  { en: "rainbow", kb: "Mukak-ser / Horbong-arnam", as: "ৰামধেনু", role: "NOUN", tier: "DOCUMENTED", note: "Authentic Karbi term for rainbow (replaces unverified cache)." },
+  { en: "rice", kb: "an (cooked) / sang (uncooked) / sok (paddy)", as: "ভাত / চাউল / ধান", role: "NOUN", tier: "DOCUMENTED", note: "Use 'an' when eating cooked rice (ne an cho)." },
+  { en: "cooked rice", kb: "an", as: "ভাত", role: "NOUN", tier: "DOCUMENTED", note: "Konnerth 2014 / Jeyapaul 1987: an = cooked rice." },
+  { en: "pork meat", kb: "phak-ok", as: "গাহৰি মাংস", role: "NOUN", tier: "DOCUMENTED", note: "Compound noun: phak (pig) + ok (meat)." },
+  { en: "water", kb: "lang", as: "পানী", role: "NOUN", tier: "DOCUMENTED", note: "Basic noun: lang." },
+  { en: "tea", kb: "cha", as: "চাহ", role: "NOUN", tier: "DOCUMENTED", note: "Basic noun: cha." },
+  { en: "house", kb: "hem", as: "ঘৰ", role: "PLACE", tier: "DOCUMENTED", note: "Inanimate place goal is unmarked with dam (ne hem damlo)." },
+  { en: "home", kb: "hem", as: "ঘৰলৈ", role: "PLACE", tier: "DOCUMENTED", note: "Jeyapaul p.146: ne hem damlo." },
+  { en: "market", kb: "bajar", as: "বজাৰলৈ", role: "PLACE", tier: "DOCUMENTED", note: "Jeyapaul p.145: pini ne bajar dampo." },
+  { en: "school", kb: "skul", as: "স্কুললৈ", role: "PLACE", tier: "VERIFIED", note: "Verified by P. Ronghang (2026-11-18). Jeyapaul 1987 also notes 'iskul'." },
+  { en: "today", kb: "pini", as: "আজি", role: "TIME", tier: "VERIFIED", note: "Verified by P. Ronghang (2026-11-18). Unmarked day word." },
+  { en: "tomorrow", kb: "penap", as: "কাইলৈ", role: "TIME", tier: "DOCUMENTED", note: "Konnerth s.4.8 / Jeyapaul p.114." },
+  { en: "yesterday", kb: "tumi / atumi", as: "যোৱাকালি", role: "TIME", tier: "DOCUMENTED", note: "Spelling varies: tumi / timi / atumi." },
+  { en: "now", kb: "non", as: "এতিয়া", role: "TIME", tier: "VERIFIED", note: "Verified in B6: non neli skul damde." },
+  { en: "maternal uncle", kb: "Ongsar", as: "মামা", role: "KINSHIP", tier: "DOCUMENTED", note: "Specific Karbi kinship term for mother's brother." },
+  { en: "paternal uncle", kb: "Po-sar", as: "খুৰা / বৰদেউতা
