@@ -32,15 +32,320 @@ jobs:
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses >/dev/null 2>&1 || true
           $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
-      - name: Unpack Project Zip (if uploaded as ZIP) & Sync Web Assets
+      - name: Unpack Any Uploaded Project Zip & Prepare Clean Android Project
         run: |
-          if [ -f "talk_aurelia_github_project.zip" ]; then
-            unzip -o talk_aurelia_github_project.zip
-          fi
+          # 1. Unzip any uploaded project zip (even if renamed with (1).zip by mobile browser)
+          for z in *.zip; do
+            if [ -f "$z" ]; then
+              echo "Unpacking $z..."
+              unzip -o "$z"
+            fi
+          done
+
+          # 2. Prepare clean android directory structure (remove any stale/conflicting files from older runs)
+          rm -rf android/app/src/main/java android/app/src/main/kotlin android/app/src/main/res/layout android/app/src/main/res/drawable* android/app/src/main/res/mipmap-anydpi*
           mkdir -p android/app/src/main/assets/www
+          mkdir -p android/app/src/main/java/com/talkaurelia/karbi
+          mkdir -p android/app/src/main/res/values
+
           if [ -f "index.html" ]; then
             cp -f index.html android/app/src/main/assets/www/index.html
           fi
+          cp -f *.json android/app/src/main/assets/www/ 2>/dev/null || true
+
+          # 3. Write guaranteed-compatible Gradle configuration for Gradle 8.5 + JDK 17
+          cat << 'EOF' > android/settings.gradle
+          pluginManagement {
+              repositories {
+                  google()
+                  mavenCentral()
+                  gradlePluginPortal()
+              }
+          }
+          dependencyResolutionManagement {
+              repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+          }
+          rootProject.name = "TalkAurelia"
+          include ':app'
+          EOF
+
+          cat << 'EOF' > android/gradle.properties
+          org.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8
+          android.useAndroidX=true
+          kotlin.code.style=official
+          android.nonTransitiveRClass=true
+          EOF
+
+          cat << 'EOF' > android/build.gradle
+          plugins {
+              id 'com.android.application' version '8.2.2' apply false
+              id 'org.jetbrains.kotlin.android' version '1.9.22' apply false
+          }
+          EOF
+
+          cat << 'EOF' > android/app/build.gradle
+          plugins {
+              id 'com.android.application'
+              id 'org.jetbrains.kotlin.android'
+          }
+
+          android {
+              namespace 'com.talkaurelia.karbi'
+              compileSdk 34
+
+              defaultConfig {
+                  applicationId "com.talkaurelia.karbi"
+                  minSdk 24
+                  targetSdk 34
+                  versionCode 12
+                  versionName "2026.11.18-v12"
+              }
+
+              signingConfigs {
+                  release {
+                      def ksFile = file("release-key.jks")
+                      if (ksFile.exists()) {
+                          storeFile ksFile
+                          storePassword "talkaurelia123"
+                          keyAlias "talkaurelia"
+                          keyPassword "talkaurelia123"
+                      }
+                  }
+              }
+
+              buildTypes {
+                  debug {
+                      debuggable true
+                  }
+                  release {
+                      minifyEnabled false
+                      shrinkResources false
+                      signingConfig signingConfigs.release
+                  }
+              }
+
+              compileOptions {
+                  sourceCompatibility JavaVersion.VERSION_17
+                  targetCompatibility JavaVersion.VERSION_17
+              }
+              kotlinOptions {
+                  jvmTarget = '17'
+              }
+          }
+
+          dependencies {
+              implementation 'androidx.core:core-ktx:1.12.0'
+              implementation 'androidx.appcompat:appcompat:1.6.1'
+              implementation 'androidx.activity:activity-ktx:1.8.2'
+              implementation 'androidx.webkit:webkit:1.10.0'
+          }
+          EOF
+
+          cat << 'EOF' > android/app/src/main/AndroidManifest.xml
+          <?xml version="1.0" encoding="utf-8"?>
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+              <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+              <queries>
+                  <intent>
+                      <action android:name="android.intent.action.TTS_SERVICE" />
+                  </intent>
+                  <intent>
+                      <action android:name="android.speech.RecognitionService" />
+                  </intent>
+              </queries>
+
+              <application
+                  android:allowBackup="true"
+                  android:icon="@mipmap/ic_launcher"
+                  android:roundIcon="@mipmap/ic_launcher_round"
+                  android:label="Talk Aurelia"
+                  android:supportsRtl="true"
+                  android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+
+                  <activity
+                      android:name=".MainActivity"
+                      android:exported="true"
+                      android:configChanges="orientation|screenSize|keyboardHidden|uiMode"
+                      android:windowSoftInputMode="adjustResize">
+                      <intent-filter>
+                          <action android:name="android.intent.action.MAIN" />
+                          <category android:name="android.intent.category.LAUNCHER" />
+                      </intent-filter>
+                  </activity>
+              </application>
+          </manifest>
+          EOF
+
+          cat << 'EOF' > android/app/src/main/java/com/talkaurelia/karbi/MainActivity.kt
+          package com.talkaurelia.karbi
+
+          import android.annotation.SuppressLint
+          import android.content.Context
+          import android.os.Bundle
+          import android.speech.tts.TextToSpeech
+          import android.webkit.JavascriptInterface
+          import android.webkit.WebChromeClient
+          import android.webkit.WebSettings
+          import android.webkit.WebView
+          import android.webkit.WebViewClient
+          import androidx.activity.OnBackPressedCallback
+          import androidx.appcompat.app.AppCompatActivity
+          import java.util.Locale
+
+          class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
+
+              private lateinit var webView: WebView
+              private var tts: TextToSpeech? = null
+              private var ttsReady = false
+              private var pendingWelcomeSpeech: String? = null
+
+              @SuppressLint("SetJavaScriptEnabled")
+              override fun onCreate(savedInstanceState: Bundle?) {
+                  super.onCreate(savedInstanceState)
+
+                  tts = TextToSpeech(this, this)
+
+                  webView = WebView(this)
+                  setContentView(webView)
+
+                  val settings: WebSettings = webView.settings
+                  settings.javaScriptEnabled = true
+                  settings.domStorageEnabled = true
+                  settings.allowFileAccess = true
+                  settings.allowContentAccess = true
+                  settings.mediaPlaybackRequiresUserGesture = false
+
+                  webView.webViewClient = WebViewClient()
+                  webView.webChromeClient = WebChromeClient()
+
+                  val bridge = NativeAppBridge(this)
+                  webView.addJavascriptInterface(bridge, "AndroidBridge")
+                  webView.addJavascriptInterface(bridge, "AndroidKarbiBridge")
+                  webView.addJavascriptInterface(bridge, "AndroidInterface")
+
+                  webView.loadUrl("file:///android_asset/www/index.html")
+
+                  onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+                      override fun handleOnBackPressed() {
+                          webView.evaluateJavascript(
+                              "(function(){ if(window.handleAndroidBackButton){ return window.handleAndroidBackButton(); } return false; })()",
+                              null
+                          )
+                      }
+                  })
+              }
+
+              override fun onInit(status: Int) {
+                  if (status == TextToSpeech.SUCCESS) {
+                      val result = tts?.setLanguage(Locale("en", "IN"))
+                      if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                          tts?.setLanguage(Locale.US)
+                      }
+                      tts?.setSpeechRate(0.92f)
+                      ttsReady = true
+                      pendingWelcomeSpeech?.let {
+                          speakOut(it)
+                          pendingWelcomeSpeech = null
+                      }
+                  }
+              }
+
+              private fun speakOut(text: String) {
+                  if (!ttsReady) {
+                      pendingWelcomeSpeech = text
+                      return
+                  }
+                  val clean = text.split("/")[0].replace(Regex("\\([^)]*\\)"), "").trim()
+                  if (clean.isEmpty()) return
+                  tts?.speak(clean, TextToSpeech.QUEUE_FLUSH, null, "ta_utt_" + System.currentTimeMillis())
+              }
+
+              inner class NativeAppBridge(private val context: Context) {
+                  private val prefs = context.getSharedPreferences("talk_aurelia_prefs_v2", Context.MODE_PRIVATE)
+
+                  @JavascriptInterface
+                  fun speakText(text: String, lang: String?) {
+                      runOnUiThread { speakOut(text) }
+                  }
+
+                  @JavascriptInterface
+                  fun speakP1P2(text: String, lang: String?) {
+                      runOnUiThread { speakOut(text) }
+                  }
+
+                  @JavascriptInterface
+                  fun playAudio(text: String) {
+                      runOnUiThread { speakOut(text) }
+                  }
+
+                  @JavascriptInterface
+                  fun savePref(key: String, value: String) {
+                      prefs.edit().putString(key, value).apply()
+                  }
+
+                  @JavascriptInterface
+                  fun loadPref(key: String): String {
+                      return prefs.getString(key, "") ?: ""
+                  }
+
+                  @JavascriptInterface
+                  fun exitApp() {
+                      runOnUiThread { finishAffinity() }
+                  }
+
+                  @JavascriptInterface
+                  fun onExitClick() {
+                      runOnUiThread { finishAffinity() }
+                  }
+              }
+
+              override fun onDestroy() {
+                  tts?.stop()
+                  tts?.shutdown()
+                  super.onDestroy()
+              }
+          }
+          EOF
+
+          # 4. Ensure launcher icons exist in all mipmap folders (extracting from app_icon.png or index.html base64 icon)
+          python3 - << 'PY'
+          import base64, os, re
+          from PIL import Image
+          from io import BytesIO
+
+          img = None
+          for candidate in ["app_icon.png", "icon-512.png", "48409.png", "android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png"]:
+              if os.path.exists(candidate):
+                  try:
+                      img = Image.open(candidate).convert("RGBA")
+                      break
+                  except Exception:
+                      pass
+
+          if img is None and os.path.exists("android/app/src/main/assets/www/index.html"):
+              html = open("android/app/src/main/assets/www/index.html", "r", encoding="utf-8", errors="ignore").read()
+              m = re.search(r"data:image/png;base64,([A-Za-z0-9+/=]+)", html)
+              if m:
+                  img = Image.open(BytesIO(base64.b64decode(m.group(1)))).convert("RGBA")
+
+          if img is None:
+              img = Image.new("RGBA", (192, 192), (5, 150, 105, 255))
+
+          sizes = {"mipmap-mdpi": 48, "mipmap-hdpi": 72, "mipmap-xhdpi": 96, "mipmap-xxhdpi": 144, "mipmap-xxxhdpi": 192}
+          for folder, px in sizes.items():
+              d = os.path.join("android/app/src/main/res", folder)
+              os.makedirs(d, exist_ok=True)
+              r = img.resize((px, px), Image.LANCZOS)
+              r.save(os.path.join(d, "ic_launcher.png"), "PNG")
+              r.save(os.path.join(d, "ic_launcher_round.png"), "PNG")
+          print("Verified all mipmap launcher icons.")
+          PY
 
       - name: Generate Release Signing Keystore
         run: |
@@ -59,7 +364,7 @@ jobs:
       - name: Build debug.apk and release-signed.apk
         run: |
           cd android
-          gradle assembleDebug assembleRelease --no-daemon --stacktrace
+          gradle assembleDebug assembleRelease --no-daemon
           mkdir -p ../dist
           DEBUG_APK=$(find app/build/outputs/apk/debug -name "*.apk" | head -n 1)
           RELEASE_APK=$(find app/build/outputs/apk/release -name "*.apk" | head -n 1)
