@@ -3,119 +3,63 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>🧚‍♀️ Talk Aurelia • Learn Karbi Language</title>
+  <title>Talk Aurelia • Learn Karbi Language</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <style>
     :root {
-      --teal-dark: #0f766e;
-      --teal-main: #0d9488;
-      --teal-light: #ccfbf1;
-      --teal-bg: #f0fdfa;
-      --bg: #f8fafc;
-      --card: #ffffff;
-      --text: #0f172a;
+      --bg: #f4f7f6;
+      --surface: #ffffff;
+      --primary: #0f766e;
+      --primary-dark: #115e59;
+      --primary-light: #ccfbf1;
+      --accent: #0284c7;
+      --text: #1e293b;
       --muted: #64748b;
       --border: #e2e8f0;
+      --verified-bg: #dcfce7;
+      --verified-text: #166534;
+      --doc-bg: #e0f2fe;
+      --doc-text: #075985;
+      --warn-bg: #fef3c7;
+      --warn-text: #92400e;
+      --danger-bg: #fee2e2;
+      --danger-text: #991b1b;
     }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      height: 100dvh;
-      overflow: hidden;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: var(--bg); color: var(--text); height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
 
-    /* Non-Overlapping Smart Auto-Hide Header */
+    /* Auto-Hide Header */
     header {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 40;
-      background: linear-gradient(135deg, var(--teal-dark), var(--teal-main));
-      color: #fff;
-      padding: 8px 10px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 6px;
-      box-shadow: 0 2px 10px rgba(15, 118, 110, 0.25);
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 40;
       transition: transform 0.25s ease;
     }
-    header.header-hidden { transform: translateY(-100%); }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      flex: 1;
-      min-width: 0;
-      overflow: hidden;
+    header.nav-hidden { transform: translateY(-105%); }
+    .brand { display: flex; align-items: center; gap: 8px; min-width: 0; }
+    .brand-title { font-size: 14px; font-weight: 700; color: var(--primary-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .brand-sub { font-size: 11px; color: var(--primary); font-weight: 500; }
+    .header-actions { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
+    .btn-top {
+      background: #f8fafc; border: 1px solid var(--border); color: var(--text);
+      padding: 6px 8px; border-radius: 8px; font-size: 11px; font-weight: 600; cursor: pointer;
     }
-    .brand-icon {
-      width: 30px; height: 30px;
-      border-radius: 8px;
-      background: rgba(255,255,255,0.18);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px;
-      flex-shrink: 0;
-    }
-    .brand-text {
-      min-width: 0;
-      overflow: hidden;
-    }
-    .brand-title {
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 1.2;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .brand-sub {
-      font-size: 10px;
-      opacity: 0.92;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .dot-live {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: #4ade80;
-      flex-shrink: 0;
-    }
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      flex-shrink: 0;
-    }
-    .top-btn {
-      background: rgba(255,255,255,0.16);
-      border: 1px solid rgba(255,255,255,0.28);
-      color: #fff;
-      padding: 5px 8px;
-      border-radius: 7px;
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    .top-btn.exit-btn {
-      background: rgba(239, 68, 68, 0.32);
-      border-color: rgba(254, 202, 202, 0.5);
-    }
+    .btn-zip { background: #ecfdf5; border-color: #6ee7b7; color: #065f46; }
+    .btn-exit { background: #fef2f2; border-color: #fecaca; color: #b91c1c; }
 
-    /* Try Chips Bar */
+    /* Try Bar */
     .try-bar {
-      margin-top: 50px;
-      padding: 8px 12px;
-      background: #fff;
+      margin-top: 56px;
+      background: var(--surface);
       border-bottom: 1px solid var(--border);
+      padding: 7px 12px;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -124,1285 +68,370 @@
       flex-shrink: 0;
       transition: margin-top 0.25s ease;
     }
-    header.header-hidden + .try-bar { margin-top: 0; }
-    .try-label {
-      font-size: 11px;
-      font-weight: 800;
-      color: var(--teal-dark);
-      letter-spacing: 0.4px;
-    }
+    header.nav-hidden + .try-bar { margin-top: 0; }
+    .try-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; }
     .chip {
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--text);
-      padding: 5px 11px;
-      border-radius: 999px;
-      font-size: 12px;
-      cursor: pointer;
+      background: #f1f5f9; border: 1px solid var(--border); color: var(--text);
+      padding: 5px 10px; border-radius: 999px; font-size: 12px; cursor: pointer; flex-shrink: 0;
     }
-    .chip:active { background: var(--teal-light); border-color: var(--teal-main); }
+    .chip:hover { background: var(--primary-light); border-color: var(--primary); }
 
     /* Chat Area */
     #chatBox {
       flex: 1;
       overflow-y: auto;
-      padding: 14px 12px 20px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
       gap: 12px;
+      scroll-behavior: smooth;
     }
-    .msg-row {
-      display: flex;
-      flex-direction: column;
-      max-width: 92%;
-    }
+    .msg-row { display: flex; flex-direction: column; max-width: 94%; }
     .msg-row.user { align-self: flex-end; }
-    .msg-row.bot { align-self: flex-start; width: 94%; }
+    .msg-row.bot { align-self: flex-start; width: 100%; max-width: 540px; }
 
     .user-bubble {
-      background: var(--teal-main);
-      color: #fff;
-      padding: 10px 14px;
-      border-radius: 16px 16px 4px 16px;
-      font-size: 15px;
-      box-shadow: 0 2px 6px rgba(13, 148, 136, 0.18);
+      background: var(--primary); color: #fff;
+      padding: 10px 14px; border-radius: 16px 16px 4px 16px;
+      font-size: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.08);
     }
     .user-meta {
-      margin-top: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      font-size: 11px;
-      opacity: 0.92;
-    }
-    .user-meta button, .user-meta span.ts-link {
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 11px;
-      padding: 0;
-      cursor: pointer;
-      text-decoration: underline;
+      display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+      margin-top: 5px; font-size: 10px; color: #ccfbf1;
     }
 
     .bot-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 12px;
-      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 12px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+      display: flex; flex-direction: column; gap: 8px;
     }
-    .badge-src {
-      display: inline-block;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.4px;
-      color: var(--teal-dark);
-      background: var(--teal-light);
-      padding: 3px 8px;
-      border-radius: 6px;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-    }
-    .lang-block {
-      border-radius: 10px;
-      padding: 9px 11px;
-      margin-bottom: 7px;
-      border: 1px solid var(--border);
-      background: #f8fafc;
-    }
-    .lang-block.karbi {
-      background: var(--teal-bg);
-      border-color: #99f6e4;
-    }
-    .lang-tag {
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--teal-dark);
-      letter-spacing: 0.4px;
-      margin-bottom: 3px;
-    }
-    .lang-block:not(.karbi) .lang-tag { color: var(--muted); }
-    .lang-val {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text);
-      line-height: 1.35;
-    }
-    .grammar-note {
-      font-size: 12px;
-      color: var(--muted);
-      margin: 6px 2px 10px;
-      line-height: 1.4;
-    }
-    .card-footer {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-      padding-top: 8px;
-      border-top: 1px solid var(--border);
-    }
-    .speak-btn {
-      background: var(--teal-bg);
-      border: 1px solid #99f6e4;
-      color: var(--teal-dark);
-      font-size: 12px;
-      font-weight: 700;
-      padding: 5px 10px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    .ts-pill {
-      background: #f1f5f9;
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-size: 12px;
-      font-weight: 600;
-      padding: 5px 9px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    .action-link {
-      background: none;
-      border: none;
-      color: var(--teal-dark);
-      font-size: 12px;
-      font-weight: 700;
-      padding: 4px 6px;
-      cursor: pointer;
-    }
-    .action-link.copy { color: var(--muted); }
+    .badge-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px; }
+    .badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 6px; letter-spacing: 0.3px; }
+    .badge-verified { background: var(--verified-bg); color: var(--verified-text); }
+    .badge-doc { background: var(--doc-bg); color: var(--doc-text); }
+    .badge-warn { background: var(--warn-bg); color: var(--warn-text); }
+    .badge-danger { background: var(--danger-bg); color: var(--danger-text); }
 
-    /* Inline Edit Form */
-    .inline-edit-box {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-top: 6px;
+    .lang-box { border: 1px solid var(--border); border-radius: 10px; padding: 9px 11px; background: #fafafa; }
+    .lang-box.karbi { background: #f0fdf4; border-color: #bbf7d0; }
+    .lang-tag { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 2px; }
+    .karbi .lang-tag { color: #15803d; }
+    .lang-val { font-size: 16px; font-weight: 700; color: var(--text); }
+    .lang-val.sm { font-size: 14px; font-weight: 600; }
+
+    /* Tokenized English -> Karbi & Assamese Grid */
+    .token-box { background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px; }
+    .token-title { font-size: 10px; font-weight: 700; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; }
+    .token-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(125px, 1fr)); gap: 6px; }
+    .token-item { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; }
+    .tok-en { font-size: 12px; font-weight: 700; color: #0f172a; border-bottom: 1px dashed var(--border); padding-bottom: 3px; margin-bottom: 3px; }
+    .tok-kb { font-size: 12px; font-weight: 700; color: var(--primary-dark); }
+    .tok-as { font-size: 11px; color: #475569; }
+    .tok-role { font-size: 9px; color: var(--muted); margin-top: 2px; }
+
+    /* Slot Disambiguation Buttons */
+    .slot-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 10px; }
+    .slot-q { font-size: 12px; font-weight: 700; color: #92400e; margin-bottom: 8px; }
+    .slot-opts { display: flex; flex-wrap: wrap; gap: 6px; }
+    .slot-btn {
+      background: #fff; border: 1px solid #f59e0b; color: #78350f;
+      padding: 6px 10px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;
     }
-    .inline-edit-box input {
-      width: 100%;
-      padding: 7px 9px;
-      border: 1px solid #94a3b8;
-      border-radius: 8px;
-      font-size: 13px;
+    .slot-btn:hover { background: #fef3c7; }
+
+    .note-text { font-size: 11px; color: var(--muted); line-height: 1.45; }
+    .caveat-box { background: #fefce8; border-left: 3px solid #eab308; padding: 6px 8px; font-size: 11px; color: #854d0e; border-radius: 4px; }
+
+    /* Card Footer Controls */
+    .card-footer {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      gap: 6px; padding-top: 6px; border-top: 1px solid var(--border); font-size: 11px;
     }
-    .inline-edit-actions {
-      display: flex;
-      gap: 8px;
+    .speak-group { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+    .btn-speak {
+      background: #f0fdfa; border: 1px solid #99f6e4; color: var(--primary-dark);
+      padding: 5px 9px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer;
     }
-    .btn-save-sm {
-      background: var(--teal-main);
-      color: #fff;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
+    .voice-select {
+      border: 1px solid var(--border); border-radius: 8px; padding: 4px 6px;
+      font-size: 11px; background: #fff; color: var(--text); max-width: 175px;
     }
-    .btn-cancel-sm {
-      background: #e2e8f0;
-      color: var(--text);
-      border: none;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 12px;
-      cursor: pointer;
-    }
+    .ts-link { color: var(--accent); font-weight: 600; cursor: pointer; text-decoration: underline; font-size: 11px; }
+    .card-links { display: flex; gap: 10px; }
+    .link-btn { background: none; border: none; color: var(--primary); font-size: 11px; font-weight: 600; cursor: pointer; }
 
     /* Input Bar */
     .input-bar {
-      background: #fff;
-      border-top: 1px solid var(--border);
-      padding: 8px 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
+      background: var(--surface); border-top: 1px solid var(--border);
+      padding: 8px 10px; display: flex; align-items: center; gap: 8px; flex-shrink: 0;
     }
     .mic-btn {
-      width: 42px; height: 42px;
-      border-radius: 12px;
-      border: 1.5px solid #fda4af;
-      background: #fff1f2;
-      color: #e11d48;
-      font-size: 18px;
-      cursor: pointer;
-      flex-shrink: 0;
+      width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--border);
+      background: #f8fafc; font-size: 18px; cursor: pointer; flex-shrink: 0;
     }
-    .mic-btn.listening {
-      background: #e11d48;
-      color: #fff;
-      animation: pulse 1.1s infinite;
-    }
-    @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+    .mic-btn.recording { background: #fee2e2; border-color: #ef4444; }
     #userInput {
-      flex: 1;
-      height: 42px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 0 12px;
-      font-size: 14px;
-      outline: none;
-      min-width: 0;
+      flex: 1; border: 1px solid var(--border); border-radius: 12px;
+      padding: 10px 12px; font-size: 14px; outline: none;
     }
-    #userInput:focus { border-color: var(--teal-main); }
+    #userInput:focus { border-color: var(--primary); }
     .send-btn {
-      width: 44px; height: 42px;
-      border-radius: 12px;
-      border: none;
-      background: var(--teal-dark);
-      color: #fff;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      flex-shrink: 0;
+      background: var(--primary); color: #fff; border: none;
+      padding: 10px 16px; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer;
     }
 
-    /* Modals — ALWAYS closed by default on startup */
+    /* Modals */
     .modal-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 100;
-      background: rgba(15, 23, 42, 0.55);
-      align-items: flex-end;
-      justify-content: center;
+      display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.55);
+      z-index: 60; align-items: center; justify-content: center; padding: 14px;
     }
     .modal-backdrop.open { display: flex; }
-    .modal-sheet {
-      background: #fff;
-      width: 100%;
-      max-width: 540px;
-      max-height: 88dvh;
-      border-radius: 20px 20px 0 0;
-      padding: 16px;
-      overflow-y: auto;
-      box-shadow: 0 -4px 24px rgba(0,0,0,0.2);
+    .modal {
+      background: var(--surface); border-radius: 16px; width: 100%; max-width: 480px;
+      max-height: 86dvh; display: flex; flex-direction: column; overflow: hidden;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);
     }
-    .modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 12px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--border);
+    .modal-head {
+      padding: 12px 16px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; font-weight: 700; font-size: 15px;
     }
-    .modal-header h3 { margin: 0; font-size: 17px; }
-    .close-modal {
-      background: #f1f5f9;
-      border: none;
-      width: 32px; height: 32px;
-      border-radius: 50%;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    .setting-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
-      gap: 10px;
-    }
-    .setting-btn {
-      width: 100%;
-      text-align: left;
-      padding: 12px 14px;
-      margin-top: 10px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--teal-dark);
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .db-tabs {
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      padding-bottom: 8px;
-      margin-bottom: 10px;
-    }
-    .db-tab {
-      padding: 7px 12px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      font-size: 12px;
-      font-weight: 700;
-      white-space: nowrap;
-      cursor: pointer;
-    }
-    .db-tab.active {
-      background: var(--teal-dark);
-      color: #fff;
-      border-color: var(--teal-dark);
-    }
-    .db-form {
-      background: var(--teal-bg);
-      border: 1px solid #99f6e4;
-      border-radius: 12px;
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-      margin-bottom: 10px;
-    }
-    .db-form input {
-      padding: 8px 10px;
-      border-radius: 8px;
-      border: 1px solid #cbd5e1;
-      font-size: 13px;
-    }
-    .json-preview {
-      background: #0f172a;
-      color: #e2e8f0;
-      padding: 10px;
-      border-radius: 10px;
-      font-family: monospace;
-      font-size: 11px;
-      max-height: 180px;
-      overflow: auto;
-      white-space: pre-wrap;
-    }
-    .cal-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 5px;
-      margin: 10px 0;
-      text-align: center;
-    }
-    .cal-day {
-      padding: 8px 4px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      font-size: 12px;
-      cursor: pointer;
-    }
-    .cal-day.has-chat {
-      background: var(--teal-light);
-      border-color: var(--teal-main);
-      font-weight: 700;
-      color: var(--teal-dark);
-    }
-    .cal-day.selected {
-      background: var(--teal-dark);
-      color: #fff;
-    }
+    .modal-body { padding: 14px 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; font-size: 13px; }
+    .close-x { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted); }
+    .setting-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+    .cal-day { padding: 8px 4px; border-radius: 8px; border: 1px solid var(--border); font-size: 12px; cursor: pointer; }
+    .cal-day.has-data { background: var(--primary-light); border-color: var(--primary); font-weight: 700; color: var(--primary-dark); }
+    .cal-day.active { background: var(--primary); color: #fff; }
+    textarea, .form-input { width: 100%; border: 1px solid var(--border); border-radius: 8px; padding: 8px; font-size: 13px; }
+    pre.test-out { background: #0f172a; color: #e2e8f0; padding: 10px; border-radius: 8px; font-size: 11px; overflow-x: auto; white-space: pre-wrap; }
   </style>
 </head>
 <body>
 
-  <!-- Top Header -->
-  <header id="appHeader">
-    <div class="brand">
-      <div class="brand-icon">🧚‍♀️</div>
-      <div class="brand-text">
-        <div class="brand-title">Talk Aurelia • Learn Karbi</div>
-        <div class="brand-sub"><span class="dot-live"></span><span id="dbStatusText">Offline SOV + JSON DB</span></div>
-      </div>
-    </div>
-    <div class="top-actions">
-      <button class="top-btn" onclick="openModal('settingsModal')">⚙️</button>
-      <button class="top-btn" onclick="openModal('aboutModal')">ℹ️</button>
-      <button class="top-btn exit-btn" onclick="handleExit()">Exit</button>
-    </div>
-  </header>
-
-  <!-- Quick Try Bar -->
-  <div class="try-bar" id="tryBar">
-    <span class="try-label">TRY:</span>
-    <button class="chip" onclick="sendQuick('Lets go for tea')">Lets go for tea</button>
-    <button class="chip" onclick="sendQuick('Kardom')">Kardom</button>
-    <button class="chip" onclick="sendQuick('I eat rice')">I eat rice (SOV)</button>
-    <button class="chip" onclick="sendQuick('Where are you going?')">Where are you going?</button>
-    <button class="chip" onclick="sendQuick('I am going to the market')">I am going to the market</button>
+<header id="mainHeader">
+  <div class="brand">
+    <div class="brand-title">🧚‍♀️ Talk Aurelia • Learn Karbi Language</div>
   </div>
-
-  <!-- Main Chat Dashboard -->
-  <main id="chatBox"></main>
-
-  <!-- Bottom Input Bar -->
-  <div class="input-bar">
-    <button class="mic-btn" id="micBtn" onclick="startVoiceInput()" title="Speak">🎙️</button>
-    <input type="text" id="userInput" placeholder="Ask in English, অসমীয়া, or Karbi..." onkeydown="if(event.key==='Enter') handleSend()" />
-    <button class="send-btn" onclick="handleSend()">➤</button>
+  <div class="header-actions">
+    <button class="btn-top btn-zip" onclick="downloadFullGitHubZip()">📦 .zip</button>
+    <button class="btn-top" onclick="openModal('settingsModal')">⚙️ Settings</button>
+    <button class="btn-top" onclick="openModal('aboutModal')">About</button>
+    <button class="btn-top btn-exit" onclick="handleExit()">Exit</button>
   </div>
+</header>
 
-  <!-- SETTINGS MODAL -->
-  <div class="modal-backdrop" id="settingsModal" onclick="if(event.target===this) closeModal('settingsModal')">
-    <div class="modal-sheet">
-      <div class="modal-header">
-        <h3>⚙️ Settings</h3>
-        <button class="close-modal" onclick="closeModal('settingsModal')">✕</button>
-      </div>
+<div class="try-bar">
+  <span class="try-label">Try:</span>
+  <button class="chip" onclick="quickAsk('I am not going to school today')">I am not going to school today</button>
+  <button class="chip" onclick="quickAsk('not going school today')">not going school today</button>
+  <button class="chip" onclick="quickAsk('we are not going to school today')">we are not going to school today</button>
+  <button class="chip" onclick="quickAsk('I eat rice')">I eat rice</button>
+  <button class="chip" onclick="quickAsk('Rainbow')">Rainbow</button>
+</div>
 
+<main id="chatBox"></main>
+
+<div class="input-bar">
+  <button id="micBtn" class="mic-btn" title="Speak English" onclick="toggleMic()">🎙️</button>
+  <input id="userInput" type="text" placeholder="Type or speak in English (e.g., I am not going to school today)..." onkeydown="if(event.key==='Enter') sendMessage()" />
+  <button class="send-btn" onclick="sendMessage()">Send</button>
+</div>
+
+<!-- Settings Modal -->
+<div id="settingsModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <span>⚙️ Settings &amp; Verified Database</span>
+      <button class="close-x" onclick="closeTopModal()">×</button>
+    </div>
+    <div class="modal-body">
       <div class="setting-row">
         <div>
-          <div style="font-weight:700;font-size:14px;">Opening & Closing Voice</div>
-          <div style="font-size:12px;color:var(--muted);">Speak "Kardom" on open & "Chorolo" on exit</div>
+          <strong>Opening &amp; Closing Voice</strong>
+          <div class="note-text">Speak "Kardom" on open &amp; "Chorolo" on exit</div>
         </div>
-        <input type="checkbox" id="voiceGreetingToggle" style="width:20px;height:20px;accent-color:var(--teal-dark);" onchange="toggleVoiceGreetings(this.checked)" />
+        <input type="checkbox" id="voiceGreetToggle" checked onchange="saveSettings()" />
       </div>
-
-      <button class="setting-btn" onclick="closeModal('settingsModal'); openJsonDbModal();">
-        <span>🗄️ JSON DB Manager (4 Bundled Datasets)</span>
-        <span>›</span>
-      </button>
-
-      <button class="setting-btn" onclick="exportAllChatTxt()">
-        <span>📄 Export Full Chat History (.txt)</span>
-        <span>↓</span>
-      </button>
-
-      <button class="setting-btn" style="color:#dc2626;" onclick="clearChatHistory()">
-        <span>🗑️ Clear Chat History</span>
-        <span>!</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- ABOUT MODAL -->
-  <div class="modal-backdrop" id="aboutModal" onclick="if(event.target===this) closeModal('aboutModal')">
-    <div class="modal-sheet">
-      <div class="modal-header">
-        <h3>ℹ️ About Talk Aurelia</h3>
-        <button class="close-modal" onclick="closeModal('aboutModal')">✕</button>
-      </div>
-      <div style="font-size:14px;line-height:1.6;color:var(--text);">
-        <p>This application has been developed for personal learning and educational purposes, particularly to facilitate learning the Karbi language at one's own convenience and pace.</p>
-        <p>It is not intended for commercial use, promotion or any purpose that may harm, offend, disrespect or discriminate against any individual, community or group.</p>
-        <div style="background:#fef3c7;border:1px solid #f59e0b;border-radius:12px;padding:12px;margin-top:12px;">
-          <div style="font-weight:800;color:#92400e;margin-bottom:6px;">⚠️ Accuracy Disclaimer</div>
-          <p style="margin:0 0 8px;">Every effort has been made to ensure the accuracy and reliability of the information, translations, meanings and pronunciations provided in this application. However, some information may be incomplete, inaccurate or misleading. Variations in local dialects, expressions, meanings and pronunciation may also exist.</p>
-          <p style="margin:0 0 8px;">Users are advised to verify important information with native Karbi speakers, language experts or other reliable sources before relying on it.</p>
-          <p style="margin:0;">This application is intended solely as a learning aid and should not be considered an authoritative or definitive source of the Karbi language.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- JSON DB MANAGER MODAL -->
-  <div class="modal-backdrop" id="jsonDbModal" onclick="if(event.target===this) closeModal('jsonDbModal')">
-    <div class="modal-sheet">
-      <div class="modal-header">
+      <div class="setting-row">
         <div>
-          <h3>Offline JSON Databases</h3>
-          <div style="font-size:11px;color:var(--muted);">Bundled in APK + Local Custom Overrides</div>
+          <strong>Default Voice Output Mode</strong>
+          <div class="note-text">English input defaults to Karbi Only</div>
         </div>
-        <button class="close-modal" onclick="closeModal('jsonDbModal')">✕</button>
+        <select id="defaultVoiceMode" class="voice-select" onchange="saveSettings()">
+          <option value="kb_only">En Input: Speak Karbi Only</option>
+          <option value="kb_as">En Input: Speak Karbi + Assamese</option>
+        </select>
       </div>
-
-      <div class="db-tabs" id="dbTabs"></div>
-
-      <div class="db-form">
-        <div style="font-size:11px;font-weight:800;color:var(--teal-dark);">+ ADD ENTRY TO <span id="activeDbLabel"></span></div>
-        <input type="text" id="dbEng" placeholder="English (e.g., Thank you)" />
-        <input type="text" id="dbAsm" placeholder="Assamese (e.g., ধন্যবাদ)" />
-        <input type="text" id="dbKar" placeholder="Karbi SOV (e.g., Kardom)" />
-        <input type="text" id="dbNote" placeholder="Grammar / Kinship note (optional)" />
-        <button class="btn-save-sm" onclick="addDbEntry()">Save Entry</button>
-      </div>
-
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:12px;font-weight:700;">
-        <span id="dbCountLabel">Loaded Entries (0)</span>
-        <div style="display:flex;gap:10px;">
-          <label style="color:var(--teal-dark);cursor:pointer;text-decoration:underline;">
-            Import .json
-            <input type="file" accept=".json" style="display:none;" onchange="importJsonFile(event)" />
-          </label>
-          <span style="color:var(--teal-dark);cursor:pointer;text-decoration:underline;" onclick="downloadActiveJson()">Download .json</span>
+      <div class="setting-row">
+        <div>
+          <strong>Assume Casual Register ("ne/nang")</strong>
+          <div class="note-text">Off = Ask between Casual (friends) vs Respect (elders)</div>
         </div>
+        <input type="checkbox" id="assumeCasualToggle" onchange="saveSettings()" />
       </div>
-
-      <div class="json-preview" id="jsonPreview">[]</div>
+      <div>
+        <strong>Optional Gemini API Key (for online open-ended phrases)</strong>
+        <input type="password" id="geminiKeyInput" class="form-input" placeholder="Paste Gemini API key (optional)..." onchange="saveSettings()" />
+      </div>
+      <div style="display:flex; flex-wrap:wrap; gap:8px;">
+        <button class="btn-top btn-zip" onclick="runSchemaAndTests()">✅ Run validate_data.py &amp; Tests</button>
+        <button class="btn-top" onclick="exportAllHistoryTxt()">📄 Export Chat (.txt)</button>
+        <button class="btn-top" onclick="openJsonDbManager()">🗄️ JSON DB Manager</button>
+        <button class="btn-top btn-zip" onclick="downloadFullGitHubZip()">📦 Download Complete .zip</button>
+      </div>
+      <pre id="validatorOutput" class="test-out" style="display:none;"></pre>
     </div>
   </div>
+</div>
 
-  <!-- CALENDAR HISTORY MODAL -->
-  <div class="modal-backdrop" id="calendarModal" onclick="if(event.target===this) closeModal('calendarModal')">
-    <div class="modal-sheet">
-      <div class="modal-header">
-        <h3 id="calMonthTitle">📅 Chat History</h3>
-        <button class="close-modal" onclick="closeModal('calendarModal')">✕</button>
+<!-- JSON DB Modal -->
+<div id="jsonModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <span>🗄️ JSON Databases (karbi_data_2.json)</span>
+      <button class="close-x" onclick="closeTopModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="note-text">Active speaker-verified dataset signed by P. Ronghang (Dengaon, Karbi Anglong, 2026-11-18) + custom corrections:</div>
+      <textarea id="jsonDbViewer" rows="12" readonly></textarea>
+      <div style="display:flex; gap:8px;">
+        <button class="btn-top" onclick="exportCorrectionsJson()">⬇️ Export karbi_corrections.json</button>
+        <button class="btn-top btn-exit" onclick="clearCustomCache()">🗑️ Reset Custom Cache</button>
       </div>
-      <div class="cal-grid" id="calGrid"></div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin:10px 0 6px;">
-        <strong id="calSelectedDateLabel" style="font-size:13px;">Selected Date</strong>
-        <button class="btn-save-sm" onclick="exportSelectedDateTxt()">Export Date (.txt)</button>
-      </div>
-      <div id="calDateChats" style="max-height:220px;overflow-y:auto;font-size:13px;display:flex;flex-direction:column;gap:8px;"></div>
     </div>
   </div>
+</div>
+
+<!-- Calendar History Modal -->
+<div id="calendarModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <span id="calTitle">📅 Chat History Calendar</span>
+      <button class="close-x" onclick="closeTopModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <button class="btn-top" onclick="shiftCalMonth(-1)">◀ Prev</button>
+        <strong id="calMonthLabel">November 2026</strong>
+        <button class="btn-top" onclick="shiftCalMonth(1)">Next ▶</button>
+      </div>
+      <div id="calGrid" class="cal-grid"></div>
+      <div id="calDatePreview" style="display:flex; flex-direction:column; gap:6px;"></div>
+      <button id="exportDateBtn" class="btn-top btn-zip" onclick="exportSelectedDateTxt()">📄 Export This Date (.txt)</button>
+    </div>
+  </div>
+</div>
+
+<!-- Inline Edit Modal -->
+<div id="editModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <span>✏️ Edit &amp; Save Verified Translation</span>
+      <button class="close-x" onclick="closeTopModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="editMsgIndex" />
+      <label><strong>English</strong><input id="editEn" class="form-input" /></label>
+      <label><strong>Karbi (SOV)</strong><input id="editKb" class="form-input" /></label>
+      <label><strong>Assamese (অসমীয়া)</strong><input id="editAs" class="form-input" /></label>
+      <label><strong>Grammar / Speaker Note</strong><textarea id="editNote" rows="3"></textarea></label>
+      <button class="send-btn" onclick="saveInlineEdit()">Save Correction to Database</button>
+    </div>
+  </div>
+</div>
+
+<!-- About Modal -->
+<div id="aboutModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <span>ℹ️ About Talk Aurelia</span>
+      <button class="close-x" onclick="closeTopModal()">×</button>
+    </div>
+    <div class="modal-body" style="line-height:1.55;">
+      <p>This application has been developed for personal learning and educational purposes, particularly to facilitate learning the Karbi language at one's own convenience and pace.</p>
+      <p>It is not intended for commercial use, promotion or any purpose that may harm, offend, disrespect or discriminate against any individual, community or group.</p>
+      <div class="caveat-box" style="font-size:12px; padding:10px;">
+        <strong>⚠️ Accuracy Disclaimer</strong><br><br>
+        Every effort has been made to ensure the accuracy and reliability of the information, translations, meanings and pronunciations provided in this application. However, some information may be incomplete, inaccurate or misleading. Variations in local dialects, expressions, meanings and pronunciation may also exist.<br><br>
+        Users are advised to verify important information with native Karbi speakers, language experts or other reliable sources before relying on it.<br><br>
+        This application is intended solely as a learning aid and should not be considered an authoritative or definitive source of the Karbi language.
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
-const BUNDLED_JSON_FILES = [
-  "Karbi_A_Letter_Vocabulary_Final_Handcrafted.json",
-  "Karbi_Full_Vocabulary_Substitution_Drills.json",
-  "karbi_corrections.json",
-  "karbi_custom_lessons.json"
-];
-
-const FALLBACK_SEEDS = {
-  "Karbi_A_Letter_Vocabulary_Final_Handcrafted.json": [
-    { english: "I / Me", assamese: "মই (Moi)", karbi: "Ne", note: "First-person singular subject pronoun (SOV start)." },
-    { english: "You", assamese: "তুমি (Tumi)", karbi: "Nang", note: "Second-person singular pronoun." },
-    { english: "Rice", assamese: "ভাত (Bhat)", karbi: "An", note: "Object noun. Example: Ne an cho (I eat rice)." },
-    { english: "Water", assamese: "পানী (Pani)", karbi: "Lang", note: "Core noun. Example: Ne lang jun (I drink water)." },
-    { english: "Tea", assamese: "চাহ (Sah)", karbi: "Sangho", note: "Common daily noun." },
-    { english: "Pork meat", assamese: "গাহৰি মাংস (Gahori mangxo)", karbi: "Phak-ok", note: "Phak (pig) + ok (meat)." },
-    { english: "House / Home", assamese: "ঘৰ (Ghor)", karbi: "Hem", note: "Core noun." },
-    { english: "Maternal Uncle", assamese: "মামা (Mama)", karbi: "Ongsar", note: "Respectful Karbi kinship term." },
-    { english: "Paternal Uncle", assamese: "বৰদেউতা (Bordeuta)", karbi: "Po-sar", note: "Father's elder brother." },
-    { english: "Elder Brother", assamese: "দাদা (Dada)", karbi: "Ik-sar", note: "Respectful kinship term." }
+/* ============================================================================
+   1. SPEAKER-VERIFIED DATASET (karbi_data_2.json — P. Ronghang, 2026-11-18)
+   ============================================================================ */
+const KARBI_DATA_V2 = {
+  schemaVersion: 1,
+  lexemes: [
+    { id: "lex.pron1sg", gloss: "I (friends / casual)", english_forms: ["i"], pos: "pronoun", surface: "ne", assamese: "মই", status: "verified", register: "casual", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.pron1sg_hon", gloss: "I (elders / respectful)", english_forms: ["i"], pos: "pronoun", surface: "neli", assamese: "মই", status: "verified", register: "respect", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.pron2sg", gloss: "you (friends / casual)", english_forms: ["you"], pos: "pronoun", surface: "nang", assamese: "তুমি", status: "verified", register: "casual", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.pron2sg_hon", gloss: "you (elders / respectful)", english_forms: ["you"], pos: "pronoun", surface: "nangli", assamese: "আপুনি", status: "verified", register: "respect", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.pron3sg", gloss: "he / she (friends / casual)", english_forms: ["he", "she"], pos: "pronoun", surface: "alang", assamese: "সি / তাই", status: "verified", register: "casual", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.pron3sg_hon", gloss: "he / she (elders / respectful)", english_forms: ["he", "she"], pos: "pronoun", surface: "alangli", assamese: "তেওঁ", status: "verified", register: "respect", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.pron3pl", gloss: "they (friends / casual)", english_forms: ["they"], pos: "pronoun", surface: "latum", assamese: "সিহঁত", status: "verified", register: "casual", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.pron3pl_hon", gloss: "they (respectful)", english_forms: ["they"], pos: "pronoun", surface: "alanglitum", assamese: "তেওঁলোক", status: "verified", register: "respect", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.pron1pl", gloss: "we (friends — candidate)", english_forms: ["we"], pos: "pronoun", surface: "itum", assamese: "আমি", status: "candidate", register: "casual", hint: "Open Question oq1: Sheet A4 gives itum, B3 gives nelitum, C4/D7 write alanglitum. Held back until clarified." },
+    { id: "lex.pron1pl_hon", gloss: "we (respectful — candidate)", english_forms: ["we"], pos: "pronoun", surface: "nelitum", assamese: "আমি", status: "candidate", register: "respect", hint: "Open Question oq1: B3 gives nelitum, C4/D7 write alanglitum." },
+    { id: "lex.school", gloss: "school", english_forms: ["school"], pos: "place", surface: "skul", assamese: "স্কুললৈ", status: "verified", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.today", gloss: "today", english_forms: ["today", "to-day"], pos: "time", surface: "pini", assamese: "আজি", status: "verified", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.go", gloss: "go", english_forms: ["go"], pos: "verb", surface: "dam", assamese: "যোৱা", status: "verified", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } }
   ],
-  "Karbi_Full_Vocabulary_Substitution_Drills.json": [
-    { english: "Hello", assamese: "নমস্কাৰ (Nomoskar)", karbi: "Kardom", note: "Standard respectful Karbi greeting." },
-    { english: "Kardom", assamese: "নমস্কাৰ (Nomoskar)", karbi: "Kardom", note: "Respectful Karbi greeting / thank you." },
-    { english: "Goodbye", assamese: "আহোঁ / বিদায় (Ahon / Biday)", karbi: "Chorolo", note: "Standard Karbi farewell expression." },
-    { english: "I eat rice", assamese: "মই ভাত খাওঁ (Moi bhat khaon)", karbi: "Ne an cho", note: "SOV Breakdown: Ne (I) + an (rice) + cho (eat)." },
-    { english: "I am cooking Pork Meat", assamese: "মই গাহৰি মাংস ৰান্ধি আছো (Moi gahori mangxo randhi aso)", karbi: "Ne phak-ok thok-lo", note: "SOV Breakdown: Ne (I) + phak-ok (pork meat) + thok-lo (cooking)." },
-    { english: "Lets go for tea", assamese: "বলক চাহ খাবলৈ যাওঁ (Bolok sah khaboloi jaon)", karbi: "Sangho jun-ik-nang", note: "SOV Hortative: Sangho (tea) + jun-ik-nang (let us drink)." },
-    { english: "Where are you going?", assamese: "তুমি ক'লৈ গৈছা? (Tumi koloi goisa?)", karbi: "Nang kopi-si dam-lo?", note: "SOV Interrogative: Nang (you) + kopi-si (where) + dam-lo (going)." },
-    { english: "Where is your home", assamese: "তোমাৰ ঘৰ ক'ত? (Tomar ghor kot?)", karbi: "Nang hem kopi-si?", note: "SOV Interrogative: Nang hem (your home) + kopi-si (where is)." },
-    { english: "I am going to the market", assamese: "মই বজাৰলৈ গৈ আছো (Moi bojaroloi goi aso)", karbi: "Ne bazar dam-lo", note: "SOV Motion: Ne (I) + bazar (market) + dam-lo (am going)." },
-    { english: "I am going home", assamese: "মই ঘৰলৈ গৈ আছো (Moi ghoroloi goi aso)", karbi: "Ne hem dam-lo", note: "SOV Motion: Ne (I) + hem (home) + dam-lo (am going)." },
-    { english: "I am going to school", assamese: "মই স্কুললৈ গৈ আছো (Moi schoololoi goi aso)", karbi: "Ne school dam-lo", note: "SOV Motion: Ne (I) + school (destination) + dam-lo (am going)." },
-    { english: "How are you?", assamese: "তুমি কেনে আছা? (Tumi kene asa?)", karbi: "Nang mesen-ma?", note: "mesen (well/good) + -ma (interrogative suffix)." },
-    { english: "How are you", assamese: "তুমি কেনে আছা? (Tumi kene asa?)", karbi: "Nang mesen-ma?", note: "mesen (well/good) + -ma (interrogative suffix)." },
-    { english: "I am fine", assamese: "মই ভালে আছো (Moi bhale aso)", karbi: "Ne mesen-lo", note: "SOV Response: Ne (I) + mesen-lo (am well)." },
-    { english: "What is your name?", assamese: "তোমাৰ নাম কি? (Tomar nam ki?)", karbi: "Nang men kopi-ma?", note: "Nang men (your name) + kopi-ma (what)." }
+  forms: [
+    { id: "form.go.neg_bare", lexeme: "lex.go", features: ["NEG"], surface: "damde", status: "verified", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" }, hint: "Verified invariant negative stem across all persons (B1-B4)." },
+    { id: "form.go.neg_future", lexeme: "lex.go", features: ["NEG", "FUTURE"], surface: "damde lo", status: "candidate", hint: "Open Question oq7: Confirm future 'will not go'." }
   ],
-  "karbi_corrections.json": [],
-  "karbi_custom_lessons.json": []
+  templates: [
+    {
+      id: "tpl.neg_go_dest_time.v1",
+      status: "validated",
+      english_patterns: [
+        "^(?:(?<SUBJ>i|you|he|she|they) )?(?:(?:am|is|are) )?not going (?<TO>to )?(?<DEST>school) (?<TIME>today|to-day)$",
+        "^(?<TIME>today|to-day) (?:(?<SUBJ>i|you|he|she|they) )?(?:(?:am|is|are) )?not going (?<TO>to )?(?<DEST>school)$"
+      ],
+      slots: {
+        SUBJ: { required: true, values: ["lex.pron1sg", "lex.pron1sg_hon", "lex.pron2sg", "lex.pron2sg_hon", "lex.pron3sg", "lex.pron3sg_hon", "lex.pron3pl", "lex.pron3pl_hon"] },
+        DEST: { required: true, values: ["lex.school"] },
+        TIME: { required: true, values: ["lex.today"] }
+      },
+      order: ["SUBJ", "TIME", "DEST", "VERB"],
+      verb_form: "form.go.neg_bare",
+      tests: [
+        { input: "I am not going to school today", expect: "built", register: "casual", karbi: "ne pini skul damde" },
+        { input: "I am not going to school today", expect: "built", register: "respect", karbi: "neli pini skul damde" },
+        { input: "I'm not going to school today", expect: "built", register: "casual", karbi: "ne pini skul damde" },
+        { input: "not going school today", expect: "ask_subject_then_built", register: "casual", karbi: "ne pini skul damde" },
+        { input: "not going to school today", expect: "ask_subject" },
+        { input: "today I am not going to school", expect: "built", register: "respect", karbi: "neli pini skul damde" },
+        { input: "he is not going to school today", expect: "built", register: "respect", karbi: "alangli pini skul damde" },
+        { input: "I don't go to school today", expect: "no_match" }
+      ]
+    }
+  ]
 };
 
-let DB = {};
-let activeDbFile = BUNDLED_JSON_FILES[0];
-let chatHistory = [];
-let selectedCalDate = "";
-const memoryFallbackStore = {};
-
-function safeSaveStorage(key, val) {
-  memoryFallbackStore[key] = val;
-  try { localStorage.setItem(key, val); } catch (e) {}
-}
-
-function safeGetStorage(key, fallback) {
-  try {
-    const v = localStorage.getItem(key);
-    if (v !== null) return v;
-  } catch (e) {}
-  return Object.prototype.hasOwnProperty.call(memoryFallbackStore, key) ? memoryFallbackStore[key] : fallback;
-}
-
-function safeParseArray(raw) {
-  try {
-    const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed)) return parsed;
-    if (parsed && typeof parsed === "object") {
-      for (const k of Object.keys(parsed)) {
-        if (Array.isArray(parsed[k])) return parsed[k];
-      }
-    }
-  } catch (e) {}
-  return [];
-}
-
-function normalizeEntry(item) {
-  if (!item || typeof item !== "object") return null;
-  const english = String(item.english || item.en || item.English || item.word || item.sentence || item.prompt || "").trim();
-  const assamese = String(item.assamese || item.as || item.Assamese || "").trim();
-  const karbi = String(item.karbi || item.kar || item.Karbi || item.translation || item.target || "").trim();
-  const note = String(item.note || item.grammar || item.meaning || item.notes || "").trim();
-  if (!english && !karbi) return null;
-  return { english, assamese, karbi, note };
-}
-
-function formatTimestamp(dateObj = new Date()) {
-  let hours = dateObj.getHours();
-  const mins = String(dateObj.getMinutes()).padStart(2, "0");
-  const ampm = hours >= 12 ? "pm" : "am";
-  hours = hours % 12 || 12;
-  const hh = String(hours).padStart(2, "0");
-  const dd = String(dateObj.getDate()).padStart(2, "0");
-  const mm = String(dateObj.getMonth() + 1).padStart(2, "0");
-  const yyyy = dateObj.getFullYear();
-  return {
-    full: `${hh}:${mins} ${ampm}, ${dd}-${mm}-${yyyy}`,
-    dateKey: `${dd}-${mm}-${yyyy}`
-  };
-}
-
-async function hydrateBundledDatabases() {
-  let totalEntries = 0;
-  for (const fileName of BUNDLED_JSON_FILES) {
-    const savedLocal = safeParseArray(safeGetStorage(`aurelia_db_${fileName}`, "[]"));
-    const seeds = FALLBACK_SEEDS[fileName] || [];
-    let merged = [...seeds];
-
-    savedLocal.map(normalizeEntry).filter(Boolean).forEach(item => {
-      const k = item.english.toLowerCase();
-      if (!merged.some(m => (m.english || "").toLowerCase() === k)) {
-        merged.push(item);
-      }
-    });
-
-    try {
-      let raw = "[]";
-      if (window.AndroidBridge && typeof window.AndroidBridge.loadJsonFile === "function") {
-        raw = window.AndroidBridge.loadJsonFile(fileName);
-      } else {
-        const res = await fetch(`./data/${fileName}`);
-        if (res.ok) raw = await res.text();
-      }
-      safeParseArray(raw).map(normalizeEntry).filter(Boolean).forEach(item => {
-        const k = item.english.toLowerCase();
-        if (!merged.some(m => (m.english || "").toLowerCase() === k)) {
-          merged.push(item);
-        }
-      });
-    } catch (e) {}
-
-    DB[fileName] = merged;
-    totalEntries += merged.length;
-    safeSaveStorage(`aurelia_db_${fileName}`, JSON.stringify(merged));
-  }
-  const statusEl = document.getElementById("dbStatusText");
-  if (statusEl) statusEl.textContent = `Offline SOV • ${totalEntries} Entries Ready`;
-}
-
-function synthesizeKarbiSovTranslation(query) {
-  const clean = query.trim();
-  const lower = clean.toLowerCase().replace(/[?.!,]/g, "").trim();
-
-  const priorityOrder = [
-    "karbi_corrections.json",
-    "karbi_custom_lessons.json",
-    "Karbi_Full_Vocabulary_Substitution_Drills.json",
-    "Karbi_A_Letter_Vocabulary_Final_Handcrafted.json"
-  ];
-
-  for (const file of priorityOrder) {
-    const list = DB[file] || [];
-    const exact = list.find(e =>
-      (e.english || "").toLowerCase().replace(/[?.!,]/g, "").trim() === lower ||
-      (e.karbi || "").toLowerCase().replace(/[?.!,]/g, "").trim() === lower
-    );
-    if (exact) {
-      return {
-        source: `VERIFIED DATASET (${file})`,
-        karbi: exact.karbi,
-        assamese: exact.assamese || "—",
-        english: exact.english || clean,
-        note: exact.note || "Verified SOV Karbi entry."
-      };
-    }
-  }
-
-  for (const file of priorityOrder) {
-    const list = DB[file] || [];
-    const partial = list.find(e => {
-      const eng = (e.english || "").toLowerCase().replace(/[?.!,]/g, "").trim();
-      return eng.length > 3 && (lower.includes(eng) || eng.includes(lower));
-    });
-    if (partial) {
-      return {
-        source: `MATCHED DATASET (${file})`,
-        karbi: partial.karbi,
-        assamese: partial.assamese || "—",
-        english: clean,
-        note: `${partial.note || ""} (Closest match: "${partial.english}")`.trim()
-      };
-    }
-  }
-
-  const lex = {
-    "i": { k: "Ne", a: "মই" },
-    "my": { k: "Ne", a: "মোৰ" },
-    "we": { k: "Netum", a: "আমি" },
-    "you": { k: "Nang", a: "তুমি" },
-    "your": { k: "Nang", a: "তোমাৰ" },
-    "he": { k: "Alang", a: "সি" },
-    "she": { k: "Alang", a: "তাই" },
-    "home": { k: "hem", a: "ঘৰ" },
-    "house": { k: "hem", a: "ঘৰ" },
-    "market": { k: "bazar", a: "বজাৰ" },
-    "school": { k: "school", a: "স্কুল" },
-    "rice": { k: "an", a: "ভাত" },
-    "water": { k: "lang", a: "পানী" },
-    "tea": { k: "sangho", a: "চাহ" },
-    "meat": { k: "ok", a: "মাংস" },
-    "pork": { k: "phak-ok", a: "গাহৰি মাংস" },
-    "fish": { k: "ok-lang", a: "মাছ" },
-    "book": { k: "kitap", a: "কিতাপ" },
-    "name": { k: "men", a: "নাম" },
-    "father": { k: "po", a: "দেউতা" },
-    "mother": { k: "pei", a: "মা" },
-    "good": { k: "mesen", a: "ভাল" },
-    "fine": { k: "mesen", a: "ভাল" },
-    "today": { k: "pini", a: "আজি" },
-    "tomorrow": { k: "penap", a: "কাইলৈ" },
-    "now": { k: "non", a: "এতিয়া" },
-    "here": { k: "ladak", a: "ইয়াত" },
-    "there": { k: "haladak", a: "তাত" }
-  };
-
-  if (lower.startsWith("where is ")) {
-    const target = lower.replace("where is ", "").trim();
-    const kTarget = target.split(" ").map(w => lex[w]?.k || w).join(" ");
-    const aTarget = target.split(" ").map(w => lex[w]?.a || w).join(" ");
-    return {
-      source: "OFFLINE SOV GRAMMAR ENGINE",
-      karbi: `${capitalize(kTarget)} kopi-si?`,
-      assamese: `${aTarget} ক'ত?`,
-      english: clean,
-      note: `SOV Interrogative rule: [Subject: ${capitalize(kTarget)}] + [Interrogative: kopi-si (where is)].`
-    };
-  }
-
-  if (lower.includes("going to ")) {
-    const place = lower.split("going to ")[1].replace(/^the\s+/, "").trim();
-    const kPlace = lex[place]?.k || place;
-    const aPlace = lex[place]?.a || place;
-    const subj = lower.startsWith("we") ? "Netum" : (lower.startsWith("you") ? "Nang" : "Ne");
-    const aSubj = subj === "Netum" ? "আমি" : (subj === "Nang" ? "তুমি" : "মই");
-    return {
-      source: "OFFLINE SOV GRAMMAR ENGINE",
-      karbi: `${subj} ${kPlace} dam-lo`,
-      assamese: `${aSubj} ${aPlace}লৈ গৈ আছো`,
-      english: clean,
-      note: `SOV Motion rule: ${subj} (Subject) + ${kPlace} (Destination) + dam-lo (am/are going).`
-    };
-  }
-
-  const verbMap = {
-    "eat": { k: "cho", a: "খাওঁ" },
-    "eating": { k: "cho-lo", a: "খাই আছো" },
-    "drink": { k: "jun", a: "খাওঁ" },
-    "drinking": { k: "jun-lo", a: "খাই আছো" },
-    "cook": { k: "thok", a: "ৰান্ধো" },
-    "cooking": { k: "thok-lo", a: "ৰান্ধি আছো" },
-    "want": { k: "nang-ji", a: "লাগে" },
-    "need": { k: "nang-ji", a: "প্ৰয়োজন" },
-    "read": { k: "porhi", a: "পঢ়োঁ" },
-    "reading": { k: "porhi-lo", a: "পঢ়ি আছো" },
-    "come": { k: "vang", a: "আহোঁ" },
-    "coming": { k: "vang-lo", a: "আহি আছো" }
-  };
-
-  const words = lower.split(/\s+/);
-  let subj = "Ne", aSubj = "মই";
-  if (words[0] === "you") { subj = "Nang"; aSubj = "তুমি"; }
-  else if (words[0] === "we") { subj = "Netum"; aSubj = "আমি"; }
-  else if (words[0] === "he" || words[0] === "she") { subj = "Alang"; aSubj = "সি/তাই"; }
-
-  let foundVerb = null;
-  let objWords = [];
-  for (let i = 0; i < words.length; i++) {
-    if (verbMap[words[i]]) {
-      foundVerb = verbMap[words[i]];
-      objWords = words.slice(i + 1).filter(w => !["a", "an", "the", "to", "for"].includes(w));
-      break;
-    }
-  }
-
-  if (foundVerb) {
-    const kObj = objWords.map(w => lex[w]?.k || w).join(" ");
-    const aObj = objWords.map(w => lex[w]?.a || w).join(" ");
-    const kSentence = [subj, kObj, foundVerb.k].filter(Boolean).join(" ");
-    const aSentence = [aSubj, aObj, foundVerb.a].filter(Boolean).join(" ");
-    return {
-      source: "OFFLINE SOV GRAMMAR ENGINE",
-      karbi: kSentence,
-      assamese: aSentence,
-      english: clean,
-      note: `SOV Construction: ${subj} (Subject)${kObj ? ` + ${kObj} (Object)` : ""} + ${foundVerb.k} (Verb).`
-    };
-  }
-
-  const glossed = words.map(w => lex[w]?.k || w).join(" ");
-  const aGlossed = words.map(w => lex[w]?.a || w).join(" ");
-  return {
-    source: "OFFLINE LEXICAL SOV",
-    karbi: capitalize(glossed),
-    assamese: aGlossed,
-    english: clean,
-    note: "Offline lexical mapping. Tap Edit below to refine and save to karbi_corrections.json."
-  };
-}
-
-function capitalize(s) {
-  return s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
-}
-
-function speakKarbiThenAssamese(karbiText, assameseText) {
-  try {
-    const cleanK = String(karbiText || "").replace(/[*#_`~>|]/g, " ").trim();
-    const cleanA = String(assameseText || "").replace(/\(.*?\)/g, "").replace(/[*#_`~>|]/g, " ").trim();
-    const combined = `${cleanK}. ${cleanA}`;
-    if (window.AndroidBridge && typeof window.AndroidBridge.speak === "function") {
-      window.AndroidBridge.speak(combined);
-    } else if ("speechSynthesis" in window) {
-      window.speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(combined);
-      u.lang = "en-IN";
-      window.speechSynthesis.speak(u);
-    }
-  } catch (e) {}
-}
-
-function sendQuick(text) {
-  const input = document.getElementById("userInput");
-  if (input) input.value = text;
-  handleSend();
-}
-
-function handleSend() {
-  const input = document.getElementById("userInput");
-  if (!input) return;
-  const text = input.value.trim();
-  if (!text) return;
-  input.value = "";
-
-  const ts = formatTimestamp();
-  chatHistory.push({ role: "user", text, timestamp: ts.full, dateKey: ts.dateKey });
-
-  const result = synthesizeKarbiSovTranslation(text);
-  const botTs = formatTimestamp();
-  chatHistory.push({
-    role: "bot",
-    source: result.source,
-    karbi: result.karbi,
-    assamese: result.assamese,
-    english: result.english,
-    note: result.note,
-    timestamp: botTs.full,
-    dateKey: botTs.dateKey
-  });
-
-  saveChatHistory();
-  renderChatHistory();
-  speakKarbiThenAssamese(result.karbi, result.assamese);
-}
-
-function saveChatHistory() {
-  safeSaveStorage("aurelia_chat_history_v2", JSON.stringify(chatHistory));
-}
-
-function renderChatHistory() {
-  const box = document.getElementById("chatBox");
-  if (!box) return;
-  box.innerHTML = "";
-
-  chatHistory.forEach((msg, idx) => {
-    const row = document.createElement("div");
-    row.className = `msg-row ${msg.role}`;
-
-    if (msg.role === "user") {
-      row.innerHTML = `
-        <div class="user-bubble" id="msg-body-${idx}">
-          <div>${escapeHtml(msg.text)}</div>
-          <div class="user-meta">
-            <button onclick="openInlineEdit(${idx})">Edit</button>
-            <span class="ts-link" onclick="openCalendarForDate('${msg.dateKey}')">${msg.timestamp}</span>
-          </div>
-        </div>
-      `;
-    } else {
-      row.innerHTML = `
-        <div class="bot-card" id="msg-body-${idx}">
-          <div class="badge-src">${escapeHtml(msg.source || "KARBI SOV")}</div>
-          <div class="lang-block karbi">
-            <div class="lang-tag">KARBI (SOV STANDARD — 1ST VOICE)</div>
-            <div class="lang-val">${escapeHtml(msg.karbi)}</div>
-          </div>
-          <div class="lang-block">
-            <div class="lang-tag">ASSAMESE (অসমীয়া — 2ND VOICE)</div>
-            <div class="lang-val">${escapeHtml(msg.assamese)}</div>
-          </div>
-          <div class="lang-block">
-            <div class="lang-tag">ENGLISH</div>
-            <div class="lang-val" style="font-size:14px;font-weight:500;">${escapeHtml(msg.english)}</div>
-          </div>
-          <div class="grammar-note">${escapeHtml(msg.note || "")}</div>
-          <div class="card-footer">
-            <button class="speak-btn" onclick="speakHistoryItem(${idx})">🔊 Speak (Karbi → As)</button>
-            <button class="ts-pill" onclick="openCalendarForDate('${msg.dateKey}')">${msg.timestamp}</button>
-            <button class="action-link" onclick="openInlineEdit(${idx})">Edit</button>
-            <button class="action-link copy" onclick="copyMessageText(${idx})">Copy</button>
-          </div>
-        </div>
-      `;
-    }
-    box.appendChild(row);
-  });
-
-  box.scrollTop = box.scrollHeight;
-}
-
-function speakHistoryItem(idx) {
-  const m = chatHistory[idx];
-  if (m) speakKarbiThenAssamese(m.karbi, m.assamese);
-}
-
-function openInlineEdit(idx) {
-  const msg = chatHistory[idx];
-  const container = document.getElementById(`msg-body-${idx}`);
-  if (!msg || !container) return;
-
-  if (msg.role === "user") {
-    container.innerHTML = `
-      <div class="inline-edit-box">
-        <input type="text" id="edit-user-${idx}" value="${escapeHtml(msg.text)}" />
-        <div class="inline-edit-actions">
-          <button class="btn-save-sm" onclick="saveInlineEdit(${idx})">Save & Re-translate</button>
-          <button class="btn-cancel-sm" onclick="renderChatHistory()">Cancel</button>
-        </div>
-      </div>
-    `;
-  } else {
-    container.innerHTML = `
-      <div class="inline-edit-box">
-        <label style="font-size:11px;font-weight:700;">Karbi (SOV):</label>
-        <input type="text" id="edit-kar-${idx}" value="${escapeHtml(msg.karbi)}" />
-        <label style="font-size:11px;font-weight:700;">Assamese:</label>
-        <input type="text" id="edit-asm-${idx}" value="${escapeHtml(msg.assamese)}" />
-        <label style="font-size:11px;font-weight:700;">English:</label>
-        <input type="text" id="edit-eng-${idx}" value="${escapeHtml(msg.english)}" />
-        <label style="font-size:11px;font-weight:700;">Grammar Note:</label>
-        <input type="text" id="edit-note-${idx}" value="${escapeHtml(msg.note || "")}" />
-        <div class="inline-edit-actions">
-          <button class="btn-save-sm" onclick="saveInlineEdit(${idx})">Save Correction</button>
-          <button class="btn-cancel-sm" onclick="renderChatHistory()">Cancel</button>
-        </div>
-      </div>
-    `;
-  }
-}
-
-function saveInlineEdit(idx) {
-  const msg = chatHistory[idx];
-  if (!msg) return;
-
-  if (msg.role === "user") {
-    const newText = document.getElementById(`edit-user-${idx}`).value.trim();
-    if (newText) {
-      msg.text = newText;
-      if (chatHistory[idx + 1] && chatHistory[idx + 1].role === "bot") {
-        const updated = synthesizeKarbiSovTranslation(newText);
-        Object.assign(chatHistory[idx + 1], updated);
-      }
-    }
-  } else {
-    msg.karbi = document.getElementById(`edit-kar-${idx}`).value.trim();
-    msg.assamese = document.getElementById(`edit-asm-${idx}`).value.trim();
-    msg.english = document.getElementById(`edit-eng-${idx}`).value.trim();
-    msg.note = document.getElementById(`edit-note-${idx}`).value.trim();
-    msg.source = "USER VERIFIED (karbi_corrections.json)";
-
-    const list = DB["karbi_corrections.json"] || [];
-    const existingIdx = list.findIndex(e => (e.english || "").toLowerCase() === msg.english.toLowerCase());
-    const entry = { english: msg.english, assamese: msg.assamese, karbi: msg.karbi, note: msg.note };
-    if (existingIdx >= 0) list[existingIdx] = entry;
-    else list.unshift(entry);
-    DB["karbi_corrections.json"] = list;
-    persistDbFile("karbi_corrections.json");
-  }
-
-  saveChatHistory();
-  renderChatHistory();
-}
-
-function copyMessageText(idx) {
-  const m = chatHistory[idx];
-  if (!m) return;
-  const txt = `Karbi: ${m.karbi}\nAssamese: ${m.assamese}\nEnglish: ${m.english}\n(${m.timestamp})`;
-  try { navigator.clipboard.writeText(txt); } catch (e) {}
-}
-
-function openJsonDbModal() {
-  renderDbTabs();
-  selectDbTab(activeDbFile);
-  openModal("jsonDbModal");
-}
-
-function renderDbTabs() {
-  const container = document.getElementById("dbTabs");
-  if (!container) return;
-  container.innerHTML = BUNDLED_JSON_FILES.map(f => `
-    <button class="db-tab ${f === activeDbFile ? "active" : ""}" onclick="selectDbTab('${f}')">${f}</button>
-  `).join("");
-}
-
-function selectDbTab(fileName) {
-  activeDbFile = fileName;
-  renderDbTabs();
-  const list = DB[fileName] || [];
-  document.getElementById("activeDbLabel").textContent = fileName;
-  document.getElementById("dbCountLabel").textContent = `Loaded Entries (${list.length})`;
-  document.getElementById("jsonPreview").textContent = JSON.stringify(list, null, 2);
-}
-
-function addDbEntry() {
-  const english = document.getElementById("dbEng").value.trim();
-  const assamese = document.getElementById("dbAsm").value.trim();
-  const karbi = document.getElementById("dbKar").value.trim();
-  const note = document.getElementById("dbNote").value.trim();
-  if (!english || !karbi) return;
-
-  const list = DB[activeDbFile] || [];
-  list.unshift({ english, assamese, karbi, note });
-  DB[activeDbFile] = list;
-  persistDbFile(activeDbFile);
-
-  document.getElementById("dbEng").value = "";
-  document.getElementById("dbAsm").value = "";
-  document.getElementById("dbKar").value = "";
-  document.getElementById("dbNote").value = "";
-  selectDbTab(activeDbFile);
-}
-
-function persistDbFile(fileName) {
-  const content = JSON.stringify(DB[fileName] || [], null, 2);
-  safeSaveStorage(`aurelia_db_${fileName}`, content);
-  if (window.AndroidBridge && typeof window.AndroidBridge.saveJsonFile === "function") {
-    try { window.AndroidBridge.saveJsonFile(fileName, content); } catch (e) {}
-  }
-}
-
-function importJsonFile(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    const normalized = safeParseArray(e.target.result).map(normalizeEntry).filter(Boolean);
-    if (normalized.length > 0) {
-      DB[activeDbFile] = normalized;
-      persistDbFile(activeDbFile);
-      selectDbTab(activeDbFile);
-    }
-  };
-  reader.readAsText(file);
-}
-
-function downloadActiveJson() {
-  const content = JSON.stringify(DB[activeDbFile] || [], null, 2);
-  triggerDownload(activeDbFile, content);
-}
-
-function openCalendarForDate(dateKey) {
-  selectedCalDate = dateKey || formatTimestamp().dateKey;
-  renderCalendar();
-  openModal("calendarModal");
-}
-
-function renderCalendar() {
-  const parts = selectedCalDate.split("-");
-  const monthIdx = parseInt(parts[1], 10) - 1;
-  const year = parseInt(parts[2], 10);
-  const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-  document.getElementById("calMonthTitle").textContent = `📅 ${monthNames[monthIdx]} ${year}`;
-
-  const daysInMonth = new Date(year, monthIdx + 1, 0).getDate();
-  const activeDates = new Set(chatHistory.map(m => m.dateKey));
-  const grid = document.getElementById("calGrid");
-  grid.innerHTML = "";
-
-  for (let d = 1; d <= daysInMonth; d++) {
-    const dk = `${String(d).padStart(2,"0")}-${String(monthIdx+1).padStart(2,"0")}-${year}`;
-    const cell = document.createElement("div");
-    cell.className = `cal-day ${activeDates.has(dk) ? "has-chat" : ""} ${dk === selectedCalDate ? "selected" : ""}`;
-    cell.textContent = d;
-    cell.onclick = () => { selectedCalDate = dk; renderCalendar(); };
-    grid.appendChild(cell);
-  }
-
-  document.getElementById("calSelectedDateLabel").textContent = `Chats on ${selectedCalDate}`;
-  const dayChats = chatHistory.filter(m => m.dateKey === selectedCalDate);
-  const listEl = document.getElementById("calDateChats");
-  if (!dayChats.length) {
-    listEl.innerHTML = `<div style="color:var(--muted);">No conversations recorded on this date.</div>`;
-  } else {
-    listEl.innerHTML = dayChats.map(m => `
-      <div style="background:var(--bg);padding:8px 10px;border-radius:10px;border:1px solid var(--border);">
-        <div style="font-size:11px;color:var(--muted);">${m.timestamp}</div>
-        ${m.role === "user"
-          ? `<strong>You:</strong> ${escapeHtml(m.text)}`
-          : `<strong>Karbi:</strong> ${escapeHtml(m.karbi)}<br><strong>Assamese:</strong> ${escapeHtml(m.assamese)}<br><strong>English:</strong> ${escapeHtml(m.english)}`
-        }
-      </div>
-    `).join("");
-  }
-}
-
-function formatChatsAsTxt(list) {
-  return list.map(m => {
-    if (m.role === "user") return `[${m.timestamp}] You: ${m.text}`;
-    return `[${m.timestamp}] Talk Aurelia:\n  Karbi: ${m.karbi}\n  Assamese: ${m.assamese}\n  English: ${m.english}\n  Note: ${m.note || ""}`;
-  }).join("\n\n----------------------------------------\n\n");
-}
-
-function exportSelectedDateTxt() {
-  const dayChats = chatHistory.filter(m => m.dateKey === selectedCalDate);
-  triggerDownload(`Talk_Aurelia_Chat_${selectedCalDate}.txt`, formatChatsAsTxt(dayChats));
-}
-
-function exportAllChatTxt() {
-  triggerDownload("Talk_Aurelia_Full_Chat_History.txt", formatChatsAsTxt(chatHistory));
-}
-
-function triggerDownload(filename, text) {
-  const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
-function clearChatHistory() {
-  chatHistory = [];
-  saveChatHistory();
-  renderChatHistory();
-  closeModal("settingsModal");
-}
-
-function startVoiceInput() {
-  const btn = document.getElementById("micBtn");
-  btn.classList.add("listening");
-  if (window.AndroidBridge && typeof window.AndroidBridge.startListening === "function") {
-    window.AndroidBridge.startListening();
-    setTimeout(() => btn.classList.remove("listening"), 5000);
-  } else if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const rec = new SR();
-    rec.lang = "en-IN";
-    rec.onresult = e => {
-      document.getElementById("userInput").value = e.results[0][0].transcript;
-      handleSend();
-    };
-    rec.onend = () => btn.classList.remove("listening");
-    rec.start();
-  } else {
-    btn.classList.remove("listening");
-  }
-}
-
-window.onVoiceResult = function(text) {
-  const btn = document.getElementById("micBtn");
-  if (btn) btn.classList.remove("listening");
-  if (text) {
-    document.getElementById("userInput").value = text;
-    handleSend();
-  }
-};
-
-function toggleVoiceGreetings(enabled) {
-  safeSaveStorage("aurelia_voice_greetings", enabled ? "1" : "0");
-}
-
-function handleExit() {
-  const greetOn = safeGetStorage("aurelia_voice_greetings", "1") === "1";
-  if (greetOn) speakKarbiThenAssamese("Chorolo", "আহোঁ");
-  setTimeout(() => {
-    if (window.AndroidBridge && typeof window.AndroidBridge.exitApp === "function") {
-      window.AndroidBridge.exitApp();
-    } else {
-      window.close();
-    }
-  }, greetOn ? 900 : 100);
-}
-
-window.onAndroidBackPressed = function() {
-  const openModals = document.querySelectorAll(".modal-backdrop.open");
-  if (openModals.length > 0) {
-    openModals.forEach(m => m.classList.remove("open"));
-    return;
-  }
-  handleExit();
-};
-
-function openModal(id) {
-  const el = document.getElementById(id);
-  if (el) el.classList.add("open");
-}
-
-function closeModal(id) {
-  const el = document.getElementById(id);
-  if (el) el.classList.remove("open");
-}
-
-function escapeHtml(str) {
-  return String(str || "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
-let lastScrollTop = 0;
-const chatBoxEl = document.getElementById("chatBox");
-if (chatBoxEl) {
-  chatBoxEl.addEventListener("scroll", function() {
-    const st = this.scrollTop;
-    const header = document.getElementById("appHeader");
-    if (header) {
-      if (st > lastScrollTop && st > 40) header.classList.add("header-hidden");
-      else if (st < lastScrollTop) header.classList.remove("header-hidden");
-    }
-    lastScrollTop = Math.max(0, st);
-  });
-}
-
-async function initApp() {
-  try {
-    document.querySelectorAll(".modal-backdrop").forEach(m => m.classList.remove("open"));
-
-    const greetOn = safeGetStorage("aurelia_voice_greetings", "1") === "1";
-    const toggleEl = document.getElementById("voiceGreetingToggle");
-    if (toggleEl) toggleEl.checked = greetOn;
-
-    await hydrateBundledDatabases();
-
-    chatHistory = safeParseArray(safeGetStorage("aurelia_chat_history_v2", "[]"));
-    if (chatHistory.length === 0) {
-      const ts = formatTimestamp();
-      chatHistory.push({
-        role: "bot",
-        source: "BUNDLED KARBI SOV DATABASE",
-        karbi: "Kardom! Nang kopi-si dam-lo?",
-        assamese: "নমস্কাৰ! তুমি ক'লৈ গৈছা? (Nomoskar! Tumi koloi goisa?)",
-        english: "Greetings! Where are you going?",
-        note: "SOV Interrogative pattern: Nang (you) + kopi-si (where) + dam-lo (going).",
-        timestamp: ts.full,
-        dateKey: ts.dateKey
-      });
-      saveChatHistory();
-    }
-
-    renderChatHistory();
-    if (greetOn) {
-      setTimeout(() => speakKarbiThenAssamese("Kardom", "নমস্কাৰ"), 500);
-    }
-  } catch (err) {
-    console.error("Init error:", err);
-    renderChatHistory();
-  }
-}
-
-initApp();
-</script>
-</body>
-</html>
+/* ============================================================================
+   2. ENGLISH-INDEXED VOCABULARY & PHRASE LEXICON (ENGLISH -> KARBI & ASSAMESE)
+   ============================================================================ */
+const ENGLISH_VOCAB_DB = [
+  { en: "rainbow", kb: "Mukak-ser / Horbong-arnam", as: "ৰামধেনু", role: "NOUN", tier: "DOCUMENTED", note: "Authentic Karbi term for rainbow (replaces unverified cache)." },
+  { en: "rice", kb: "an (cooked) / sang (uncooked) / sok (paddy)", as: "ভাত / চাউল / ধান", role: "NOUN", tier: "DOCUMENTED", note: "Use 'an' when eating cooked rice (ne an cho)." },
+  { en: "cooked rice", kb: "an", as: "ভাত", role: "NOUN", tier: "DOCUMENTED", note: "Konnerth 2014 / Jeyapaul 1987: an = cooked rice." },
+  { en: "pork meat", kb: "phak-ok", as: "গাহৰি মাংস", role: "NOUN", tier: "DOCUMENTED", note: "Compound noun: phak (pig) + ok (meat)." },
+  { en: "water", kb: "lang", as: "পানী", role: "NOUN", tier: "DOCUMENTED", note: "Basic noun: lang." },
+  { en: "tea", kb: "cha", as: "চাহ", role: "NOUN", tier: "DOCUMENTED", note: "Basic noun: cha." },
+  { en: "house", kb: "hem", as: "ঘৰ", role: "PLACE", tier: "DOCUMENTED", note: "Inanimate place goal is unmarked with dam (ne hem damlo)." },
+  { en: "home", kb: "hem", as: "ঘৰলৈ", role: "PLACE", tier: "DOCUMENTED", note: "Jeyapaul p.146: ne hem damlo." },
+  { en: "market", kb: "bajar", as: "বজাৰলৈ", role: "PLACE", tier: "DOCUMENTED", note: "Jeyapaul p.145: pini ne bajar dampo." },
+  { en: "school", kb: "skul", as: "স্কুললৈ", role: "PLACE", tier: "VERIFIED", note: "Verified by P. Ronghang (2026-11-18). Jeyapaul 1987 also notes 'iskul'." },
+  { en: "today", kb: "pini", as: "আজি", role: "TIME", tier: "VERIFIED", note: "Verified by P. Ronghang (2026-11-18). Unmarked day word." },
+  { en: "tomorrow", kb: "penap", as: "কাইলৈ", role: "TIME", tier: "DOCUMENTED", note: "Konnerth s.4.8 / Jeyapaul p.114." },
+  { en: "yesterday", kb: "tumi / atumi", as: "যোৱাকালি", role: "TIME", tier: "DOCUMENTED", note: "Spelling varies: tumi / timi / atumi." },
+  { en: "now", kb: "non", as: "এতিয়া", role: "TIME", tier: "VERIFIED", note: "Verified in B6: non neli skul damde." },
+  { en: "maternal uncle", kb: "Ongsar", as: "মামা", role: "KINSHIP", tier: "DOCUMENTED", note: "Specific Karbi kinship term for mother's brother." },
+  { en: "paternal uncle", kb: "Po-sar", as: "খুৰা / বৰদেউতা
