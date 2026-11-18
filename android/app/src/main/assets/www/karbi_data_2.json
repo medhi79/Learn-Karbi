@@ -1,0 +1,593 @@
+{
+  "schemaVersion": 1,
+  "lexemes": [
+    {
+      "id": "lex.pron1sg",
+      "gloss": "I (friends)",
+      "english_forms": [
+        "i"
+      ],
+      "pos": "pronoun",
+      "surface": "ne",
+      "status": "verified",
+      "register": "casual",
+      "review": {
+        "reviewers": [
+          "P. Ronghang"
+        ],
+        "date": "2026-11-18",
+        "dialect": "Dengaon, Karbi Anglong",
+        "notes": "Paper review sheet dated 18/11/2026, signed P. Ronghang. Dialect line read from handwriting as 'Dengaon, Karbi Anglong'."
+      },
+      "sources": [
+        {
+          "doc": "Speaker review sheet 2026-11-18",
+          "loc": "A1, A9, C1"
+        }
+      ]
+    },
+    {
+      "id": "lex.pron1sg_hon",
+      "gloss": "I (elders, respectful)",
+      "english_forms": [
+        "i"
+      ],
+      "pos": "pronoun",
+      "surface": "neli",
+      "status": "verified",
+      "register": "respect",
+      "review": {
+        "reviewers": [
+          "P. Ronghang"
+        ],
+        "date": "2026-11-18",
+        "dialect": "Dengaon, Karbi Anglong",
+        "notes": "Paper review sheet dated 18/11/2026, signed P. Ronghang. Dialect line read from handwriting as 'Dengaon, Karbi Anglong'."
+      },
+      "sources": [
+        {
+          "doc": "Speaker review sheet 2026-11-18",
+          "loc": "A1, A9, B1, C2, D1"
+        }
+      ]
+    },
+    {
+      "id": "lex.pron2sg",
+      "gloss": "you (friends)",
+      "english_forms": [
+        "you"
+      ],
+      "pos": "pronoun",
+      "surface": "nang",
+      "status": "verified",
+      "register": "casual",
+      "review": {
+        "reviewers": [
+          "P. Ronghang"
+        ],
+        "date": "2026-11-18",
+        "dialect": "Dengaon, Karbi Anglong",
+        "notes": "Paper review sheet dated 18/11/2026, signed P. Ronghang. Dialect line read from handwriting as 'Dengaon, Karbi Anglong'."
+      },
+      "sources": [
+        {
+          "doc": "Speaker review sheet 2026-11-18",
+          "loc": "A2"
+        }
+      ]
+    },
+    {
+      "id": "lex.pron2sg_hon",
+      "gloss": "you (elders, respectful)",
+      "english_forms": [
+        "you"
+      ],
+      "pos": "pronoun",
+      "surface": "nangli",
+      "status": "verified",
+      "register": "respect",
+      "review": {
+        "reviewers": [
+          "P. Ronghang"
+        ],
+        "date": "2026-11-18",
+        "dialect": "Dengaon, Karbi Anglong",
+        "notes": "Paper review sheet dated 18/11/2026, signed P. Ronghang. Dialect line read from handwriting as 'Dengaon, Karbi Anglong'."
+      },
+      "sources": [
+        {
+          "doc": "Speaker review sheet 2026-11-18",
+          "loc": "A2 note"
+        }
+      ]
+    },
+    {
+      "id": "lex.pron3sg",
+      "gloss": "he / she (friends)",
+      "english_forms": [
+        "he",
+        "she"
+      ],
+      "pos": "pronoun",
+      "surface": "alang",
+      "status": "verified",
+      "register": "casual",
+      "review": {
+        "reviewers": [
+          "P. Ronghang"
+        ],
+        "date": "2026-11-18",
+        "dialect": "Dengaon, Karbi Anglong",
+        "notes": "Paper review sheet dated 18/11/2026, signed P. Ronghang. Dialect line read from handwriting as 'Dengaon, Karbi Anglong'."
+      },
+      "sources": [
+        {
+          "doc": "Speaker review sheet 2026-11-18",
+          "loc": "A3, B2"
+        }
+      ]
+    },
+    {
+      "id": "lex.pron3sg_hon",
+      "gloss": "he / she (elders, respectful)",
+      "english_forms": [
+        "he",
+        "she"
+      ],
+      "pos": "pronoun",
+      "surface": "alangli",
+      "status": "verified",
+      "register": "respect",
+      "review": {
+        "reviewers": [
+          "P. Ronghang"
+        ],
+        "date": "2026-11-18",
+        "dialect": "Dengaon, Karbi Anglong",
+        "notes": "Paper review sheet dated 18/11/2026, signed P. Ronghang. Dialect line read from handwriting as 'Dengaon, Karbi Anglong'."
+      },
+      "sources": [
+        {
+          "doc": "Speaker review sheet 2026-11-18",
+          "loc": "A3 note, C3, D6"
+        }
+      ]
+    },
+    {
+      "id": "lex.pron3pl",
+      "gloss": "they (friends)",
+      "english_forms": [
+        "they"
+      ],
+      "pos": "pronoun",
+      "surface": "latum",
+      "status": "verified",
+      "register": "casual",
+      "review": {
+        "reviewers": [
+          "P. Ronghang"
+        ],
+        "date": "2026-11-18",
+        "dialect": "Dengaon, Karbi Anglong",
+        "notes": "Paper review sheet dated 18/11/2026, signed P. Ronghang. Dialect line read from handwriting as 'Dengaon, Karbi Anglong'."
+      },
+      "sources": [
+        {
+          "doc": "Speaker review sheet 2026-11-18",
+          "loc": "A5"
+        }
+      ]
+    },
+    {
+      "id": "lex.pron3pl_hon",
+      "gloss": "they (respectful)",
+      "english_forms": [
+        "they"
+      ],
+      "pos": "pronoun",
+      "surface": "alanglitum",
+      "status": "verified",
+      "register": "respect",
+      "review": {
+        "reviewers": [
+          "P. Ronghang"
+        ],
+        "date": "2026-11-18",
+        "dialect": "Dengaon, Karbi Anglong",
+        "notes": "Paper review sheet dated 18/11/2026, signed P. Ronghang. Dialect line read from handwriting as 'Dengaon, Karbi Anglong'."
+      },
+      "sources": [
+        {
+          "doc": "Speaker review sheet 2026-11-18",
+          "loc": "B4, B5"
+        }
+      ]
+    },
+    {
+      "id": "lex.pron1pl",
+      "gloss": "we (friends)",
+      "english_forms": [
+        "we"
+      ],
+      "pos": "pronoun",
+      "surface": "itum",
+      "status": "candidate",
+      "register": "casual",
+      "sources": [
+        {
+          "doc": "Speaker review sheet 2026-11-18",
+          "loc": "A4"
+        }
+      ],
+      "hint": "Sheet gives itum (A4) but C4 and D7 write alanglitum for 'we'. Not used until clarified."
+    },
+    {
+      "id": "lex.pron1pl_hon",
+      "gloss": "we (respectful)",
+      "english_forms": [
+        "we"
+      ],
+      "pos": "pronoun",
+      "surface": "nelitum",
+      "status": "candidate",
+      "register": "respect",
+      "sources": [
+        {
+          "doc": "Speaker review sheet 2026-11-18",
+          "loc": "B3"
+        }
+      ],
+      "hint": "B3 gives nelitum; C4/D7 write alanglitum. Not used until clarified."
+    },
+    {
+      "id": "lex.school",
+      "gloss": "school",
+      "english_forms": [
+        "school"
+      ],
+      "pos": "place",
+      "surface": "skul",
+      "status": "verified",
+      "review": {
+        "reviewers": [
+          "P. Ronghang"
+        ],
+        "date": "2026-11-18",
+        "dialect": "Dengaon, Karbi Anglong",
+        "notes": "Paper review sheet dated 18/11/2026, signed P. Ronghang. Dialect line read from handwriting as 'Dengaon, Karbi Anglong'."
+      },
+      "sources": [
+        {
+          "doc": "Speaker review sheet 2026-11-18",
+          "loc": "A6, C1"
+        }
+      ]
+    },
+    {
+      "id": "lex.today",
+      "gloss": "today",
+      "english_forms": [
+        "today",
+        "to-day"
+      ],
+      "pos": "time",
+      "surface": "pini",
+      "status": "verified",
+      "review": {
+        "reviewers": [
+          "P. Ronghang"
+        ],
+        "date": "2026-11-18",
+        "dialect": "Dengaon, Karbi Anglong",
+        "notes": "Paper review sheet dated 18/11/2026, signed P. Ronghang. Dialect line read from handwriting as 'Dengaon, Karbi Anglong'."
+      },
+      "sources": [
+        {
+          "doc": "Speaker review sheet 2026-11-18",
+          "loc": "A7, C1"
+        }
+      ]
+    },
+    {
+      "id": "lex.go",
+      "gloss": "go",
+      "english_forms": [],
+      "pos": "verb",
+      "surface": "dam",
+      "status": "verified",
+      "review": {
+        "reviewers": [
+          "P. Ronghang"
+        ],
+        "date": "2026-11-18",
+        "dialect": "Dengaon, Karbi Anglong",
+        "notes": "Paper review sheet dated 18/11/2026, signed P. Ronghang. Dialect line read from handwriting as 'Dengaon, Karbi Anglong'."
+      },
+      "sources": [
+        {
+          "doc": "Speaker review sheet 2026-11-18",
+          "loc": "A8"
+        }
+      ]
+    }
+  ],
+  "forms": [
+    {
+      "id": "form.go.neg_bare",
+      "lexeme": "lex.go",
+      "features": [
+        "NEG"
+      ],
+      "surface": "damde",
+      "status": "verified",
+      "review": {
+        "reviewers": [
+          "P. Ronghang"
+        ],
+        "date": "2026-11-18",
+        "dialect": "Dengaon, Karbi Anglong",
+        "notes": "Paper review sheet dated 18/11/2026, signed P. Ronghang. Dialect line read from handwriting as 'Dengaon, Karbi Anglong'."
+      },
+      "sources": [
+        {
+          "doc": "Speaker review sheet 2026-11-18",
+          "loc": "B1-B4 (same form for every person), B6 now/habit, C1-C5, D1-D7"
+        },
+        {
+          "doc": "Jeyapaul 1987 (Karbi Grammar, CIIL)",
+          "loc": "p.146 ne damde"
+        }
+      ],
+      "hint": "Used for 'am not going today'. B6 now: 'non neli skul damde'."
+    },
+    {
+      "id": "form.go.neg_future",
+      "lexeme": "lex.go",
+      "features": [
+        "NEG",
+        "FUTURE"
+      ],
+      "surface": "damde lo",
+      "status": "candidate",
+      "sources": [
+        {
+          "doc": "Speaker review sheet 2026-11-18",
+          "loc": "B6 future (handwriting partly overwritten)"
+        }
+      ],
+      "hint": "Not used by any template. Confirm 'will not go'."
+    }
+  ],
+  "sentences": [],
+  "templates": [
+    {
+      "id": "tpl.neg_go_dest_time.v1",
+      "status": "validated",
+      "canonical_english": "{SUBJ} am/is/are not going to {DEST} {TIME}",
+      "english_patterns": [
+        "(?:{SUBJ} )?(?:(?:am|is|are) )?not going (?<TO>to )?{DEST} {TIME}",
+        "{TIME} (?:{SUBJ} )?(?:(?:am|is|are) )?not going (?<TO>to )?{DEST}"
+      ],
+      "slots": {
+        "SUBJ": {
+          "type": "pronoun",
+          "required": true,
+          "allow_default": false,
+          "default": "lex.pron1sg",
+          "values": [
+            "lex.pron1sg",
+            "lex.pron1sg_hon",
+            "lex.pron2sg",
+            "lex.pron2sg_hon",
+            "lex.pron3sg",
+            "lex.pron3sg_hon",
+            "lex.pron3pl",
+            "lex.pron3pl_hon"
+          ]
+        },
+        "DEST": {
+          "type": "place",
+          "required": true,
+          "values": [
+            "lex.school"
+          ]
+        },
+        "TIME": {
+          "type": "time",
+          "required": true,
+          "values": [
+            "lex.today"
+          ]
+        }
+      },
+      "allowed_omissions": [
+        "to"
+      ],
+      "realization": {
+        "order": "SUBJ TIME DEST VERB",
+        "verb_form": "form.go.neg_bare",
+        "time_marking": "",
+        "dest_marking": "",
+        "sources": [
+          {
+            "doc": "Speaker review sheet 2026-11-18",
+            "loc": "C5 (Subject-Time-Place-Verb preferred), C6 (no small word after place or today), C7 (subject must be said)"
+          }
+        ]
+      },
+      "required_forms": [
+        "lex.pron1sg",
+        "lex.pron1sg_hon",
+        "lex.pron2sg",
+        "lex.pron2sg_hon",
+        "lex.pron3sg",
+        "lex.pron3sg_hon",
+        "lex.pron3pl",
+        "lex.pron3pl_hon",
+        "lex.school",
+        "lex.today",
+        "form.go.neg_bare"
+      ],
+      "tests": [
+        {
+          "input": "I am not going to school today",
+          "expect": "built",
+          "verdict": "accepted",
+          "reviewers": [
+            "P. Ronghang"
+          ],
+          "register": "casual",
+          "karbi": "ne pini skul damde",
+          "note": "D1 (NE/NELI)"
+        },
+        {
+          "input": "I am not going to school today",
+          "expect": "built",
+          "verdict": "accepted",
+          "reviewers": [
+            "P. Ronghang"
+          ],
+          "register": "respect",
+          "karbi": "neli pini skul damde",
+          "note": "D1 (NE/NELI)"
+        },
+        {
+          "input": "I'm not going to school today",
+          "expect": "built",
+          "verdict": "accepted",
+          "reviewers": [
+            "P. Ronghang"
+          ],
+          "register": "casual",
+          "karbi": "ne pini skul damde",
+          "note": "D2"
+        },
+        {
+          "input": "not going school today",
+          "expect": "ask_subject_then_built",
+          "verdict": "accepted",
+          "reviewers": [
+            "P. Ronghang"
+          ],
+          "register": "casual",
+          "karbi": "ne pini skul damde",
+          "note": "D3: speaker also wrote that 'to' is not used in Karbi; their Karbi omitted pini (see open question oq3)"
+        },
+        {
+          "input": "not going to school today",
+          "expect": "ask_subject",
+          "verdict": "accepted",
+          "reviewers": [
+            "P. Ronghang"
+          ],
+          "note": "D4"
+        },
+        {
+          "input": "today I am not going to school",
+          "expect": "built",
+          "verdict": "accepted",
+          "reviewers": [
+            "P. Ronghang"
+          ],
+          "register": "respect",
+          "karbi": "neli pini skul damde",
+          "note": "D5"
+        },
+        {
+          "input": "he is not going to school today",
+          "expect": "built",
+          "verdict": "accepted",
+          "reviewers": [
+            "P. Ronghang"
+          ],
+          "register": "respect",
+          "karbi": "alangli pini skul damde",
+          "note": "D6"
+        },
+        {
+          "input": "I don't go to school today",
+          "expect": "no_match",
+          "verdict": "accepted",
+          "reviewers": [
+            "P. Ronghang"
+          ],
+          "note": "D9: speaker agreed this is a different sentence"
+        }
+      ],
+      "review": {
+        "reviewers": [
+          "P. Ronghang"
+        ],
+        "date": "2026-11-18",
+        "dialect": "Dengaon, Karbi Anglong",
+        "notes": "Paper review sheet dated 18/11/2026, signed P. Ronghang. Dialect line read from handwriting as 'Dengaon, Karbi Anglong'."
+      }
+    }
+  ],
+  "grammar_rules": [
+    "g.pron.personal",
+    "g.pron.possessive",
+    "g.order.basic",
+    "g.case.goal",
+    "g.case.time",
+    "g.time.words",
+    "g.verb.no_tense",
+    "g.verb.lo",
+    "g.verb.future",
+    "g.verb.continuous",
+    "g.verb.perfective",
+    "g.neg.verb",
+    "g.neg.future_conflict",
+    "g.neg.exist",
+    "g.imperative",
+    "g.hortative",
+    "g.modal.need",
+    "g.modal.ability",
+    "g.question",
+    "g.verb.go",
+    "g.vocab.school",
+    "g.orthography.tone"
+  ],
+  "open_questions": [
+    {
+      "id": "oq1",
+      "source": "A4, B3, C4, D7",
+      "question": "Which form means 'we'? A4 gives itum, B3 gives nelitum, but C4 and D7 write alanglitum (the 'they' form)."
+    },
+    {
+      "id": "oq2",
+      "source": "B5, B1-B4",
+      "question": "B5 is ticked 'Yes, the verb changes' but B1-B4 all show damde. Does the verb ever change with the person?"
+    },
+    {
+      "id": "oq3",
+      "source": "D3, D8",
+      "question": "D8 'I am not going to school' (no time) left the 'agree it needs today' box blank, and the D3 answer 'ne skul damde' has no pini. Is the time word optional?"
+    },
+    {
+      "id": "oq4",
+      "source": "D10",
+      "question": "D10 'I did not go to school today' left the 'agree it is different' box blank. Is the past sentence the same ne pini skul damde?"
+    },
+    {
+      "id": "oq5",
+      "source": "B6, D9",
+      "question": "B6 gives habit = damde (same as now) but D9 agreed 'I don't go' is a different sentence. What is the difference?"
+    },
+    {
+      "id": "oq6",
+      "source": "A2, A9",
+      "question": "A9 describes ne/neli (I) not 'you'. Confirm: neli/nangli/alangli are used when speaking with elders; ne/nang/alang with friends."
+    },
+    {
+      "id": "oq7",
+      "source": "B6",
+      "question": "Confirm future 'damde lo' means 'will not go'."
+    },
+    {
+      "id": "oq8",
+      "source": "Part F",
+      "question": "No second reviewer yet."
+    }
+  ]
+}
