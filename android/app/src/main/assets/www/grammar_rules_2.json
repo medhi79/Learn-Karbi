@@ -1,0 +1,486 @@
+{
+  "meta": {
+    "documents": [
+      {
+        "id": "K",
+        "title": "A Grammar of Karbi (Konnerth, 2014), Hills Karbi",
+        "file": "a-grammar-of-karbi.docx",
+        "notes": "Full text with tone marks and glossed examples. Section numbers come from its table of contents."
+      },
+      {
+        "id": "J",
+        "title": "Karbi Grammar (Jeyapaul, CIIL Grammar Series 15, 1987)",
+        "file": "dli_language_2239.pdf",
+        "notes": "Scanned; OCR text re-read by eye for key examples. Printed page = PDF page - 12. The nasal 'ng' prints as 'y' in some scans."
+      },
+      {
+        "id": "N",
+        "title": "Vocabulary in English and Mikir (Neighbor, 1878)",
+        "file": "vocabularyinengl00neigrich.pdf",
+        "notes": "Missionary vocabulary with 172 sentences."
+      },
+      {
+        "id": "S",
+        "title": "Speaker review sheet, P. Ronghang, Dengaon (Karbi Anglong), 18 Nov 2026",
+        "file": "docs/reviews/2026-11-18_speaker_review_sheet.pdf",
+        "notes": "Paper sheet, one reviewer."
+      }
+    ],
+    "status_ladder": [
+      "verified (signed by a fluent speaker)",
+      "documented (appears in a published grammar; no speaker sign-off)",
+      "candidate (unreviewed hint)",
+      "missing"
+    ]
+  },
+  "rules": [
+    {
+      "id": "g.pron.personal",
+      "topic": "pronouns",
+      "rule": "ne = I, nang = you, alang = he/she. Plural = + -tum (netum 'we, excluding you'; etum ~ itum 'we, including you'; alang-tum 'they'). Honorific = + -li before -tum (nang-li, ne-li).",
+      "agreement": "agree",
+      "sources": [
+        {
+          "doc": "Konnerth 2014 (A Grammar of Karbi, Hills Karbi)",
+          "loc": "s.4.5.1 Personal pronouns (table)"
+        },
+        {
+          "doc": "Jeyapaul 1987 (Karbi Grammar, CIIL Grammar Series 15)",
+          "loc": "p.59-60 Personal pronouns (table)"
+        },
+        {
+          "doc": "Neighbor 1878",
+          "loc": "vocabulary: Ne, Nang, Netum"
+        }
+      ],
+      "notes": "English 'you' needs a casual/polite choice; English 'we' needs an including-you/excluding-you choice. The app must ask."
+    },
+    {
+      "id": "g.pron.possessive",
+      "topic": "pronouns",
+      "rule": "Possession: K gives prefixes ne- (my), nang- (your), a- (his/her): nephi 'my grandmother', nangpo 'your father'. J writes the possessor and noun as separate words (ne hem 'my house', nang hem, la a-hem 'his house') with a- on the second noun in some cases.",
+      "agreement": "differ",
+      "sources": [
+        {
+          "doc": "Konnerth 2014 (A Grammar of Karbi, Hills Karbi)",
+          "loc": "s.4.5.1 possessive prefixes"
+        },
+        {
+          "doc": "Jeyapaul 1987 (Karbi Grammar, CIIL Grammar Series 15)",
+          "loc": "p.78 Genitive: ne hem, nang hem, la a-hem"
+        }
+      ],
+      "notes": "Kin terms are probably prefixed (K); other nouns may be separate words (J). Speaker to confirm per noun class."
+    },
+    {
+      "id": "g.order.basic",
+      "topic": "word order",
+      "rule": "Predominantly SOV. Time adverbs and free postpositions may come before or after the subject (pini ne bajar dampo; dakchi ne do; la atumi vaylo). Subject is optional in commands.",
+      "agreement": "agree",
+      "sources": [
+        {
+          "doc": "Jeyapaul 1987 (Karbi Grammar, CIIL Grammar Series 15)",
+          "loc": "p.145-147 s.4.2 Word order",
+          "example": "pini ne bajar dampo ~ damji = \"I will/shall go to the market today\""
+        },
+        {
+          "doc": "Konnerth 2014 (A Grammar of Karbi, Hills Karbi)",
+          "loc": "constituent order section: verb-final, flexible order of arguments"
+        }
+      ],
+      "notes": "Template order may be TIME SUBJ DEST VERB or SUBJ TIME DEST VERB. Both are documented."
+    },
+    {
+      "id": "g.case.goal",
+      "topic": "case",
+      "rule": "Inanimate place goals are unmarked with 'go': ne hem damlo 'I went home'; pini ne bajar dampo. Human/animate goals take an allative marker. K describes -long (a-long) as a locative/allative relator.",
+      "agreement": "differ",
+      "sources": [
+        {
+          "doc": "Jeyapaul 1987 (Karbi Grammar, CIIL Grammar Series 15)",
+          "loc": "p.79 Allative: only human and animate nouns are marked"
+        },
+        {
+          "doc": "Jeyapaul 1987 (Karbi Grammar, CIIL Grammar Series 15)",
+          "loc": "p.146 ne hem damlo"
+        },
+        {
+          "doc": "Konnerth 2014 (A Grammar of Karbi, Hills Karbi)",
+          "loc": "s.4.4.4 relator nouns (-long)"
+        }
+      ],
+      "notes": "Template 1 uses an unmarked place word (documented by J). Speaker to confirm for 'school'."
+    },
+    {
+      "id": "g.case.time",
+      "topic": "case",
+      "rule": "Day words such as pini 'today' are unmarked. Clock time takes the locative -chi (baji kethomchi 'at three o'clock').",
+      "agreement": "single",
+      "sources": [
+        {
+          "doc": "Jeyapaul 1987 (Karbi Grammar, CIIL Grammar Series 15)",
+          "loc": "p.79 Locative; p.147 baji kethomchi neli hem damji"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "g.time.words",
+      "topic": "time words",
+      "rule": "pini = today, penap = tomorrow, (a)tumi = yesterday, non = now.",
+      "agreement": "agree",
+      "sources": [
+        {
+          "doc": "Konnerth 2014 (A Grammar of Karbi, Hills Karbi)",
+          "loc": "s.4.8 temporal adverbs"
+        },
+        {
+          "doc": "Jeyapaul 1987 (Karbi Grammar, CIIL Grammar Series 15)",
+          "loc": "p.114-119 examples pini, penap, tumi, non"
+        },
+        {
+          "doc": "Neighbor 1878",
+          "loc": "vocabulary To-day Pini, To-morrow Penap, Yesterday Timi"
+        }
+      ],
+      "notes": "Spelling varies: tumi / timi / atumi."
+    },
+    {
+      "id": "g.verb.no_tense",
+      "topic": "verbs",
+      "rule": "Karbi has no tense. Time comes from adverbs plus aspect/mood endings. The bare verb with a time adverb is normal (pini la iskul dun = 'he goes to school today').",
+      "agreement": "agree",
+      "sources": [
+        {
+          "doc": "Konnerth 2014 (A Grammar of Karbi, Hills Karbi)",
+          "loc": "s.6.9 realis and irrealis"
+        },
+        {
+          "doc": "Jeyapaul 1987 (Karbi Grammar, CIIL Grammar Series 15)",
+          "loc": "p.113-114 Tense"
+        }
+      ],
+      "notes": "Do not label -lo as 'past' in the app."
+    },
+    {
+      "id": "g.verb.lo",
+      "topic": "verbs",
+      "rule": "-lo (realis): J says the action began before speech time and continues (ne an colo 'I eat rice') and may be added optionally when a time adverb is present. K treats it as realis/completed. Neighbor often glosses it as past.",
+      "agreement": "differ",
+      "sources": [
+        {
+          "doc": "Konnerth 2014 (A Grammar of Karbi, Hills Karbi)",
+          "loc": "s.6.9.1 realis"
+        },
+        {
+          "doc": "Jeyapaul 1987 (Karbi Grammar, CIIL Grammar Series 15)",
+          "loc": "p.114 -lo"
+        },
+        {
+          "doc": "Neighbor 1878",
+          "loc": "sentences 5, 6, 12"
+        }
+      ],
+      "notes": "English past tense is not a safe mapping for -lo."
+    },
+    {
+      "id": "g.verb.future",
+      "topic": "verbs",
+      "rule": "-po = definite future; -ji = dubitative / intended future. 'I will come tomorrow' = ne penap vaypo (definite), ne penap vayji (intended). K: -po irrealis 1, -ji irrealis 2.",
+      "agreement": "agree",
+      "sources": [
+        {
+          "doc": "Jeyapaul 1987 (Karbi Grammar, CIIL Grammar Series 15)",
+          "loc": "p.114-115 Future"
+        },
+        {
+          "doc": "Konnerth 2014 (A Grammar of Karbi, Hills Karbi)",
+          "loc": "s.6.9.2 irrealis"
+        },
+        {
+          "doc": "Neighbor 1878",
+          "loc": "sentence 55 (po), 138/163/168 (ji)"
+        }
+      ],
+      "notes": "First-person inclusive subjects take -nang (distant) or -lonang (near) future (J p.115)."
+    },
+    {
+      "id": "g.verb.continuous",
+      "topic": "verbs",
+      "rule": "-bom (continuative) directly after the verb base: ne vaybomlo 'I was coming', ne vaybomlang 'I am still coming', ne vaybompo 'I will be coming'. K also documents -lang 'still'.",
+      "agreement": "agree",
+      "sources": [
+        {
+          "doc": "Jeyapaul 1987 (Karbi Grammar, CIIL Grammar Series 15)",
+          "loc": "p.115 Continuous"
+        },
+        {
+          "doc": "Konnerth 2014 (A Grammar of Karbi, Hills Karbi)",
+          "loc": "s.6.5 continuative -bom; s.6.7.3 -lang"
+        }
+      ],
+      "notes": "OCR note: J prints the final nasal as 'y' in this scan; read as -lang."
+    },
+    {
+      "id": "g.verb.perfective",
+      "topic": "verbs",
+      "rule": "Perfective -det after the verb; the tense/mood marker follows: damdet 'have gone', damdetlo 'had gone', damdetpo 'will have gone'.",
+      "agreement": "agree",
+      "sources": [
+        {
+          "doc": "Jeyapaul 1987 (Karbi Grammar, CIIL Grammar Series 15)",
+          "loc": "p.116 Perfective"
+        },
+        {
+          "doc": "Konnerth 2014 (A Grammar of Karbi, Hills Karbi)",
+          "loc": "s.6.8 perfective -det"
+        },
+        {
+          "doc": "Neighbor 1878",
+          "loc": "-det, -tang-lo"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "g.neg.verb",
+      "topic": "negation",
+      "rule": "Verb negation = repeat the first consonant (cluster) of a monosyllabic root, or of the LAST syllable of a longer root, then -e: klem-kle, vay-ve, dam-de, thek-the. If that syllable begins with a vowel, -e alone. The tense/mood marker follows the negative. With a time adverb the marker may be dropped: ne pini vayve = 'I will not come today'; alayliloy ne damde = 'I will not go with him'.",
+      "agreement": "agree",
+      "sources": [
+        {
+          "doc": "Jeyapaul 1987 (Karbi Grammar, CIIL Grammar Series 15)",
+          "loc": "p.118-119 Negation; p.146 ne damde"
+        },
+        {
+          "doc": "Konnerth 2014 (A Grammar of Karbi, Hills Karbi)",
+          "loc": "s.3.8.6.3 onset reduplication; s.6.7 negation"
+        },
+        {
+          "doc": "Neighbor 1878",
+          "loc": "p.49 note: Thek-the, Vang-ve, Nang-ne"
+        }
+      ],
+      "notes": "Negated progressive: ne non cobombelang 'I am not eating now' (J p.119): -bom takes the negative (bom -> be)."
+    },
+    {
+      "id": "g.neg.future_conflict",
+      "topic": "negation",
+      "rule": "J writes negation directly before the future marker (latum vayvepo 'they will not come'). K says the negative can combine with irrealis only if perfective -det intervenes (e.g. NEG-PFV-IRR).",
+      "agreement": "differ",
+      "sources": [
+        {
+          "doc": "Jeyapaul 1987 (Karbi Grammar, CIIL Grammar Series 15)",
+          "loc": "p.119 latum vayvepo"
+        },
+        {
+          "doc": "Konnerth 2014 (A Grammar of Karbi, Hills Karbi)",
+          "loc": "s.6.2.3.1 co-occurrence restriction"
+        }
+      ],
+      "notes": "Dialect or analysis difference. Speaker must choose between dam-de-po and dam-de-det-po (or the bare dam-de)."
+    },
+    {
+      "id": "g.neg.exist",
+      "topic": "negation",
+      "rule": "do = be/exist/have; ave = its negative (hadak ok ave 'there is no fish'; ne hem ave 'I have no house'). kali = 'is not' after nouns/adjectives (la ne mudey kali 'this is not my umbrella').",
+      "agreement": "agree",
+      "sources": [
+        {
+          "doc": "Jeyapaul 1987 (Karbi Grammar, CIIL Grammar Series 15)",
+          "loc": "p.118 Negation"
+        },
+        {
+          "doc": "Konnerth 2014 (A Grammar of Karbi, Hills Karbi)",
+          "loc": "s.4.6 copulas"
+        },
+        {
+          "doc": "Neighbor 1878",
+          "loc": "kali = No; ave = lacking"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "g.imperative",
+      "topic": "commands",
+      "rule": "Command endings: -non (also -noi in family speech), -tha (polite, outside family), -tu (command). Prohibitive -ri, optionally + -non: vayri 'don't come', vayrinon. Honorific marker -ik comes before the imperative. The subject is optional.",
+      "agreement": "differ",
+      "sources": [
+        {
+          "doc": "Jeyapaul 1987 (Karbi Grammar, CIIL Grammar Series 15)",
+          "loc": "p.116-117 Imperative; p.119 Prohibitive"
+        },
+        {
+          "doc": "Konnerth 2014 (A Grammar of Karbi, Hills Karbi)",
+          "loc": "s.11.1.2 imperatives: -noi informal, -non formal"
+        },
+        {
+          "doc": "Neighbor 1878",
+          "loc": "non, ri, ri non"
+        }
+      ],
+      "notes": "J and K disagree on how -tha is used (J: polite; K: conative). Speaker to confirm each ending."
+    },
+    {
+      "id": "g.hortative",
+      "topic": "commands",
+      "rule": "Let's ___ = verb + -nang (K: hortative). J lists -nang/-lonang for the first-person inclusive future.",
+      "agreement": "agree",
+      "sources": [
+        {
+          "doc": "Konnerth 2014 (A Grammar of Karbi, Hills Karbi)",
+          "loc": "s.11.1.3 hortatives"
+        },
+        {
+          "doc": "Jeyapaul 1987 (Karbi Grammar, CIIL Grammar Series 15)",
+          "loc": "p.115 inclusive future"
+        }
+      ],
+      "notes": "Use with the inclusive pronoun etum/itum."
+    },
+    {
+      "id": "g.modal.need",
+      "topic": "modality",
+      "rule": "nang + -ji after the verb = must / need to (nang-ji); negated nang-ne = need not.",
+      "agreement": "agree",
+      "sources": [
+        {
+          "doc": "Konnerth 2014 (A Grammar of Karbi, Hills Karbi)",
+          "loc": "necessity -nang"
+        },
+        {
+          "doc": "Neighbor 1878",
+          "loc": "sentences 16, 23, 105, 165"
+        }
+      ],
+      "notes": "J not yet checked for this."
+    },
+    {
+      "id": "g.modal.ability",
+      "topic": "modality",
+      "rule": "-un = be able (physical ability), negative -un-e; thek = know how (learned skill): lang vek thek = can swim.",
+      "agreement": "agree",
+      "sources": [
+        {
+          "doc": "Konnerth 2014 (A Grammar of Karbi, Hills Karbi)",
+          "loc": "ability sections"
+        },
+        {
+          "doc": "Jeyapaul 1987 (Karbi Grammar, CIIL Grammar Series 15)",
+          "loc": "p.119 cothekthe 'does not know to eat rice'"
+        },
+        {
+          "doc": "Neighbor 1878",
+          "loc": "sentences 76, 92, 131"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "g.question",
+      "topic": "questions",
+      "rule": "Yes/no questions take the particle ma after the clause. Question words: kopi what, komat who, konat where.",
+      "agreement": "agree",
+      "sources": [
+        {
+          "doc": "Konnerth 2014 (A Grammar of Karbi, Hills Karbi)",
+          "loc": "s.speech act particles =ma"
+        },
+        {
+          "doc": "Neighbor 1878",
+          "loc": "sentences 16, 36, 129, 144"
+        }
+      ],
+      "notes": "J chapter on particles/sentence types not yet read."
+    },
+    {
+      "id": "g.verb.go",
+      "topic": "vocabulary",
+      "rule": "go = dam (dampo, damji, damlo, damde). J also writes 'pini la iskul dun' for 'he goes to school today'; in K, dun means 'join/together with'.",
+      "agreement": "differ",
+      "sources": [
+        {
+          "doc": "Jeyapaul 1987 (Karbi Grammar, CIIL Grammar Series 15)",
+          "loc": "p.114 iskul dun; p.115 dampo/damji"
+        },
+        {
+          "doc": "Konnerth 2014 (A Grammar of Karbi, Hills Karbi)",
+          "loc": "dam 'go'; dun 'join'"
+        }
+      ],
+      "notes": "Speaker should say whether 'go to school' uses dam or dun."
+    },
+    {
+      "id": "g.vocab.school",
+      "topic": "vocabulary",
+      "rule": "school = skul (K: modern loan, reborrowed) or iskul (J).",
+      "agreement": "differ",
+      "sources": [
+        {
+          "doc": "Konnerth 2014 (A Grammar of Karbi, Hills Karbi)",
+          "loc": "s.2 note on /skul/"
+        },
+        {
+          "doc": "Jeyapaul 1987 (Karbi Grammar, CIIL Grammar Series 15)",
+          "loc": "p.114 iskul"
+        }
+      ],
+      "notes": "Pick one spelling with a speaker."
+    },
+    {
+      "id": "g.orthography.tone",
+      "topic": "orthography",
+      "rule": "K documents two or three tones (written with accents in the thesis). J and Neighbor do not mark tone. The app should show plain spelling without tone marks unless a speaker says otherwise.",
+      "agreement": "single",
+      "sources": [
+        {
+          "doc": "Konnerth 2014 (A Grammar of Karbi, Hills Karbi)",
+          "loc": "phonology chapter, tone"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "g.speaker.register",
+      "topic": "pronouns",
+      "rule": "Respect forms add -li: ne/neli (I), nang/nangli (you), alang/alangli (he/she); plural they = latum (casual) / alanglitum (respectful). Casual forms are used with friends, -li forms when speaking with elders. The choice is about the conversation, not only the person referred to.",
+      "agreement": "single",
+      "sources": [
+        {
+          "doc": "Speaker review sheet 2026-11-18",
+          "loc": "A1-A3, A5, A9, B4",
+          "example": "neli = I when speaking with elders"
+        }
+      ],
+      "notes": "Matches the -li honorific in Konnerth and Jeyapaul."
+    },
+    {
+      "id": "g.speaker.neg_go",
+      "topic": "negation",
+      "rule": "'(subject) am/is/are not going' = pronoun + damde for every person; now and habit are both damde; with the word non = now: 'non neli skul damde'. Future: damde lo (to confirm).",
+      "agreement": "single",
+      "sources": [
+        {
+          "doc": "Speaker review sheet 2026-11-18",
+          "loc": "B1-B4, B6",
+          "example": "ne pini skul damde"
+        }
+      ],
+      "notes": "Same negative form dam-de predicted by both grammars."
+    },
+    {
+      "id": "g.speaker.order",
+      "topic": "word order",
+      "rule": "Preferred: Subject - Time - Place - Verb (ne pini skul damde). Also written: Time - Subject - Place - Verb (pini neli skul damde) and Subject - Place - Verb - Time (alangli skul damde pini). The subject must be said. No small word follows the place or 'today'.",
+      "agreement": "single",
+      "sources": [
+        {
+          "doc": "Speaker review sheet 2026-11-18",
+          "loc": "C1-C7"
+        }
+      ],
+      "notes": "Karbi has no word for 'to' (E2)."
+    }
+  ]
+}
