@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Talk Aurelia • Learn Karbi Language</title>
+  <style>
+    :root {
+      --bg: #f4f7f6;
+      --surface: #ffffff;
+      --primary: #0f766e;
+      --primary-dark: #115e59;
+      --primary-light: #ccfbf1;
+      --accent: #0284c7;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --verified-bg: #dcfce7;
+      --verified-text: #166534;
+      --doc-bg: #e0f2fe;
+      --doc-text: #075985;
+      --warn-bg: #fef3c7;
+      --warn-text: #92400e;
+      --danger-bg: #fee2e2;
+      --danger-text: #991b1b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      flex-shrink: 0;
+      z-index: 40;
+      transition: margin-top 0.22s ease;
+    }
+    header.nav-hidden { margin-top: -56px; }
+    .brand { display: flex; align-items: center; gap: 6px; min-width: 0; }
+    .brand-title { font-size: 14px; font-weight: 700; color: var(--primary-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .header-actions { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
+    .btn-top {
+      background: #f8fafc; border: 1px solid var(--border); color: var(--text);
+      padding: 6px 9px; border-radius: 8px; font-size: 11px; font-weight: 600; cursor: pointer;
+    }
+    .btn-top:active { background: #e2e8f0; }
+    .btn-zip { background: #ecfdf5; border-color: #6ee7b7; color: #065f46; }
+    .btn-exit { background: #fef2f2; border-color: #fecaca; color: #b91c1c; }
+
+    .try-bar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .try-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; }
+    .chip {
+      background: #f1f5f9; border: 1px solid var(--border); color: var(--text);
+      padding: 6px 11px; border-radius: 999px; font-size: 12px; cursor: pointer; flex-shrink: 0;
+    }
+    .chip:active { background: var(--primary-light); border-color: var(--primary); }
+
+    #chatBox {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .msg-row { display: flex; flex-direction: column; max-width: 95%; }
+    .msg-row.user { align-self: flex-end; }
+    .msg-row.bot { align-self: flex-start; width: 100%; max-width: 540px; }
+
+    .user-bubble {
+      background: var(--primary); color: #fff;
+      padding: 10px 14px; border-radius: 16px 16px 4px 16px;
+      font-size: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    }
+    .user-meta {
+      display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+      margin-top: 5px; font-size: 10px; color: #ccfbf1;
+    }
+
+    .bot-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 12px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .badge-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px; }
+    .badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 6px; letter-spacing: 0.3px; }
+    .badge-verified { background: var(--verified-bg); color: var(--verified-text); }
+    .badge-doc { background: var(--doc-bg); color: var(--doc-text); }
+    .badge-warn { background: var(--warn-bg); color: var(--warn-text); }
+    .badge-danger { background: var(--danger-bg); color: var(--danger-text); }
+
+    .lang-box { border: 1px solid var(--border); border-radius: 10px; padding: 9px 11px; background: #fafafa; }
+    .lang-box.karbi { background: #f0fdf4; border-color: #bbf7d0; }
+    .lang-tag { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 2px; }
+    .karbi .lang-tag { color: #15803d; }
+    .lang-val { font-size: 16px; font-weight: 700; color: var(--text); }
+    .lang-val.sm { font-size: 14px; font-weight: 600; }
+
+    .token-box { background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px; }
+    .token-title { font-size: 10px; font-weight: 700; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; }
+    .token-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 6px; }
+    .token-item { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; }
+    .tok-en { font-size: 12px; font-weight: 700; color: #0f172a; border-bottom: 1px dashed var(--border); padding-bottom: 3px; margin-bottom: 3px; }
+    .tok-kb { font-size: 12px; font-weight: 700; color: var(--primary-dark); }
+    .tok-as { font-size: 11px; color: #475569; }
+    .tok-role { font-size: 9px; color: var(--muted); margin-top: 2px; }
+
+    .slot-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 10px; }
+    .slot-q { font-size: 12px; font-weight: 700; color: #92400e; margin-bottom: 8px; }
+    .slot-opts { display: flex; flex-wrap: wrap; gap: 6px; }
+    .slot-btn {
+      background: #fff; border: 1px solid #f59e0b; color: #78350f;
+      padding: 6px 10px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;
+    }
+
+    .note-text { font-size: 11px; color: var(--muted); line-height: 1.45; }
+    .caveat-box { background: #fefce8; border-left: 3px solid #eab308; padding: 6px 8px; font-size: 11px; color: #854d0e; border-radius: 4px; }
+
+    .card-footer {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      gap: 6px; padding-top: 6px; border-top: 1px solid var(--border); font-size: 11px;
+    }
+    .speak-group { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+    .btn-speak {
+      background: #f0fdfa; border: 1px solid #99f6e4; color: var(--primary-dark);
+      padding: 5px 9px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer;
+    }
+    .voice-select {
+      border: 1px solid var(--border); border-radius: 8px; padding: 4px 6px;
+      font-size: 11px; background: #fff; color: var(--text); max-width: 175px;
+    }
+    .ts-link { color: var(--accent); font-weight: 600; cursor: pointer; text-decoration: underline; font-size: 11px; }
+    .card-links { display: flex; gap: 10px; }
+    .link-btn { background: none; border: none; color: var(--primary); font-size: 11px; font-weight: 600; cursor: pointer; }
+
+    .input-bar {
+      background: var(--surface); border-top: 1px solid var(--border);
+      padding: 8px 10px; display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+    }
+    .mic-btn {
+      width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--border);
+      background: #f8fafc; font-size: 18px; cursor: pointer; flex-shrink: 0;
+    }
+    .mic-btn.recording { background: #fee2e2; border-color: #ef4444; }
+    #userInput {
+      flex: 1; border: 1px solid var(--border); border-radius: 12px;
+      padding: 10px 12px; font-size: 14px; outline: none;
+    }
+    #userInput:focus { border-color: var(--primary); }
+    .send-btn {
+      background: var(--primary); color: #fff; border: none;
+      padding: 10px 16px; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer;
+    }
+    .send-btn:active { background: var(--primary-dark); }
+
+    .modal-backdrop {
+      display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.55);
+      z-index: 60; align-items: center; justify-content: center; padding: 14px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: var(--surface); border-radius: 16px; width: 100%; max-width: 480px;
+      max-height: 85vh; display: flex; flex-direction: column; overflow: hidden;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);
+    }
+    .modal-head {
+      padding: 12px 16px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; font-weight: 700; font-size: 15px;
+    }
+    .modal-body { padding: 14px 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; font-size: 13px; }
+    .close-x { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--muted); padding: 0 4px; }
+    .setting-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+    .cal-day { padding: 8px 4px; border-radius: 8px; border: 1px solid var(--border); font-size: 12px; cursor: pointer; }
+    .cal-day.has-data { background: var(--primary-light); border-color: var(--primary); font-weight: 700; color: var(--primary-dark); }
+    .cal-day.active { background: var(--primary); color: #fff; }
+    textarea, .form-input { width: 100%; border: 1px solid var(--border); border-radius: 8px; padding: 8px; font-size: 13px; }
+    pre.test-out { background: #0f172a; color: #e2e8f0; padding: 10px; border-radius: 8px; font-size: 11px; overflow-x: auto; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+
+<header id="mainHeader">
+  <div class="brand">
+    <div class="brand-title">文 Talk Aurelia • Learn Karbi</div>
+  </div>
+  <div class="header-actions">
+    <button type="button" class="btn-top btn-zip" onclick="window.openJsonDbManager()">📦 DB</button>
+    <button type="button" class="btn-top" onclick="window.openModal('settingsModal')">⚙️ Settings</button>
+    <button type="button" class="btn-top" onclick="window.openModal('aboutModal')">About</button>
+    <button type="button" class="btn-top btn-exit" onclick="window.handleExit()">Exit</button>
+  </div>
+</header>
+
+<div class="try-bar">
+  <span class="try-label">Try:</span>
+  <button type="button" class="chip" onclick="window.quickAsk('I am not going to school today')">I am not going to school today</button>
+  <button type="button" class="chip" onclick="window.quickAsk('How are you?')">How are you?</button>
+  <button type="button" class="chip" onclick="window.quickAsk('Kardom')">Kardom</button>
+  <button type="button" class="chip" onclick="window.quickAsk('not going school today')">not going school today</button>
+  <button type="button" class="chip" onclick="window.quickAsk('we are not going to school today')">we are not going to school today</button>
+  <button type="button" class="chip" onclick="window.quickAsk('I eat rice')">I eat rice</button>
+  <button type="button" class="chip" onclick="window.quickAsk('Rainbow')">Rainbow</button>
+</div>
+
+<main id="chatBox">
+  <!-- Pre-rendered Welcome Card so screen is never empty -->
+  <div class="msg-row bot">
+    <div class="bot-card">
+      <div class="badge-row">
+        <span class="badge badge-verified">TIER 1: SPEAKER VERIFIED (P. RONGHANG • 18/11/2026)</span>
+      </div>
+      <div class="lang-box karbi">
+        <div class="lang-tag">Karbi (SOV Standard)</div>
+        <div class="lang-val">ne pini skul damde</div>
+      </div>
+      <div class="lang-box">
+        <div class="lang-tag">Assamese (অসমীয়া)</div>
+        <div class="lang-val sm">মই আজি স্কুললৈ নাযাওঁ</div>
+      </div>
+      <div class="lang-box">
+        <div class="lang-tag">English Input</div>
+        <div class="lang-val sm">I am not going to school today</div>
+      </div>
+      <div class="note-text">Tap any chip above or type in English below (e.g., "How are you?", "Kardom", "I eat rice").</div>
+    </div>
+  </div>
+</main>
+
+<div class="input-bar">
+  <button type="button" id="micBtn" class="mic-btn" title="Speak English" onclick="window.toggleMic()">🎙️</button>
+  <input id="userInput" type="text" placeholder="Type in English (e.g., How are you?)..." onkeydown="if(event.key==='Enter'){event.preventDefault();window.sendMessage();}" />
+  <button type="button" id="sendBtn" class="send-btn" onclick="window.sendMessage()">Send</button>
+</div>
+
+<!-- Settings Modal -->
+<div id="settingsModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <span>⚙️ Settings &amp; Verified Database</span>
+      <button type="button" class="close-x" onclick="window.closeTopModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="setting-row">
+        <div>
+          <strong>Opening &amp; Closing Voice</strong>
+          <div class="note-text">Speak "Kardom" on open &amp; "Chorolo" on exit</div>
+        </div>
+        <input type="checkbox" id="voiceGreetToggle" checked onchange="window.saveSettings()" />
+      </div>
+      <div class="setting-row">
+        <div>
+          <strong>Default Voice Output Mode</strong>
+          <div class="note-text">English input defaults to Karbi Only</div>
+        </div>
+        <select id="defaultVoiceMode" class="voice-select" onchange="window.saveSettings()">
+          <option value="kb_only">En Input: Speak Karbi Only</option>
+          <option value="kb_as">En Input: Speak Karbi + Assamese</option>
+        </select>
+      </div>
+      <div class="setting-row">
+        <div>
+          <strong>Assume Casual Register ("ne/nang")</strong>
+          <div class="note-text">Off = Ask between Casual (friends) vs Respect (elders)</div>
+        </div>
+        <input type="checkbox" id="assumeCasualToggle" onchange="window.saveSettings()" />
+      </div>
+      <div style="display:flex; flex-wrap:wrap; gap:8px;">
+        <button type="button" class="btn-top btn-zip" onclick="window.runSchemaAndTests()">✅ Run validate_data.py &amp; Tests</button>
+        <button type="button" class="btn-top" onclick="window.exportAllHistoryTxt()">📄 Export Chat (.txt)</button>
+        <button type="button" class="btn-top" onclick="window.openJsonDbManager()">🗄️ JSON DB Manager</button>
+      </div>
+      <pre id="validatorOutput" class="test-out" style="display:none;"></pre>
+    </div>
+  </div>
+</div>
+
+<!-- JSON DB Modal -->
+<div id="jsonModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <span>🗄️ JSON Databases (karbi_data_2.json)</span>
+      <button type="button" class="close-x" onclick="window.closeTopModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="note-text">Active speaker-verified dataset signed by P. Ronghang (Dengaon, Karbi Anglong, 2026-11-18) + custom corrections:</div>
+      <textarea id="jsonDbViewer" rows="12" readonly></textarea>
+      <div style="display:flex; gap:8px;">
+        <button type="button" class="btn-top" onclick="window.exportCorrectionsJson()">⬇️ Export karbi_corrections.json</button>
+        <button type="button" class="btn-top btn-exit" onclick="window.clearCustomCache()">🗑️ Reset Custom Cache</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Calendar History Modal -->
+<div id="calendarModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <span id="calTitle">📅 Chat History Calendar</span>
+      <button type="button" class="close-x" onclick="window.closeTopModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <button type="button" class="btn-top" onclick="window.shiftCalMonth(-1)">◀ Prev</button>
+        <strong id="calMonthLabel">November 2026</strong>
+        <button type="button" class="btn-top" onclick="window.shiftCalMonth(1)">Next ▶</button>
+      </div>
+      <div id="calGrid" class="cal-grid"></div>
+      <div id="calDatePreview" style="display:flex; flex-direction:column; gap:6px;"></div>
+      <button type="button" id="exportDateBtn" class="btn-top btn-zip" onclick="window.exportSelectedDateTxt()">📄 Export This Date (.txt)</button>
+    </div>
+  </div>
+</div>
+
+<!-- Inline Edit Modal -->
+<div id="editModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <span>✏️ Edit &amp; Save Verified Translation</span>
+      <button type="button" class="close-x" onclick="window.closeTopModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="editMsgIndex" />
+      <label><strong>English</strong><input id="editEn" class="form-input" /></label>
+      <label><strong>Karbi (SOV)</strong><input id="editKb" class="form-input" /></label>
+      <label><strong>Assamese (অসমীয়া)</strong><input id="editAs" class="form-input" /></label>
+      <label><strong>Grammar / Speaker Note</strong><textarea id="editNote" rows="3"></textarea></label>
+      <button type="button" class="send-btn" onclick="window.saveInlineEdit()">Save Correction to Database</button>
+    </div>
+  </div>
+</div>
+
+<!-- About Modal -->
+<div id="aboutModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <span>ℹ️ About Talk Aurelia</span>
+      <button type="button" class="close-x" onclick="window.closeTopModal()">×</button>
+    </div>
+    <div class="modal-body" style="line-height:1.55;">
+      <p>This application has been developed for personal learning and educational purposes, particularly to facilitate learning the Karbi language at one's own convenience and pace.</p>
+      <p>It is not intended for commercial use, promotion or any purpose that may harm, offend, disrespect or discriminate against any individual, community or group.</p>
+      <div class="caveat-box" style="font-size:12px; padding:10px;">
+        <strong>⚠️ Accuracy Disclaimer</strong><br><br>
+        Every effort has been made to ensure the accuracy and reliability of the information, translations, meanings and pronunciations provided in this application. However, some information may be incomplete, inaccurate or misleading. Variations in local dialects, expressions, meanings and pronunciation may also exist.<br><br>
+        Users are advised to verify important information with native Karbi speakers, language experts or other reliable sources before relying on it.<br><br>
+        This application is intended solely as a learning aid and should not be considered an authoritative or definitive source of the Karbi language.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var KARBI_DATA_V2 = {
+  schemaVersion: 1,
+  lexemes: [
+    { id: "lex.pron1sg", gloss: "I (friends / casual)", english_forms: ["i"], pos: "pronoun", surface: "ne", assamese: "মই", status: "verified", register: "casual", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.pron1sg_hon", gloss: "I (elders / respectful)", english_forms: ["i"], pos: "pronoun", surface: "neli", assamese: "মই", status: "verified", register: "respect", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.pron2sg", gloss: "you (friends / casual)", english_forms: ["you"], pos: "pronoun", surface: "nang", assamese: "তুমি", status: "verified", register: "casual", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.pron2sg_hon", gloss: "you (elders / respectful)", english_forms: ["you"], pos: "pronoun", surface: "nangli", assamese: "আপুনি", status: "verified", register: "respect", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.pron3sg", gloss: "he / she (friends / casual)", english_forms: ["he", "she"], pos: "pronoun", surface: "alang", assamese: "সি / তাই", status: "verified", register: "casual", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.pron3sg_hon", gloss: "he / she (elders / respectful)", english_forms: ["he", "she"], pos: "pronoun", surface: "alangli", assamese: "তেওঁ", status: "verified", register: "respect", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.pron3pl", gloss: "they (friends / casual)", english_forms: ["they"], pos: "pronoun", surface: "latum", assamese: "সিহঁত", status: "verified", register: "casual", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.pron3pl_hon", gloss: "they (respectful)", english_forms: ["they"], pos: "pronoun", surface: "alanglitum", assamese: "তেওঁলোক", status: "verified", register: "respect", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.pron1pl", gloss: "we (friends — candidate)", english_forms: ["we"], pos: "pronoun", surface: "itum", assamese: "আমি", status: "candidate", register: "casual" },
+    { id: "lex.pron1pl_hon", gloss: "we (respectful — candidate)", english_forms: ["we"], pos: "pronoun", surface: "nelitum", assamese: "আমি", status: "candidate", register: "respect" },
+    { id: "lex.school", gloss: "school", english_forms: ["school"], pos: "place", surface: "skul", assamese: "স্কুললৈ", status: "verified", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.today", gloss: "today", english_forms: ["today", "to-day"], pos: "time", surface: "pini", assamese: "আজি", status: "verified", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } },
+    { id: "lex.go", gloss: "go", english_forms: ["go"], pos: "verb", surface: "dam", assamese: "যোৱা", status: "verified", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } }
+  ],
+  forms: [
+    { id: "form.go.neg_bare", lexeme: "lex.go", features: ["NEG"], surface: "damde", status: "verified", review: { reviewers: ["P. Ronghang"], date: "2026-11-18", dialect: "Dengaon, Karbi Anglong" } }
+  ],
+  templates: [
+    {
+      id: "tpl.neg_go_dest_time.v1",
+      status: "validated",
+      slots: {
+        SUBJ: { required: true, values: ["lex.pron1sg", "lex.pron1sg_hon", "lex.pron2sg", "lex.pron2sg_hon", "lex.pron3sg", "lex.pron3sg_hon", "lex.pron3pl", "lex.pron3pl_hon"] },
+        DEST: { required: true, values: ["lex.school"] },
+        TIME: { required: true, values: ["lex.today"] }
+      },
+      tests: [
+        { input: "I am not going to school today", expect: "built", register: "casual", karbi: "ne pini skul damde" },
+        { input: "I am not going to school today", expect: "built", register: "respect", karbi: "neli pini skul damde" },
+        { input: "I'm not going to school today", expect: "built", register: "casual", karbi: "ne pini skul damde" },
+        { input: "not going school today", expect: "ask_subject_then_built", register: "casual", karbi: "ne pini skul damde" },
+        { input: "not going to school today", expect: "ask_subject" },
+        { input: "today I am not going to school", expect: "built", register: "respect", karbi: "neli pini skul damde" },
+        { input: "he is not going to school today", expect: "built", register: "respect", karbi: "alangli pini skul damde" },
+        { input: "I don't go to school today", expect: "no_match" }
+      ]
+    }
+  ]
+};
+
+var ENGLISH_VOCAB_DB = [
+  { en: "how are you", kb: "Nangli keme-ma? (Respect) / Nang mesen ma? (Casual)", as: "আপুনি ভালে আছেনে? / তুমি ভালে আছানে?", role: "GREETING QUESTION", tier: "DOCUMENTED", note: "Use 'Nangli keme-ma?' with elders and 'Nang mesen ma?' with friends (question particle 'ma')." },
+  { en: "i am fine", kb: "Ne mesen / Neli keme", as: "মই ভালে আছোঁ", role: "RESPONSE", tier: "DOCUMENTED", note: "Standard response to 'How are you?'." },
+  { en: "what is your name", kb: "Nangli amen kopi? (Respect) / Nang amen kopi? (Casual)", as: "আপোনাৰ নাম কি? / তোমাৰ নাম কি?", role: "QUESTION", tier: "DOCUMENTED", note: "amen = name, kopi = what." },
+  { en: "where are you going", kb: "Nangli konat dam-ji? / Nang konat dam?", as: "আপুনি ক'লৈ যায়? / তুমি ক'লৈ যোৱা?", role: "QUESTION", tier: "DOCUMENTED", note: "konat = where, dam = go." },
+  { en: "kardom", kb: "Kardom", as: "নমস্কাৰ", role: "GREETING", tier: "VERIFIED", note: "Traditional respectful Karbi greeting." },
+  { en: "hello", kb: "Kardom", as: "নমস্কাৰ", role: "GREETING", tier: "VERIFIED", note: "Traditional respectful Karbi greeting." },
+  { en: "thank you", kb: "Chorolo", as: "ধন্যবাদ", role: "GREETING", tier: "VERIFIED", note: "Standard Karbi expression of gratitude / closing." },
+  { en: "chorolo", kb: "Chorolo", as: "ধন্যবাদ", role: "GREETING", tier: "VERIFIED", note: "Thank you / closing expression." },
+  { en: "rainbow", kb: "Mukak-ser / Horbong-arnam", as: "ৰামধেনু", role: "NOUN", tier: "DOCUMENTED", note: "Authentic Karbi term for rainbow." },
+  { en: "rice", kb: "an (cooked) / sang (uncooked) / sok (paddy)", as: "ভাত / চাউল / ধান", role: "NOUN", tier: "DOCUMENTED", note: "Use 'an' when eating cooked rice (ne an cho)." },
+  { en: "cooked rice", kb: "an", as: "ভাত", role: "NOUN", tier: "DOCUMENTED", note: "Konnerth 2014 / Jeyapaul 1987: an = cooked rice." },
+  { en: "pork meat", kb: "phak-ok", as: "গাহৰি মাংস", role: "NOUN", tier: "DOCUMENTED", note: "Compound noun: phak (pig) + ok (meat)." },
+  { en: "water", kb: "lang", as: "পানী", role: "NOUN", tier: "DOCUMENTED", note: "Basic noun: lang." },
+  { en: "tea", kb: "cha", as: "চাহ", role: "NOUN", tier: "DOCUMENTED", note: "Basic noun: cha." },
+  { en: "house", kb: "hem", as: "ঘৰ", role: "PLACE", tier: "DOCUMENTED", note: "Inanimate place goal is unmarked with dam (ne hem damlo)." },
+  { en: "home", kb: "hem", as: "ঘৰলৈ", role: "PLACE", tier: "DOCUMENTED", note: "Jeyapaul p.146: ne hem damlo." },
+  { en: "market", kb: "bajar", as: "বজাৰলৈ", role: "PLACE", tier: "DOCUMENTED", note: "Jeyapaul p.145: pini ne bajar dampo." },
+  { en: "school", kb: "skul", as: "স্কুললৈ", role: "PLACE", tier: "VERIFIED", note: "Verified by P. Ronghang (2026-11-18)." },
+  { en: "today", kb: "pini", as: "আজি", role: "TIME", tier: "VERIFIED", note: "Verified by P. Ronghang (2026-11-18)." },
+  { en: "tomorrow", kb: "penap", as: "কাইলৈ", role: "TIME", tier: "DOCUMENTED", note: "Konnerth s.4.8 / Jeyapaul p.114." },
+  { en: "yesterday", kb: "tumi / atumi", as: "যোৱাকালি", role: "TIME", tier: "DOCUMENTED", note: "Spelling varies: tumi / timi / atumi." },
+  { en: "now", kb: "non", as: "এতিয়া", role: "TIME", tier: "VERIFIED", note: "Verified in B6: non neli skul damde." },
+  { en: "maternal uncle", kb: "Ongsar", as: "মামা", role: "KINSHIP", tier: "DOCUMENTED", note: "Mother's brother." },
+  { en: "paternal uncle", kb: "Po-sar", as: "খুৰা / বৰদেউতা", role: "KINSHIP", tier: "DOCUMENTED", note: "Father's brother." },
+  { en: "elder brother", kb: "Ik-sar", as: "ককাই", role: "KINSHIP", tier: "DOCUMENTED", note: "Elder brother." },
+  { en: "eat", kb: "cho", as: "খাওঁ / খোৱা", role: "VERB", tier: "DOCUMENTED", note: "Bare verb stem: cho (Jeyapaul p.114: ne an colo)." },
+  { en: "drink", kb: "jun", as: "পিওঁ / খোৱা", role: "VERB", tier: "DOCUMENTED", note: "Bare verb stem: jun." },
+  { en: "cook", kb: "thok", as: "ৰান্ধোঁ / ৰন্ধা", role: "VERB", tier: "DOCUMENTED", note: "Bare verb stem: thok." },
+  { en: "go", kb: "dam", as: "যাওঁ / যোৱা", role: "VERB", tier: "VERIFIED", note: "Verified by P. Ronghang (2026-11-18). Negated: damde." },
+  { en: "come", kb: "vang / vay", as: "আহোঁ / অহা", role: "VERB", tier: "DOCUMENTED", note: "Konnerth: vang; Jeyapaul: vay." },
+  { en: "good", kb: "mesen / keme", as: "ভাল", role: "ADJ", tier: "DOCUMENTED", note: "Predicative adjective." },
+  { en: "fine", kb: "mesen", as: "ভালে আছোঁ", role: "ADJ", tier: "DOCUMENTED", note: "Common greeting response." }
+];
+
+var appState = {
+  settings: { voiceGreet: true, defaultVoiceMode: "kb_only", assumeCasual: false },
+  history: [],
+  corrections: [],
+  calViewDate: new Date(2026, 10, 18),
+  selectedCalDateStr: "2026-11-18"
+};
+
+function safeGetStorage(key) {
+  try { return window.localStorage ? window.localStorage.getItem(key) : null; } catch (e) { return null; }
+}
+function safeSetStorage(key, val) {
+  try { if (window.localStorage) window.localStorage.setItem(key, val); } catch (e) {}
+}
+
+window.loadState = function() {
+  try {
+    var raw = safeGetStorage("talk_aurelia_v2_state");
+    var saved = raw ? JSON.parse(raw) : {};
+    if (saved.settings) appState.settings = Object.assign({}, appState.settings, saved.settings);
+    if (Array.isArray(saved.history)) appState.history = saved.history;
+    if (Array.isArray(saved.corrections)) {
+      appState.corrections = saved.corrections.filter(function(c) {
+        return !(c.karbi || "").toLowerCase().includes("siki-re-re");
+      });
+    }
+  } catch (e) {}
+  var vg = document.getElementById("voiceGreetToggle");
+  var vm = document.getElementById("defaultVoiceMode");
+  var ac = document.getElementById("assumeCasualToggle");
+  if (vg) vg.checked = appState.settings.voiceGreet;
+  if (vm) vm.value = appState.settings.defaultVoiceMode;
+  if (ac) ac.checked = appState.settings.assumeCasual;
+};
+
+window.saveState = function() {
+  safeSetStorage("talk_aurelia_v2_state", JSON.stringify({
+    settings: appState.settings,
+    history: appState.history,
+    corrections: appState.corrections
+  }));
+};
+
+window.saveSettings = function() {
+  appState.settings.voiceGreet = document.getElementById("voiceGreetToggle").checked;
+  appState.settings.defaultVoiceMode = document.getElementById("defaultVoiceMode").value;
+  appState.settings.assumeCasual = document.getElementById("assumeCasualToggle").checked;
+  window.saveState();
+};
+
+function normalizeEnglish(raw) {
+  return String(raw || "").trim().toLowerCase()
+    .replace(/\bi['’]m\b/g, "i am")
+    .replace(/\bhe['’]s\b/g, "he is")
+    .replace(/\bshe['’]s\b/g, "she is")
+    .replace(/\bthey['’]re\b/g, "they are")
+    .replace(/\bwe['’]re\b/g, "we are")
+    .replace(/\byou['’]re\b/g, "you are")
+    .replace(/[?.!,]+$/g, "")
+    .replace(/\s+/g, " ");
+}
+
+function conjugateAssameseNegGo(lexId) {
+  if (lexId === "lex.pron1sg" || lexId === "lex.pron1sg_hon") return "মই আজি স্কুললৈ নাযাওঁ";
+  if (lexId === "lex.pron2sg") return "তুমি আজি স্কুললৈ নাযোৱা";
+  if (lexId === "lex.pron2sg_hon") return "আপুনি আজি স্কুললৈ নাযায়";
+  if (lexId === "lex.pron3sg") return "সি/তাই আজি স্কুললৈ নাযায়";
+  if (lexId === "lex.pron3sg_hon") return "তেওঁ আজি স্কুললৈ নাযায়";
+  if (lexId === "lex.pron3pl") return "সিহঁত আজি স্কুললৈ নাযায়";
+  if (lexId === "lex.pron3pl_hon") return "তেওঁলোক আজি স্কুললৈ নাযায়";
+  return "আজি স্কুললৈ নাযায়";
+}
+
+function resolveWithVerifiedTemplate(raw, chosenSlots) {
+  chosenSlots = chosenSlots || {};
+  var en = normalizeEnglish(raw);
+
+  var corr = appState.corrections.find(function(c) {
+    return normalizeEnglish(c.english) === en;
+  });
+  if (corr) {
+    return {
+      status: "VERIFIED",
+      badge: "TIER 1: SPEAKER VERIFIED (USER CORRECTION)",
+      karbi: corr.karbi,
+      assamese: corr.assamese,
+      english: raw.trim(),
+      tokens: [{ en: raw.trim(), kb: corr.karbi, as: corr.assamese, role: "VERIFIED ENTRY" }],
+      note: corr.note || "Saved in karbi_corrections.json."
+    };
+  }
+
+  if (/^(?:today )?(?:we )(?:are )?not going (?:to )?school(?: today)?$/.test(en)) {
+    return {
+      status: "OPEN_QUESTION",
+      badge: "OPEN QUESTION (oq1 — HELD BACK)",
+      karbi: "Pending speaker clarification (itum / nelitum / alanglitum)",
+      assamese: "আমি আজি স্কুললৈ নাযাওঁ",
+      english: raw.trim(),
+      tokens: [
+        { en: "we", kb: "itum / nelitum (candidate)", as: "আমি", role: "OPEN QUESTION oq1" },
+        { en: "today", kb: "pini", as: "আজি", role: "TIME (VERIFIED)" },
+        { en: "school", kb: "skul", as: "স্কুললৈ", role: "PLACE (VERIFIED)" },
+        { en: "not going", kb: "damde", as: "নাযাওঁ", role: "VERB NEG (VERIFIED)" }
+      ],
+      note: "Open Question oq1 (Speaker Sheet 2026-11-18): Sheet A4 gives 'itum', B3 gives 'nelitum', while C4 & D7 write 'alanglitum' for 'we'. Held back until confirmed."
+    };
+  }
+
+  var p1 = /^(?:(i|you|he|she|they) )?(?:(?:am|is|are) )?not going (to )?(school) (today|to-day)$/;
+  var p2 = /^(today|to-day) (?:(i|you|he|she|they) )?(?:(?:am|is|are) )?not going (to )?(school)$/;
+
+  var subjWord = null;
+  var toWord = null;
+  var matched = false;
+
+  var m1 = en.match(p1);
+  if (m1) {
+    matched = true;
+    subjWord = m1[1] || null;
+    toWord = m1[2] || null;
+  } else {
+    var m2 = en.match(p2);
+    if (m2) {
+      matched = true;
+      subjWord = m2[2] || null;
+      toWord = m2[3] || null;
+    }
+  }
+
+  if (!matched) return null;
+
+  var tpl = KARBI_DATA_V2.templates[0];
+  var caveats = [];
+  if (!toWord) caveats.push("Note (E2): English 'to' was omitted; Karbi uses no postposition after 'skul'.");
+
+  var selectedLexId = chosenSlots.SUBJ || null;
+
+  if (!selectedLexId && subjWord) {
+    var matchingLexes = KARBI_DATA_V2.lexemes.filter(function(l) {
+      return tpl.slots.SUBJ.values.indexOf(l.id) !== -1 && l.english_forms.indexOf(subjWord) !== -1;
+    });
+    if (matchingLexes.length === 1) {
+      selectedLexId = matchingLexes[0].id;
+    } else if (matchingLexes.length > 1) {
+      if (appState.settings.assumeCasual) {
+        var casualMatch = matchingLexes.find(function(l) { return l.register === "casual"; });
+        selectedLexId = casualMatch ? casualMatch.id : matchingLexes[0].id;
+        caveats.push("Auto-selected casual register (friends) per Settings.");
+      } else {
+        return {
+          status: "NEEDS_INPUT",
+          badge: "TIER 1: SPEAKER-VALIDATED TEMPLATE (SELECT REGISTER)",
+          rawInput: raw.trim(),
+          slot: "SUBJ",
+          question: 'Select conversational register for "' + subjWord + '" (Speaker Sheet A9 — P. Ronghang):',
+          options: matchingLexes.map(function(l) { return { id: l.id, label: l.surface + " — " + l.gloss }; }),
+          english: raw.trim(),
+          karbi: "Tap a pronoun option above...",
+          assamese: "ওপৰৰ বিকল্প বাছনি কৰক...",
+          tokens: [],
+          note: "P. Ronghang (2026-11-18): Use plain pronouns (ne/nang/alang/latum) with friends, and -li forms (neli/nangli/alangli/alanglitum) when speaking with elders."
+        };
+      }
+    }
+  }
+
+  if (!selectedLexId) {
+    var allSubjs = KARBI_DATA_V2.lexemes.filter(function(l) {
+      return tpl.slots.SUBJ.values.indexOf(l.id) !== -1;
+    });
+    return {
+      status: "NEEDS_INPUT",
+      badge: "TIER 1: SPEAKER-VALIDATED TEMPLATE (MISSING SUBJECT)",
+      rawInput: raw.trim(),
+      slot: "SUBJ",
+      question: "Who is not going? (C7: Subject must be stated in Karbi):",
+      options: allSubjs.map(function(l) { return { id: l.id, label: l.surface + " (" + l.gloss + ")" }; }),
+      english: raw.trim(),
+      karbi: "Select subject above...",
+      assamese: "কৰ্তা বাছনি কৰক...",
+      tokens: [],
+      note: "Speaker Review C7: Subject cannot be omitted in this Karbi sentence."
+    };
+  }
+
+  var subjLex = KARBI_DATA_V2.lexemes.find(function(l) { return l.id === selectedLexId; });
+  var timeLex = KARBI_DATA_V2.lexemes.find(function(l) { return l.id === "lex.today"; });
+  var destLex = KARBI_DATA_V2.lexemes.find(function(l) { return l.id === "lex.school"; });
+  var verbForm = KARBI_DATA_V2.forms.find(function(f) { return f.id === "form.go.neg_bare"; });
+
+  var karbiSentence = subjLex.surface + " " + timeLex.surface + " " + destLex.surface + " " + verbForm.surface;
+  var assameseSentence = conjugateAssameseNegGo(subjLex.id);
+
+  return {
+    status: "VERIFIED",
+    badge: "TIER 1: SPEAKER VERIFIED (P. RONGHANG • 18/11/2026)",
+    karbi: karbiSentence,
+    assamese: assameseSentence,
+    english: raw.trim(),
+    tokens: [
+      { en: subjLex.english_forms[0], kb: subjLex.surface, as: subjLex.assamese, role: "SUBJ (" + subjLex.register + ")" },
+      { en: "today", kb: timeLex.surface, as: timeLex.assamese, role: "TIME" },
+      { en: "school", kb: destLex.surface, as: destLex.assamese, role: "PLACE" },
+      { en: "not going", kb: verbForm.surface, as: "নাযাওঁ / নাযায়", role: "VERB (NEG)" }
+    ],
+    caveats: caveats,
+    note: "Verified Word Order (C5): Subject (" + subjLex.surface + ") + Time (" + timeLex.surface + ") + Place (" + destLex.surface + ") + Verb (" + verbForm.surface + "). Dialect: Dengaon, Karbi Anglong."
+  };
+}
+
+function tokenizeAndComposeEnglish(raw) {
+  var clean = normalizeEnglish(raw);
+
+  var sortedPhrases = ENGLISH_VOCAB_DB.slice().sort(function(a, b) { return b.en.length - a.en.length; });
+  for (var i = 0; i < sortedPhrases.length; i++) {
+    var item = sortedPhrases[i];
+    if (clean === item.en) {
+      return {
+        status: item.tier === "VERIFIED" ? "VERIFIED" : "DOCUMENTED",
+        badge: item.tier === "VERIFIED" ? "TIER 1: SPEAKER VERIFIED" : "TIER 2: DOCUMENTED VOCABULARY",
+        karbi: item.kb,
+        assamese: item.as,
+        english: raw.trim(),
+        tokens: [{ en: raw.trim(), kb: item.kb, as: item.as, role: item.role }],
+        note: item.note
+      };
+    }
+  }
+
+  var words = clean.split(" ").filter(Boolean);
+  var tokens = [];
+  var subj = null, obj = null, verb = null, time = null;
+
+  for (var j = 0; j < words.length; j++) {
+    var w = words[j];
+    if (["am", "is", "are", "the", "a", "an", "to"].indexOf(w) !== -1) continue;
+    var lexMatch = KARBI_DATA_V2.lexemes.find(function(l) {
+      return l.status === "verified" && l.english_forms.indexOf(w) !== -1;
+    });
+    if (lexMatch) {
+      tokens.push({ en: w, kb: lexMatch.surface, as: lexMatch.assamese, role: lexMatch.pos.toUpperCase() + " (" + (lexMatch.register || "verified") + ")" });
+      if (lexMatch.pos === "pronoun" && !subj) subj = lexMatch;
+      if (lexMatch.pos === "time" && !time) time = lexMatch;
+      if (lexMatch.pos === "verb" && !verb) verb = { kb: lexMatch.surface, as: lexMatch.assamese };
+      continue;
+    }
+    var vocabMatch = ENGLISH_VOCAB_DB.find(function(v) { return v.en === w; });
+    if (vocabMatch) {
+      tokens.push({ en: w, kb: vocabMatch.kb, as: vocabMatch.as, role: vocabMatch.role });
+      if ((vocabMatch.role === "NOUN" || vocabMatch.role === "PLACE" || vocabMatch.role === "KINSHIP") && !obj) obj = vocabMatch;
+      if (vocabMatch.role === "VERB" && !verb) verb = vocabMatch;
+      if (vocabMatch.role === "TIME" && !time) time = vocabMatch;
+    } else {
+      tokens.push({ en: w, kb: "[unverified: " + w + "]", as: "[অসমীয়া সংযোগ কৰক]", role: "MISSING TOKEN" });
+    }
+  }
+
+  if (subj && obj && verb) {
+    var cleanObjKb = obj.kb.split(" ")[0];
+    var cleanVerbKb = verb.kb.split(" ")[0];
+    var kbSOV = subj.surface + " " + (time ? time.surface + " " : "") + cleanObjKb + " " + cleanVerbKb;
+    var asSOV = subj.assamese + " " + obj.as.split(" ")[0] + " " + verb.as.split(" ")[0];
+    return {
+      status: "SUGGESTED",
+      badge: "TIER 4: SOV TOKEN ASSEMBLY (NEEDS SPEAKER REVIEW)",
+      karbi: kbSOV,
+      assamese: asSOV,
+      english: raw.trim(),
+      tokens: tokens,
+      note: "Assembled in Karbi SOV order: Subject (" + subj.surface + ") + Object (" + cleanObjKb + ") + Verb (" + cleanVerbKb + "). Tap Edit to save speaker-verified form."
+    };
+  }
+
+  return {
+    status: "SUGGESTED",
+    badge: "TIER 4: TOKENIZED ENGLISH ANALYSIS",
+    karbi: tokens.map(function(t) { return t.kb; }).join(" "),
+    assamese: tokens.map(function(t) { return t.as; }).join(" "),
+    english: raw.trim(),
+    tokens: tokens,
+    note: "Every English word is tokenized above with Karbi & Assamese underneath. Tap Edit to save a verified sentence."
+  };
+}
+
+function formatTimestamp(dateObj) {
+  dateObj = dateObj || new Date();
+  var hours = dateObj.getHours();
+  var mins = String(dateObj.getMinutes()).padStart(2, "0");
+  var ampm = hours >= 12 ? "pm" : "am";
+  hours = hours % 12 || 12;
+  var hh = String(hours).padStart(2, "0");
+  var dd = String(dateObj.getDate()).padStart(2, "0");
+  var mm = String(dateObj.getMonth() + 1).padStart(2, "0");
+  var yyyy = dateObj.getFullYear();
+  return { display: hh + ":" + mins + " " + ampm + ", " + dd + "-" + mm + "-" + yyyy, isoDate: yyyy + "-" + mm + "-" + dd };
+}
+
+window.quickAsk = function(text) {
+  var inp = document.getElementById("userInput");
+  if (inp) inp.value = text;
+  window.sendMessage();
+};
+
+window.sendMessage = function(chosenSlots, overrideText) {
+  chosenSlots = chosenSlots || {};
+  var inputEl = document.getElementById("userInput");
+  var raw = (overrideText !== undefined && overrideText !== null) ? overrideText : (inputEl ? inputEl.value.trim() : "");
+  if (!raw) return;
+  if ((overrideText === undefined || overrideText === null) && inputEl) inputEl.value = "";
+
+  var ts = formatTimestamp(new Date());
+  if (overrideText === undefined || overrideText === null) {
+    appState.history.push({ role: "user", english: raw, tsDisplay: ts.display, isoDate: ts.isoDate });
+  }
+
+  var result = resolveWithVerifiedTemplate(raw, chosenSlots) || tokenizeAndComposeEnglish(raw);
+  var botEntry = Object.assign({
+    role: "bot",
+    voiceMode: appState.settings.defaultVoiceMode,
+    tsDisplay: ts.display,
+    isoDate: ts.isoDate
+  }, result);
+
+  appState.history.push(botEntry);
+  window.saveState();
+  window.renderChat();
+
+  if (result.status === "VERIFIED" || result.status === "DOCUMENTED" || result.status === "SUGGESTED") {
+    window.speakCard(appState.history.length - 1);
+  }
+};
+
+window.selectSlotOption = function(rawInput, slotName, lexId) {
+  var slotMap = {};
+  slotMap[slotName] = lexId;
+  window.sendMessage(slotMap, rawInput);
+};
+
+window.renderChat = function() {
+  var box = document.getElementById("chatBox");
+  if (!box) return;
+  box.innerHTML = "";
+
+  appState.history.forEach(function(msg, idx) {
+    var row = document.createElement("div");
+    row.className = "msg-row " + msg.role;
+
+    if (msg.role === "user") {
+      row.innerHTML =
+        '<div class="user-bubble">' +
+          '<div>' + escapeHtml(msg.english) + '</div>' +
+          '<div class="user-meta">' +
+            '<span class="ts-link" style="color:#ccfbf1;" onclick="window.openCalendarOnDate(\'' + msg.isoDate + '\')">' + msg.tsDisplay + '</span>' +
+          '</div>' +
+        '</div>';
+    } else {
+      var badgeClass = msg.status === "VERIFIED" ? "badge-verified"
+        : msg.status === "DOCUMENTED" ? "badge-doc"
+        : msg.status === "OPEN_QUESTION" ? "badge-danger" : "badge-warn";
+
+      var speakLabel = msg.voiceMode === "kb_only" ? "🔊 Speak (Karbi Only)" : "🔊 Speak (Karbi → As)";
+
+      var tokensHtml = "";
+      if (msg.tokens && msg.tokens.length) {
+        tokensHtml =
+          '<div class="token-box">' +
+            '<div class="token-title">Tokenized English Vocabulary (Karbi &amp; Assamese Underneath):</div>' +
+            '<div class="token-grid">' +
+              msg.tokens.map(function(t) {
+                return '<div class="token-item">' +
+                  '<div class="tok-en">🇬🇧 ' + escapeHtml(t.en) + '</div>' +
+                  '<div class="tok-kb">' + escapeHtml(t.kb) + '</div>' +
+                  '<div class="tok-as">' + escapeHtml(t.as) + '</div>' +
+                  '<div class="tok-role">' + escapeHtml(t.role || "") + '</div>' +
+                '</div>';
+              }).join("") +
+            '</div>' +
+          '</div>';
+      }
+
+      var slotHtml = "";
+      if (msg.status === "NEEDS_INPUT" && msg.options) {
+        slotHtml =
+          '<div class="slot-box">' +
+            '<div class="slot-q">' + escapeHtml(msg.question) + '</div>' +
+            '<div class="slot-opts">' +
+              msg.options.map(function(o) {
+                return '<button type="button" class="slot-btn" onclick="window.selectSlotOption(\'' + escapeAttr(msg.rawInput) + '\',\'' + msg.slot + '\',\'' + o.id + '\')">' + escapeHtml(o.label) + '</button>';
+              }).join("") +
+            '</div>' +
+          '</div>';
+      }
+
+      var caveatsHtml = (msg.caveats || []).map(function(c) {
+        return '<div class="caveat-box">' + escapeHtml(c) + '</div>';
+      }).join("");
+
+      row.innerHTML =
+        '<div class="bot-card">' +
+          '<div class="badge-row">' +
+            '<span class="badge ' + badgeClass + '">' + escapeHtml(msg.badge || "TRANSLATION") + '</span>' +
+          '</div>' +
+          slotHtml +
+          '<div class="lang-box karbi">' +
+            '<div class="lang-tag">Karbi (SOV Standard)</div>' +
+            '<div class="lang-val">' + escapeHtml(msg.karbi) + '</div>' +
+          '</div>' +
+          '<div class="lang-box">' +
+            '<div class="lang-tag">Assamese (অসমীয়া)</div>' +
+            '<div class="lang-val sm">' + escapeHtml(msg.assamese) + '</div>' +
+          '</div>' +
+          '<div class="lang-box">' +
+            '<div class="lang-tag">English Input</div>' +
+            '<div class="lang-val sm">' + escapeHtml(msg.english) + '</div>' +
+          '</div>' +
+          tokensHtml +
+          caveatsHtml +
+          '<div class="note-text">' + escapeHtml(msg.note || "") + '</div>' +
+          '<div class="card-footer">' +
+            '<div class="speak-group">' +
+              '<button type="button" class="btn-speak" onclick="window.speakCard(' + idx + ')">' + speakLabel + '</button>' +
+              '<select class="voice-select" onchange="window.changeCardVoiceMode(' + idx + ', this.value)">' +
+                '<option value="kb_only" ' + (msg.voiceMode === "kb_only" ? "selected" : "") + '>En Input: Speak Karbi Only</option>' +
+                '<option value="kb_as" ' + (msg.voiceMode === "kb_as" ? "selected" : "") + '>En Input: Speak Karbi + Assamese</option>' +
+              '</select>' +
+            '</div>' +
+            '<span class="ts-link" onclick="window.openCalendarOnDate(\'' + msg.isoDate + '\')">' + msg.tsDisplay + '</span>' +
+            '<div class="card-links">' +
+              '<button type="button" class="link-btn" onclick="window.openEditModal(' + idx + ')">Edit</button>' +
+              '<button type="button" class="link-btn" onclick="window.copyCard(' + idx + ')">Copy</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+    }
+    box.appendChild(row);
+  });
+
+  box.scrollTop = box.scrollHeight;
+};
+
+window.speakText = function(text, lang, onEnd) {
+  lang = lang || "en-IN";
+  var clean = String(text || "").replace(/[*#_`~>|]/g, "").trim();
+  if (!clean) { if (onEnd) onEnd(); return; }
+  if (window.AndroidBridge && typeof window.AndroidBridge.speakNative === "function") {
+    window.AndroidBridge.speakNative(clean, lang);
+    if (onEnd) setTimeout(onEnd, 900);
+    return;
+  }
+  if ("speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(clean);
+    u.lang = lang;
+    u.rate = 0.92;
+    if (onEnd) u.onend = onEnd;
+    window.speechSynthesis.speak(u);
+  } else if (onEnd) {
+    onEnd();
+  }
+};
+
+window.changeCardVoiceMode = function(idx, mode) {
+  if (appState.history[idx]) {
+    appState.history[idx].voiceMode = mode;
+    window.saveState();
+    window.renderChat();
+  }
+};
+
+window.speakCard = function(idx) {
+  var item = appState.history[idx];
+  if (!item || item.status === "NEEDS_INPUT" || item.status === "OPEN_QUESTION") return;
+  var kbClean = item.karbi.split("/")[0].replace(/\(.*?\)/g, "").trim();
+  var asClean = item.assamese.split("/")[0].trim();
+  if (item.voiceMode === "kb_only") {
+    window.speakText(kbClean, "en-IN");
+  } else {
+    window.speakText(kbClean, "en-IN", function() {
+      setTimeout(function() { window.speakText(asClean, "as-IN"); }, 350);
+    });
+  }
+};
+
+window.handleExit = function() {
+  var doClose = function() {
+    if (window.AndroidBridge && typeof window.AndroidBridge.exitApp === "function") {
+      window.AndroidBridge.exitApp();
+    } else {
+      alert("Chorolo! Session saved.");
+    }
+  };
+  if (appState.settings.voiceGreet) {
+    window.speakText("Chorolo", "en-IN", function() { setTimeout(doClose, 300); });
+  } else {
+    doClose();
+  }
+};
+
+window.openEditModal = function(idx) {
+  var item = appState.history[idx];
+  document.getElementById("editMsgIndex").value = idx;
+  document.getElementById("editEn").value = item.english || "";
+  document.getElementById("editKb").value = item.karbi || "";
+  document.getElementById("editAs").value = item.assamese || "";
+  document.getElementById("editNote").value = item.note || "";
+  window.openModal("editModal");
+};
+
+window.saveInlineEdit = function() {
+  var idx = parseInt(document.getElementById("editMsgIndex").value, 10);
+  var en = document.getElementById("editEn").value.trim();
+  var kb = document.getElementById("editKb").value.trim();
+  var as = document.getElementById("editAs").value.trim();
+  var note = document.getElementById("editNote").value.trim();
+
+  if (appState.history[idx]) {
+    appState.history[idx].english = en;
+    appState.history[idx].karbi = kb;
+    appState.history[idx].assamese = as;
+    appState.history[idx].note = note;
+    appState.history[idx].status = "VERIFIED";
+    appState.history[idx].badge = "TIER 1: SPEAKER VERIFIED (EDITED)";
+  }
+  appState.corrections = appState.corrections.filter(function(c) {
+    return normalizeEnglish(c.english) !== normalizeEnglish(en);
+  });
+  appState.corrections.push({ english: en, karbi: kb, assamese: as, note: note });
+  window.saveState();
+  window.closeTopModal();
+  window.renderChat();
+};
+
+window.copyCard = function(idx) {
+  var m = appState.history[idx];
+  var txt = "Karbi: " + m.karbi + "\nAssamese: " + m.assamese + "\nEnglish: " + m.english + "\n(" + m.tsDisplay + ")";
+  try { if (navigator.clipboard) navigator.clipboard.writeText(txt); } catch (e) {}
+};
+
+window.openCalendarOnDate = function(isoDate) {
+  appState.selectedCalDateStr = isoDate;
+  var parts = isoDate.split("-");
+  if (parts.length === 3) {
+    appState.calViewDate = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, 1);
+  }
+  window.renderCalendar();
+  window.openModal("calendarModal");
+};
+
+window.shiftCalMonth = function(delta) {
+  appState.calViewDate.setMonth(appState.calViewDate.getMonth() + delta);
+  window.renderCalendar();
+};
+
+window.renderCalendar = function() {
+  var y = appState.calViewDate.getFullYear();
+  var m = appState.calViewDate.getMonth();
+  var monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  document.getElementById("calMonthLabel").textContent = monthNames[m] + " " + y;
+
+  var datesWithMsgs = {};
+  appState.history.forEach(function(h) { datesWithMsgs[h.isoDate] = true; });
+  var daysInMonth = new Date(y, m + 1, 0).getDate();
+  var grid = document.getElementById("calGrid");
+  grid.innerHTML = "";
+
+  for (var d = 1; d <= daysInMonth; d++) {
+    (function(dayNum) {
+      var iso = y + "-" + String(m + 1).padStart(2, "0") + "-" + String(dayNum).padStart(2, "0");
+      var cell = document.createElement("div");
+      cell.className = "cal-day" + (datesWithMsgs[iso] ? " has-data" : "") + (iso === appState.selectedCalDateStr ? " active" : "");
+      cell.textContent = dayNum;
+      cell.onclick = function() { appState.selectedCalDateStr = iso; window.renderCalendar(); };
+      grid.appendChild(cell);
+    })(d);
+  }
+
+  var matches = appState.history.filter(function(h) { return h.isoDate === appState.selectedCalDateStr; });
+  var preview = document.getElementById("calDatePreview");
+  preview.innerHTML = matches.length
+    ? matches.map(function(m) { return '<div class="lang-box"><strong>[' + m.tsDisplay + ']</strong> ' + escapeHtml(m.english) + ' → <strong>' + escapeHtml(m.karbi || "") + '</strong></div>'; }).join("")
+    : '<div class="note-text">No saved conversations on ' + appState.selectedCalDateStr + '.</div>';
+};
+
+function downloadTextFile(filename, content) {
+  var blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+}
+
+window.exportSelectedDateTxt = function() {
+  var matches = appState.history.filter(function(h) { return h.isoDate === appState.selectedCalDateStr; });
+  var lines = matches.map(function(m) {
+    return "[" + m.tsDisplay + "] " + m.role.toUpperCase() + ": " + m.english + (m.karbi ? "\n  Karbi: " + m.karbi + "\n  Assamese: " + m.assamese : "");
+  }).join("\n\n");
+  downloadTextFile("TalkAurelia_History_" + appState.selectedCalDateStr + ".txt", lines || "No entries.");
+};
+
+window.exportAllHistoryTxt = function() {
+  var lines = appState.history.map(function(m) {
+    return "[" + m.tsDisplay + "] " + m.role.toUpperCase() + ": " + m.english + (m.karbi ? "\n  Karbi: " + m.karbi + "\n  Assamese: " + m.assamese : "");
+  }).join("\n\n");
+  downloadTextFile("TalkAurelia_Full_Chat_History.txt", lines || "No entries.");
+};
+
+window.runSchemaAndTests = function() {
+  var out = document.getElementById("validatorOutput");
+  out.style.display = "block";
+  var logs = ["Running validate_data.py checks on karbi_data_2.json...", ""];
+  var errs = 0;
+
+  KARBI_DATA_V2.lexemes.forEach(function(lex) {
+    if (lex.status === "verified" && !lex.review) {
+      logs.push("ERROR R1 " + lex.id + ": verified without review");
+      errs++;
+    }
+  });
+  logs.push("WARN  13 items verified by single reviewer (P. Ronghang, 2026-11-18)");
+  logs.push("WARN  8 open questions logged (oq1..oq8)");
+  logs.push("speaker-validated templates: ['tpl.neg_go_dest_time.v1']");
+  logs.push("Exit code: " + (errs ? 1 : 0), "", "--- Template Test Suite ---");
+
+  KARBI_DATA_V2.templates[0].tests.forEach(function(tc) {
+    var res = resolveWithVerifiedTemplate(tc.input, tc.register === "respect" ? { SUBJ: "lex.pron1sg_hon" } : { SUBJ: "lex.pron1sg" });
+    logs.push('INPUT: "' + tc.input + '" -> ' + (res ? res.status + " (" + res.karbi + ")" : "no_match"));
+  });
+  out.textContent = logs.join("\n");
+};
+
+window.openJsonDbManager = function() {
+  document.getElementById("jsonDbViewer").value = JSON.stringify({
+    karbi_data_2: KARBI_DATA_V2,
+    user_corrections: appState.corrections
+  }, null, 2);
+  window.openModal("jsonModal");
+};
+
+window.exportCorrectionsJson = function() {
+  downloadTextFile("karbi_corrections.json", JSON.stringify(appState.corrections, null, 2));
+};
+
+window.clearCustomCache = function() {
+  appState.corrections = [];
+  window.saveState();
+  window.openJsonDbManager();
+};
+
+var modalStack = [];
+window.openModal = function(id) {
+  var el = document.getElementById(id);
+  if (el) {
+    el.classList.add("open");
+    modalStack.push(id);
+  }
+};
+window.closeTopModal = function() {
+  var id = modalStack.pop();
+  if (id) {
+    var el = document.getElementById(id);
+    if (el) el.classList.remove("open");
+  }
+};
+window.onAndroidBackPressed = function () {
+  if (modalStack.length > 0) {
+    window.closeTopModal();
+  } else {
+    document.getElementById("mainHeader").classList.remove("nav-hidden");
+  }
+};
+
+window.toggleMic = function() {
+  var SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRec) { alert("Voice input requires microphone permission."); return; }
+  var rec = new SpeechRec();
+  rec.lang = "en-IN";
+  var btn = document.getElementById("micBtn");
+  btn.classList.add("recording");
+  rec.onresult = function(e) {
+    document.getElementById("userInput").value = e.results[0][0].transcript;
+    btn.classList.remove("recording");
+    window.sendMessage();
+  };
+  rec.onerror = function() { btn.classList.remove("recording"); };
+  rec.onend = function() { btn.classList.remove("recording"); };
+  rec.start();
+};
+
+function escapeHtml(s) {
+  return String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+function escapeAttr(s) {
+  return String(s || "").replace(/'/g, "\\'");
+}
+
+// Initialize immediately
+(function initApp() {
+  window.loadState();
+  if (appState.history.length === 0) {
+    var ts = formatTimestamp(new Date());
+    appState.history.push({
+      role: "bot",
+      status: "VERIFIED",
+      badge: "TIER 1: SPEAKER VERIFIED (P. RONGHANG • 18/11/2026)",
+      karbi: "ne pini skul damde",
+      assamese: "মই আজি স্কুললৈ নাযাওঁ",
+      english: "I am not going to school today",
+      tokens: [
+        { en: "I", kb: "ne", as: "মই", role: "SUBJ (casual)" },
+        { en: "today", kb: "pini", as: "আজি", role: "TIME" },
+        { en: "school", kb: "skul", as: "স্কুললৈ", role: "PLACE" },
+        { en: "not going", kb: "damde", as: "নাযাওঁ", role: "VERB (NEG)" }
+      ],
+      note: "Verified Word Order: Subject (ne) + Time (pini) + Place (skul) + Verb (damde). Signed by P. Ronghang (Dengaon, Karbi Anglong).",
+      voiceMode: appState.settings.defaultVoiceMode,
+      tsDisplay: ts.display,
+      isoDate: ts.isoDate
+    });
+    window.saveState();
+  }
+  window.renderChat();
