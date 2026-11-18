@@ -16,13 +16,15 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.7'
+
+      - name: Verify Android Files Exist
+        run: |
+          ls -la android/
+          ls -la android/app/
 
       - name: Build Debug APK
         working-directory: android
