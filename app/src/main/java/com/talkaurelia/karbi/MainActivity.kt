@@ -1,4 +1,9 @@
 package com.talkaurelia.karbi
+import com.talkaurelia.karbi.domain.TranslationRequest
+import com.talkaurelia.karbi.domain.TargetLanguage
+import com.talkaurelia.karbi.domain.KarbiTranslationPipeline
+import com.talkaurelia.karbi.domain.GroundedKarbiPromptHelper
+import com.talkaurelia.karbi.domain.EvidenceStatus
 
 import android.content.Intent
 import android.os.Bundle
@@ -84,6 +89,7 @@ fun TalkAureliaNativeApp(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val pipelineContext = androidx.compose.ui.platform.LocalContext.current
 
     val configRepo = remember { HillsKarbiConfigRepository(context.applicationContext) }
     val promptBuilder = remember { HillsKarbiPromptBuilder(configRepo) }
@@ -242,22 +248,46 @@ fun TalkAureliaNativeApp(
                                     sourceTag = "Verified Lexicon/Rule (${hit.ruleId}) • Hills Karbi (Standard)"
                                 )
                             } else if (modelState is ModelRuntimeState.Ready) {
-                                val rawReply = llmManager.generateTranslation(built.fullPromptForModel)
+                        val targetLang = when {
+                            direction.contains("KARBI_TO_EN", ignoreCase = true) -> TargetLanguage.ENGLISH
+                            direction.contains("KARBI_TO_AS", ignoreCase = true) -> TargetLanguage.ASSAMESE
+                            else -> TargetLanguage.HILLS_KARBI
+                        }
+                        val pipeline = KarbiTranslationPipeline(
+                            promptHelper = GroundedKarbiPromptHelper.fromAssets(pipelineContext),
+                            llmInvoker = { groundedPrompt ->
+                                llmManager.generateTranslation(groundedPrompt)
                                     .getOrElse { "Error: ${it.localizedMessage}" }
-                                val parsed = parseStructuredReply(rawReply, direction)
-                                val safeKarbi = promptBuilder.enforceGuardrails(parsed.first)
-                                ChatHistoryMessage(
-                                    id = UUID.randomUUID().toString(),
-                                    timestampIso = nowIso,
-                                    dateKey = today,
-                                    direction = direction,
-                                    sourceText = query,
-                                    karbiText = safeKarbi,
-                                    assameseText = parsed.second,
-                                    englishText = parsed.third,
-                                    tokenBreakdown = tokens,
-                                    sourceTag = "LiteRT-LM On-Device + Karbi Guardrails"
-                                )
+                            }
+                        )
+                        val pipelineResult = pipeline.translate(
+                            TranslationRequest(inputText = query, targetLanguage = targetLang)
+                        )
+                        val citationText = if (pipelineResult.sourceCitations.isNotEmpty()) {
+                            " • " + pipelineResult.sourceCitations.joinToString("; ")
+                        } else ""
+                        val statusLabel = when (pipelineResult.status) {
+                            EvidenceStatus.VERIFIED_SOURCE -> "Verified Source"
+                            EvidenceStatus.HISTORICAL_1878 -> "Historical (1878)"
+                            EvidenceStatus.AI_SUGGESTION_UNVERIFIED -> "AI Suggestion — Unverified"
+                            else -> "Not Verified / Needs Review"
+                        }
+                        val karbiOut = if (targetLang == TargetLanguage.HILLS_KARBI) pipelineResult.outputText else query
+                        val assameseOut = if (targetLang == TargetLanguage.ASSAMESE) pipelineResult.outputText else ""
+                        val englishOut = if (targetLang == TargetLanguage.ENGLISH) pipelineResult.outputText else ""
+
+                        ChatHistoryMessage(
+                            id = UUID.randomUUID().toString(),
+                            timestampIso = nowIso,
+                            dateKey = today,
+                            direction = direction,
+                            sourceText = query,
+                            karbiText = karbiOut,
+                            assameseText = assameseOut,
+                            englishText = englishOut,
+                            tokenBreakdown = tokens,
+                            sourceTag = "$statusLabel$citationText"
+                        )
                             } else {
                                 ChatHistoryMessage(
                                     id = UUID.randomUUID().toString(),
