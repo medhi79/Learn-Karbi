@@ -418,7 +418,7 @@ private fun TranslateScreen(
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
-                                "Type or speak a phrase (e.g., "Thank you", "I am going to the market", "Did you eat lunch?"). Tap Edit on any card to save verified Hills Karbi overrides.",
+                                "Type or speak a phrase (e.g., 'Thank you', 'I am going to the market', 'Did you eat lunch?'). Tap Edit on any card to save verified Hills Karbi overrides.",
                                 style = MaterialTheme.typography.bodyMedium
                             )
                         }
