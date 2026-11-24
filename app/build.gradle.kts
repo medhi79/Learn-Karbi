@@ -30,9 +30,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
     buildFeatures {
         compose = true
     }
@@ -57,4 +54,10 @@ dependencies {
 
     // On-device LiteRT-LM Kotlin Runtime (Google Maven)
     implementation("com.google.ai.edge.litertlm:litertlm-android:0.18.0")
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+    }
 }
