@@ -1,0 +1,36 @@
+{
+  "version": "1.0",
+  "default_dialect": "Hills Karbi (Standard)",
+  "rules": [
+    {
+      "id": "corr_001",
+      "source_lang": "en",
+      "source_text": "thank you",
+      "assamese": "ধন্যবাদ",
+      "karbi_preferred": "Chorolo",
+      "karbi_avoid": ["Kardom"],
+      "match_type": "exact_phrase",
+      "dialect": "Hills Karbi (Standard)",
+      "status": "current",
+      "domain": "social",
+      "notes": "Everyday thanks in Standard Hills Karbi is Chorolo; Kardom is formal salutation or prayer.",
+      "verified": true,
+      "updated_at": "2026-11-24T04:00:00Z"
+    },
+    {
+      "id": "corr_002",
+      "source_lang": "en",
+      "source_text": "yes",
+      "assamese": "হয়",
+      "karbi_preferred": "Kalang",
+      "karbi_avoid": [],
+      "match_type": "word_token",
+      "dialect": "Hills Karbi (Standard)",
+      "status": "current",
+      "domain": "general",
+      "notes": "Standard Hills Karbi affirmative response.",
+      "verified": true,
+      "updated_at": "2026-11-24T04:00:00Z"
+    }
+  ]
+}

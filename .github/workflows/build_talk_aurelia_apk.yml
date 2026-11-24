@@ -1,0 +1,46 @@
+name: Validate Karbi Assets & Build Talk Aurelia APK
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  validate-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python for KarbiVerifier
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate hills_karbi_prompt_config.json and karbi_corrections.json
+        run: |
+          python scripts/validate_karbi_assets.py
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+
+      - name: Setup Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.7"
+
+      - name: Build Debug APK
+        run: gradle assembleDebug --stacktrace
+
+      - name: Upload Talk Aurelia Debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Talk-Aurelia-Hills-Karbi-Debug-APK
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
