@@ -43,7 +43,7 @@ jobs:
           gradle-version: "8.7"
 
       - name: Build Debug and Release APKs
-        run: gradle assembleDebug assembleRelease --stacktrace
+        run: gradle testDebugUnitTest assembleDebug assembleRelease --stacktrace
 
       - name: Sign Release APK & Rename Both APKs
         run: |

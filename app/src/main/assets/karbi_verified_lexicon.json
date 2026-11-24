@@ -2,29 +2,592 @@
   "schema_version": "1.1.0",
   "target_variety": "Hills Karbi (Standard)",
   "entries": [
-    {"id": "lex_0001", "karbi": "ne", "english": ["I", "my"], "assamese": null, "pos": "pronoun (1sg informal)", "status": "verified_source", "dialect_or_period": "hills_karbi_standard", "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf", "source_page": "Pronouns & Nasals", "variants": ["neli (honorific)", "netum (we, excl.)", "etum / itum (we, incl.)"], "conflict_note": null, "examples": [{"karbi": "Ne lang jun", "english": "I drink water", "source_page": "Semantics"}]},
-    {"id": "lex_0002", "karbi": "nang", "english": ["you", "your"], "assamese": null, "pos": "pronoun (2sg informal)", "status": "verified_source", "dialect_or_period": "hills_karbi_standard", "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf", "source_page": "Pronouns & Homonyms", "variants": ["nangli (honorific)", "nangtum (2pl)"], "conflict_note": "Homograph distinguished by tone: 'nang' (you) vs. 'nang' (be needed / be sold).", "examples": [{"karbi": "Nang nephan chini ma?", "english": "Do you know me?", "source_page": "Interrogative Pronoun"}]},
-    {"id": "lex_0003", "karbi": "alang", "english": ["he", "she"], "assamese": null, "pos": "pronoun (3sg human)", "status": "verified_source", "dialect_or_period": "hills_karbi_standard", "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf", "source_page": "Personal Pronouns & Honorific", "variants": ["alangli (honorific)", "alangtum (3pl)", "alanglitum (3pl hon.)"], "conflict_note": "Used exclusively for human referents; 'la' is used for proximate demonstrative / general 3rd person.", "examples": [{"karbi": "Alangli vang ikji", "english": "He will come", "source_page": "Honorific"}]},
-    {"id": "lex_0004", "karbi": "cho", "english": ["eat (v.)", "axe (n.)"], "assamese": null, "pos": "verb / noun (tonal homonym)", "status": "verified_source", "dialect_or_period": "hills_karbi_standard", "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf", "source_page": "Alphabet & Homonyms", "variants": ["Chó pó (1878 historical, Neighbor p. 25)"], "conflict_note": "Homograph distinguished by tone: 'cho' (eat) vs. 'cho' (axe).", "examples": [{"karbi": "Ne an cholo.", "english": "I ate rice.", "source_page": "Simple Past"}]},
-    {"id": "lex_0005", "karbi": "jun", "english": ["drink"], "assamese": null, "pos": "verb", "status": "verified_source", "dialect_or_period": "hills_karbi_standard", "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf", "source_page": "Affixation & Semantics", "variants": ["Jun pó (1878 historical, Neighbor p. 24)"], "conflict_note": null, "examples": [{"karbi": "Ne lang jun", "english": "I drink water", "source_page": "Semantics"}]},
-    {"id": "lex_0006", "karbi": "dam", "english": ["go"], "assamese": null, "pos": "verb", "status": "verified_source", "dialect_or_period": "hills_karbi_standard", "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf", "source_page": "Inflection & Active Verbs", "variants": ["Dám pó (1878 historical, Neighbor p. 32)"], "conflict_note": "Past Tense Suffix section has a printing typo glossing 'dam' as 'eat'; Inflection & Active Verbs confirm 'dam' = 'go'.", "examples": [{"karbi": "Patumi ne bojar dam (lo).", "english": "I went to the market yesterday.", "source_page": "Simple Past"}]},
-    {"id": "lex_0007", "karbi": "vang", "english": ["come"], "assamese": null, "pos": "verb", "status": "verified_source", "dialect_or_period": "hills_karbi_standard", "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf", "source_page": "Derivation & Imperative Mood", "variants": ["Váng pó (1878 historical, Neighbor p. 18)"], "conflict_note": null, "examples": [{"karbi": "Ladak vangnon", "english": "Come here", "source_page": "Verb Phrase"}]},
-    {"id": "lex_0008", "karbi": "do", "english": ["be", "stay", "exist", "have"], "assamese": null, "pos": "stative verb", "status": "verified_source", "dialect_or_period": "hills_karbi_standard", "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf", "source_page": "Stative Verbs & Assertive Sentence", "variants": ["Do pó (1878 historical, Neighbor p. 3, 64)"], "conflict_note": "Negated by 'ave' for existence/possession, or 'dode' for active 'do not stay'.", "examples": [{"karbi": "Neli dak do", "english": "I am here / I stay here", "source_page": "Stative Verbs"}]},
-    {"id": "lex_0009", "karbi": "ave", "english": ["there is not", "be not", "nil"], "assamese": null, "pos": "stative negative verb", "status": "verified_source", "dialect_or_period": "hills_karbi_standard", "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf", "source_page": "Stative Verbs & Negation", "variants": ["Avé (1878 historical, Neighbor p. 3)"], "conflict_note": null, "examples": [{"karbi": "Ne tangka ave.", "english": "I have no money.", "source_page": "Single Negative"}]},
-    {"id": "lex_0010", "karbi": "kalang", "english": ["yes", "true"], "assamese": null, "pos": "adverb (affirmative)", "status": "verified_source", "dialect_or_period": "hills_karbi_standard", "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf", "source_page": "Adverbs of Affirmative & Negation", "variants": [], "conflict_note": null, "examples": [{"karbi": "La kalang.", "english": "It is true.", "source_page": "Single Negative"}]},
-    {"id": "lex_0011", "karbi": "kali", "english": ["no", "not", "untrue"], "assamese": null, "pos": "adverb (negative)", "status": "verified_source", "dialect_or_period": "hills_karbi_standard", "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf", "source_page": "Stative Verbs & Negation", "variants": ["Káli (1878 historical, Neighbor p. 48)"], "conflict_note": null, "examples": [{"karbi": "La nekitap kali", "english": "This is not my book", "source_page": "Single Negative"}]},
-    {"id": "lex_0012", "karbi": "an", "english": ["cooked rice", "meal"], "assamese": null, "pos": "noun", "status": "verified_source", "dialect_or_period": "hills_karbi_standard", "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf", "source_page": "Vowels & Simple Nominal Roots", "variants": ["An (1878 historical, Neighbor p. 56)"], "conflict_note": null, "examples": [{"karbi": "Ne an cho'etlo.", "english": "I have eaten rice.", "source_page": "Present Perfect Tense"}]},
-    {"id": "lex_0013", "karbi": "lang", "english": ["water"], "assamese": null, "pos": "noun", "status": "verified_source", "dialect_or_period": "hills_karbi_standard", "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf", "source_page": "Vowels & Vowel Contrast", "variants": ["Láng (1878 historical, Neighbor p. 71)"], "conflict_note": "Distinct from verb 'lang' (look/see) and auxiliary 'lang' (still/yet).", "examples": [{"karbi": "Ne lang jun", "english": "I drink water", "source_page": "Semantics"}]},
-    {"id": "lex_0014", "karbi": "hem", "english": ["house", "home"], "assamese": null, "pos": "noun", "status": "verified_source", "dialect_or_period": "hills_karbi_standard", "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf", "source_page": "Consonant Contrast & Adjectives", "variants": ["Hém (1878 historical, Neighbor p. 36)"], "conflict_note": null, "examples": [{"karbi": "Nanghem konatlo?", "english": "Where is your home?", "source_page": "Intonation"}]},
-    {"id": "lex_0015", "karbi": "arleng", "english": ["man / Karbi (n.)", "slope (n.)"], "assamese": null, "pos": "noun (tonal homonym)", "status": "verified_source", "dialect_or_period": "hills_karbi_standard", "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf", "source_page": "Alphabet & Homonyms", "variants": [], "conflict_note": "Homograph distinguished by tone: 'arleng' (man/Karbi) vs. 'arleng' (slope).", "examples": []},
-    {"id": "lex_0016", "karbi": "keme", "english": ["good", "fine"], "assamese": null, "pos": "adjective (derived from 'me')", "status": "verified_source", "dialect_or_period": "hills_karbi_standard", "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf", "source_page": "Derived Adjective & Degree of Comparison", "variants": ["mesen (fine, beautiful)", "memu (better)", "menai (best)"], "conflict_note": null, "examples": [{"karbi": "monit keme", "english": "good man", "source_page": "Primary Adjective"}]},
-    {"id": "lex_0017", "karbi": "kethe", "english": ["big", "great"], "assamese": null, "pos": "adjective (derived from 'the')", "status": "verified_source", "dialect_or_period": "hills_karbi_standard", "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf", "source_page": "Derived Adjective & Degree of Comparison", "variants": ["themu (bigger)", "thenai / kethenei (biggest)"], "conflict_note": null, "examples": [{"karbi": "hem kethe", "english": "big house", "source_page": "Primary Adjective"}]},
-    {"id": "lex_0018", "karbi": "po", "english": ["father"], "assamese": null, "pos": "noun (kinship)", "status": "verified_source", "dialect_or_period": "hills_karbi_standard", "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf", "source_page": "Vowels & Gender", "variants": ["Pó (1878 historical, Neighbor p. 28)"], "conflict_note": null, "examples": []},
-    {"id": "lex_0019", "karbi": "pai", "english": ["mother"], "assamese": null, "pos": "noun (kinship)", "status": "verified_source", "dialect_or_period": "hills_karbi_standard", "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf", "source_page": "Vowels & Gender", "variants": ["pei", "Péi (1878 historical, Neighbor p. 47)"], "conflict_note": null, "examples": []},
-    {"id": "lex_0020", "karbi": "ongsar", "english": ["brother-in-law"], "assamese": null, "pos": "noun (kinship)", "status": "verified_source", "dialect_or_period": "hills_karbi_standard", "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf", "source_page": "The Gender", "variants": [], "conflict_note": null, "examples": []},
-    {"id": "lex_0021", "karbi": "kopi", "english": ["what"], "assamese": null, "pos": "interrogative pronoun / adjective", "status": "verified_source", "dialect_or_period": "hills_karbi_standard", "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf", "source_page": "Interrogative Pronoun", "variants": ["pi (weak form)", "kopi apot (why)"], "conflict_note": null, "examples": [{"karbi": "La kopilo?", "english": "What is this?", "source_page": "Interrogative Sentence"}]},
-    {"id": "lex_0022", "karbi": "kitap", "english": ["book"], "assamese": null, "pos": "noun", "status": "needs_speaker_review", "dialect_or_period": "hills_karbi_standard", "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf", "source_page": "Syntax & Genitive", "variants": ["lo (book, Karbi Lamtasam)", "Puthi (1878 historical, Neighbor p. 11)"], "conflict_note": "Confirm preferred modern Hills Karbi term among kitap, lo, and historical puthi.", "examples": [{"karbi": "Lake nekitap", "english": "This is my book", "source_page": "Genitive"}]},
-    {"id": "lex_0023", "karbi": "hithi", "english": ["bazaar", "market"], "assamese": null, "pos": "noun", "status": "historical_1878", "dialect_or_period": "historical_1878_neighbor", "source_book": "vocabularyinengl00neigrich.pdf (Neighbor 1878)", "source_page": "p. 9 (Bazaar) & p. 44 (Market)", "variants": ["bojar (Karbi Lamtasam)"], "conflict_note": "Both hithi and bojar appear in sources; confirm modern speaker preference.", "examples": [{"karbi": "Alangli an chodetsi, hithi kedam", "english": "He goes to market after having meal", "source_page": "Karbi Lamtasam (Completive Participle)"}]},
-    {"id": "lex_0024", "karbi": "thekiré", "english": ["medicine man", "priest", "sorcerer (glossed under 'Doctor')"], "assamese": null, "pos": "noun", "status": "historical_1878", "dialect_or_period": "historical_1878_neighbor", "source_book": "vocabularyinengl00neigrich.pdf (Neighbor 1878)", "source_page": "p. 24 (Doctor)", "variants": ["daktor (modern loanword in Karbi Lamtasam)"], "conflict_note": "Neighbor (1878) footnotes that 'thékiré' is not properly a modern doctor, but a medicine man/priest/sorcerer.", "examples": []}
+    {
+      "id": "lex_0001",
+      "karbi": "ne",
+      "english": [
+        "I",
+        "my"
+      ],
+      "assamese": null,
+      "pos": "pronoun (1sg informal)",
+      "status": "verified_source",
+      "dialect_or_period": "hills_karbi_standard",
+      "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf",
+      "source_page": "Pronouns & Nasals",
+      "variants": [
+        "neli (honorific)",
+        "netum (we, excl.)",
+        "etum / itum (we, incl.)"
+      ],
+      "conflict_note": null,
+      "examples": [
+        {
+          "karbi": "Ne lang jun",
+          "english": "I drink water",
+          "source_page": "Semantics"
+        }
+      ]
+    },
+    {
+      "id": "lex_0002",
+      "karbi": "nang",
+      "english": [
+        "you",
+        "your"
+      ],
+      "assamese": null,
+      "pos": "pronoun (2sg informal)",
+      "status": "verified_source",
+      "dialect_or_period": "hills_karbi_standard",
+      "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf",
+      "source_page": "Pronouns & Homonyms",
+      "variants": [
+        "nangli (honorific)",
+        "nangtum (2pl)"
+      ],
+      "conflict_note": "Homograph distinguished by tone: 'nang' (you) vs. 'nang' (be needed / be sold).",
+      "examples": [
+        {
+          "karbi": "Nang nephan chini ma?",
+          "english": "Do you know me?",
+          "source_page": "Interrogative Pronoun"
+        }
+      ]
+    },
+    {
+      "id": "lex_0003",
+      "karbi": "alang",
+      "english": [
+        "he",
+        "she"
+      ],
+      "assamese": null,
+      "pos": "pronoun (3sg human)",
+      "status": "verified_source",
+      "dialect_or_period": "hills_karbi_standard",
+      "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf",
+      "source_page": "Personal Pronouns & Honorific",
+      "variants": [
+        "alangli (honorific)",
+        "alangtum (3pl)",
+        "alanglitum (3pl hon.)"
+      ],
+      "conflict_note": "Used exclusively for human referents; 'la' is used for proximate demonstrative / general 3rd person.",
+      "examples": [
+        {
+          "karbi": "Alangli vang ikji",
+          "english": "He will come",
+          "source_page": "Honorific"
+        }
+      ]
+    },
+    {
+      "id": "lex_0004",
+      "karbi": "cho",
+      "english": [
+        "eat (v.)",
+        "axe (n.)"
+      ],
+      "assamese": null,
+      "pos": "verb / noun (tonal homonym)",
+      "status": "verified_source",
+      "dialect_or_period": "hills_karbi_standard",
+      "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf",
+      "source_page": "Alphabet & Homonyms",
+      "variants": [
+        "Chó pó (1878 historical, Neighbor p. 25)"
+      ],
+      "conflict_note": "Homograph distinguished by tone: 'cho' (eat) vs. 'cho' (axe).",
+      "examples": [
+        {
+          "karbi": "Ne an cholo.",
+          "english": "I ate rice.",
+          "source_page": "Simple Past"
+        }
+      ]
+    },
+    {
+      "id": "lex_0005",
+      "karbi": "jun",
+      "english": [
+        "drink"
+      ],
+      "assamese": null,
+      "pos": "verb",
+      "status": "verified_source",
+      "dialect_or_period": "hills_karbi_standard",
+      "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf",
+      "source_page": "Affixation & Semantics",
+      "variants": [
+        "Jun pó (1878 historical, Neighbor p. 24)"
+      ],
+      "conflict_note": null,
+      "examples": [
+        {
+          "karbi": "Ne lang jun",
+          "english": "I drink water",
+          "source_page": "Semantics"
+        }
+      ]
+    },
+    {
+      "id": "lex_0006",
+      "karbi": "dam",
+      "english": [
+        "go"
+      ],
+      "assamese": null,
+      "pos": "verb",
+      "status": "verified_source",
+      "dialect_or_period": "hills_karbi_standard",
+      "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf",
+      "source_page": "Inflection & Active Verbs",
+      "variants": [
+        "Dám pó (1878 historical, Neighbor p. 32)"
+      ],
+      "conflict_note": "Past Tense Suffix section has a printing typo glossing 'dam' as 'eat'; Inflection & Active Verbs confirm 'dam' = 'go'.",
+      "examples": [
+        {
+          "karbi": "Patumi ne bojar dam (lo).",
+          "english": "I went to the market yesterday.",
+          "source_page": "Simple Past"
+        }
+      ]
+    },
+    {
+      "id": "lex_0007",
+      "karbi": "vang",
+      "english": [
+        "come"
+      ],
+      "assamese": null,
+      "pos": "verb",
+      "status": "verified_source",
+      "dialect_or_period": "hills_karbi_standard",
+      "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf",
+      "source_page": "Derivation & Imperative Mood",
+      "variants": [
+        "Váng pó (1878 historical, Neighbor p. 18)"
+      ],
+      "conflict_note": null,
+      "examples": [
+        {
+          "karbi": "Ladak vangnon",
+          "english": "Come here",
+          "source_page": "Verb Phrase"
+        }
+      ]
+    },
+    {
+      "id": "lex_0008",
+      "karbi": "do",
+      "english": [
+        "be",
+        "stay",
+        "exist",
+        "have"
+      ],
+      "assamese": null,
+      "pos": "stative verb",
+      "status": "verified_source",
+      "dialect_or_period": "hills_karbi_standard",
+      "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf",
+      "source_page": "Stative Verbs & Assertive Sentence",
+      "variants": [
+        "Do pó (1878 historical, Neighbor p. 3, 64)"
+      ],
+      "conflict_note": "Negated by 'ave' for existence/possession, or 'dode' for active 'do not stay'.",
+      "examples": [
+        {
+          "karbi": "Neli dak do",
+          "english": "I am here / I stay here",
+          "source_page": "Stative Verbs"
+        }
+      ]
+    },
+    {
+      "id": "lex_0009",
+      "karbi": "ave",
+      "english": [
+        "there is not",
+        "be not",
+        "nil"
+      ],
+      "assamese": null,
+      "pos": "stative negative verb",
+      "status": "verified_source",
+      "dialect_or_period": "hills_karbi_standard",
+      "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf",
+      "source_page": "Stative Verbs & Negation",
+      "variants": [
+        "Avé (1878 historical, Neighbor p. 3)"
+      ],
+      "conflict_note": null,
+      "examples": [
+        {
+          "karbi": "Ne tangka ave.",
+          "english": "I have no money.",
+          "source_page": "Single Negative"
+        }
+      ]
+    },
+    {
+      "id": "lex_0010",
+      "karbi": "kalang",
+      "english": [
+        "yes",
+        "true"
+      ],
+      "assamese": null,
+      "pos": "adverb (affirmative)",
+      "status": "verified_source",
+      "dialect_or_period": "hills_karbi_standard",
+      "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf",
+      "source_page": "Adverbs of Affirmative & Negation",
+      "variants": [],
+      "conflict_note": null,
+      "examples": [
+        {
+          "karbi": "La kalang.",
+          "english": "It is true.",
+          "source_page": "Single Negative"
+        }
+      ]
+    },
+    {
+      "id": "lex_0011",
+      "karbi": "kali",
+      "english": [
+        "no",
+        "not",
+        "untrue"
+      ],
+      "assamese": null,
+      "pos": "adverb (negative)",
+      "status": "verified_source",
+      "dialect_or_period": "hills_karbi_standard",
+      "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf",
+      "source_page": "Stative Verbs & Negation",
+      "variants": [
+        "Káli (1878 historical, Neighbor p. 48)"
+      ],
+      "conflict_note": null,
+      "examples": [
+        {
+          "karbi": "La nekitap kali",
+          "english": "This is not my book",
+          "source_page": "Single Negative"
+        }
+      ]
+    },
+    {
+      "id": "lex_0012",
+      "karbi": "an",
+      "english": [
+        "cooked rice",
+        "meal"
+      ],
+      "assamese": null,
+      "pos": "noun",
+      "status": "verified_source",
+      "dialect_or_period": "hills_karbi_standard",
+      "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf",
+      "source_page": "Vowels & Simple Nominal Roots",
+      "variants": [
+        "An (1878 historical, Neighbor p. 56)"
+      ],
+      "conflict_note": null,
+      "examples": [
+        {
+          "karbi": "Ne an cho'etlo.",
+          "english": "I have eaten rice.",
+          "source_page": "Present Perfect Tense"
+        }
+      ]
+    },
+    {
+      "id": "lex_0013",
+      "karbi": "lang",
+      "english": [
+        "water"
+      ],
+      "assamese": null,
+      "pos": "noun",
+      "status": "verified_source",
+      "dialect_or_period": "hills_karbi_standard",
+      "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf",
+      "source_page": "Vowels & Vowel Contrast",
+      "variants": [
+        "Láng (1878 historical, Neighbor p. 71)"
+      ],
+      "conflict_note": "Distinct from verb 'lang' (look/see) and auxiliary 'lang' (still/yet).",
+      "examples": [
+        {
+          "karbi": "Ne lang jun",
+          "english": "I drink water",
+          "source_page": "Semantics"
+        }
+      ]
+    },
+    {
+      "id": "lex_0014",
+      "karbi": "hem",
+      "english": [
+        "house",
+        "home"
+      ],
+      "assamese": null,
+      "pos": "noun",
+      "status": "verified_source",
+      "dialect_or_period": "hills_karbi_standard",
+      "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf",
+      "source_page": "Consonant Contrast & Adjectives",
+      "variants": [
+        "Hém (1878 historical, Neighbor p. 36)"
+      ],
+      "conflict_note": null,
+      "examples": [
+        {
+          "karbi": "Nanghem konatlo?",
+          "english": "Where is your home?",
+          "source_page": "Intonation"
+        }
+      ]
+    },
+    {
+      "id": "lex_0015",
+      "karbi": "arleng",
+      "english": [
+        "man / Karbi (n.)",
+        "slope (n.)"
+      ],
+      "assamese": null,
+      "pos": "noun (tonal homonym)",
+      "status": "verified_source",
+      "dialect_or_period": "hills_karbi_standard",
+      "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf",
+      "source_page": "Alphabet & Homonyms",
+      "variants": [],
+      "conflict_note": "Homograph distinguished by tone: 'arleng' (man/Karbi) vs. 'arleng' (slope).",
+      "examples": []
+    },
+    {
+      "id": "lex_0016",
+      "karbi": "keme",
+      "english": [
+        "good",
+        "fine"
+      ],
+      "assamese": null,
+      "pos": "adjective (derived from 'me')",
+      "status": "verified_source",
+      "dialect_or_period": "hills_karbi_standard",
+      "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf",
+      "source_page": "Derived Adjective & Degree of Comparison",
+      "variants": [
+        "mesen (fine, beautiful)",
+        "memu (better)",
+        "menai (best)"
+      ],
+      "conflict_note": null,
+      "examples": [
+        {
+          "karbi": "monit keme",
+          "english": "good man",
+          "source_page": "Primary Adjective"
+        }
+      ]
+    },
+    {
+      "id": "lex_0017",
+      "karbi": "kethe",
+      "english": [
+        "big",
+        "great"
+      ],
+      "assamese": null,
+      "pos": "adjective (derived from 'the')",
+      "status": "verified_source",
+      "dialect_or_period": "hills_karbi_standard",
+      "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf",
+      "source_page": "Derived Adjective & Degree of Comparison",
+      "variants": [
+        "themu (bigger)",
+        "thenai / kethenei (biggest)"
+      ],
+      "conflict_note": null,
+      "examples": [
+        {
+          "karbi": "hem kethe",
+          "english": "big house",
+          "source_page": "Primary Adjective"
+        }
+      ]
+    },
+    {
+      "id": "lex_0018",
+      "karbi": "po",
+      "english": [
+        "father"
+      ],
+      "assamese": null,
+      "pos": "noun (kinship)",
+      "status": "verified_source",
+      "dialect_or_period": "hills_karbi_standard",
+      "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf",
+      "source_page": "Vowels & Gender",
+      "variants": [
+        "Pó (1878 historical, Neighbor p. 28)"
+      ],
+      "conflict_note": null,
+      "examples": []
+    },
+    {
+      "id": "lex_0019",
+      "karbi": "pai",
+      "english": [
+        "mother"
+      ],
+      "assamese": null,
+      "pos": "noun (kinship)",
+      "status": "verified_source",
+      "dialect_or_period": "hills_karbi_standard",
+      "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf",
+      "source_page": "Vowels & Gender",
+      "variants": [
+        "pei",
+        "Péi (1878 historical, Neighbor p. 47)"
+      ],
+      "conflict_note": null,
+      "examples": []
+    },
+    {
+      "id": "lex_0020",
+      "karbi": "ongsar",
+      "english": [
+        "brother-in-law"
+      ],
+      "assamese": null,
+      "pos": "noun (kinship)",
+      "status": "verified_source",
+      "dialect_or_period": "hills_karbi_standard",
+      "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf",
+      "source_page": "The Gender",
+      "variants": [],
+      "conflict_note": null,
+      "examples": []
+    },
+    {
+      "id": "lex_0021",
+      "karbi": "kopi",
+      "english": [
+        "what"
+      ],
+      "assamese": null,
+      "pos": "interrogative pronoun / adjective",
+      "status": "verified_source",
+      "dialect_or_period": "hills_karbi_standard",
+      "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf",
+      "source_page": "Interrogative Pronoun",
+      "variants": [
+        "pi (weak form)",
+        "kopi apot (why)"
+      ],
+      "conflict_note": null,
+      "examples": [
+        {
+          "karbi": "La kopilo?",
+          "english": "What is this?",
+          "source_page": "Interrogative Sentence"
+        }
+      ]
+    },
+    {
+      "id": "lex_0022",
+      "karbi": "kitap",
+      "english": [
+        "book"
+      ],
+      "assamese": null,
+      "pos": "noun",
+      "status": "needs_speaker_review",
+      "dialect_or_period": "hills_karbi_standard",
+      "source_book": "Karbi Lamtasam, Karbi-Assamese-English Dictionary.pdf",
+      "source_page": "Syntax & Genitive",
+      "variants": [
+        "lo (book, Karbi Lamtasam)",
+        "Puthi (1878 historical, Neighbor p. 11)"
+      ],
+      "conflict_note": "Confirm preferred modern Hills Karbi term among kitap, lo, and historical puthi.",
+      "examples": [
+        {
+          "karbi": "Lake nekitap",
+          "english": "This is my book",
+          "source_page": "Genitive"
+        }
+      ]
+    },
+    {
+      "id": "lex_0023",
+      "karbi": "hithi",
+      "english": [
+        "bazaar",
+        "market"
+      ],
+      "assamese": null,
+      "pos": "noun",
+      "status": "historical_1878",
+      "dialect_or_period": "historical_1878_neighbor",
+      "source_book": "vocabularyinengl00neigrich.pdf (Neighbor 1878)",
+      "source_page": "p. 9 (Bazaar) & p. 44 (Market)",
+      "variants": [
+        "bojar (Karbi Lamtasam)"
+      ],
+      "conflict_note": "Both hithi and bojar appear in sources; confirm modern speaker preference.",
+      "examples": [
+        {
+          "karbi": "Alangli an chodetsi, hithi kedam",
+          "english": "He goes to market after having meal",
+          "source_page": "Karbi Lamtasam (Completive Participle)"
+        }
+      ]
+    },
+    {
+      "id": "lex_0024",
+      "karbi": "thekiré",
+      "english": [
+        "medicine man",
+        "priest",
+        "sorcerer (glossed under 'Doctor')"
+      ],
+      "assamese": null,
+      "pos": "noun",
+      "status": "historical_1878",
+      "dialect_or_period": "historical_1878_neighbor",
+      "source_book": "vocabularyinengl00neigrich.pdf (Neighbor 1878)",
+      "source_page": "p. 24 (Doctor)",
+      "variants": [
+        "daktor (modern loanword in Karbi Lamtasam)"
+      ],
+      "conflict_note": "Neighbor (1878) footnotes that 'thékiré' is not properly a modern doctor, but a medicine man/priest/sorcerer.",
+      "examples": []
+    },
+    {
+      "id": "lex_0025",
+      "karbi": "Mukák",
+      "english": [
+        "rainbow"
+      ],
+      "assamese": null,
+      "pos": "noun",
+      "status": "historical_1878",
+      "dialect_or_period": "historical_1878_neighbor",
+      "source_book": "vocabularyinengl00neigrich.pdf (Neighbor 1878)",
+      "source_page": "p. 55 (Rainbow)",
+      "variants": [],
+      "conflict_note": "1878 historical record (Neighbor p. 55). Needs fluent Hills Karbi speaker confirmation for modern usage.",
+      "examples": []
+    }
   ]
 }
