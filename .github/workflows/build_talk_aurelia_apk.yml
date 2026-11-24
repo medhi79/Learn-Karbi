@@ -7,6 +7,9 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 env:
   APP_NAME: "Talk Aurelia_Learn Karbi"
   APP_VERSION: "v2.0.0"
@@ -76,3 +79,12 @@ jobs:
           name: Talk_Aurelia_Learn_Karbi_v2.0.0_APKs
           path: release_apks/*.apk
           if-no-files-found: error
+
+      - name: Publish GitHub Release
+        if: github.event_name != 'pull_request'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.APP_VERSION }}-build.${{ github.run_number }}
+          name: "${{ env.APP_NAME }} ${{ env.APP_VERSION }} (Build #${{ github.run_number }})"
+          body: "Automated native Kotlin + Jetpack Compose build containing both debug.apk and release-signed.apk for Talk Aurelia_Learn Karbi (Hills Karbi Standard, LiteRT-LM 0.18.0)."
+          files: release_apks/*.apk
