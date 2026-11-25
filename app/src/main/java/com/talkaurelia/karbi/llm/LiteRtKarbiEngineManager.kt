@@ -25,7 +25,7 @@ sealed interface ModelRuntimeState {
 class LiteRtKarbiEngineManager(private val context: Context) {
 
     private val singleThreadExecutor = Executors.newSingleThreadExecutor { runnable ->
-        Thread(runnable, "KarbiGgufEngineThread").apply { isDaemon = true }
+        Thread(null, runnable, "KarbiGgufEngineThread", 8L * 1024L * 1024L).apply { isDaemon = true }
     }
     private val llmDispatcher = singleThreadExecutor.asCoroutineDispatcher()
 

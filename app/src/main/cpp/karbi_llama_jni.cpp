@@ -1,8 +1,9 @@
 #include <jni.h>
 #include <android/log.h>
+#include <algorithm>
+#include <cstring>
 #include <string>
 #include <vector>
-#include <cstring>
 #include "llama.h"
 
 #define LOG_TAG "KarbiLlamaJNI"
@@ -44,9 +45,12 @@ Java_com_talkaurelia_karbi_llm_LiteRtKarbiEngineManager_nativeLoadModel(
         return 0;
     }
 
+    const uint32_t target_ctx = n_ctx > 1024 ? static_cast<uint32_t>(n_ctx) : 2048;
+
     llama_context_params cparams = llama_context_default_params();
-    cparams.n_ctx = n_ctx > 0 ? static_cast<uint32_t>(n_ctx) : 1024;
-    cparams.n_batch = 512;
+    cparams.n_ctx = target_ctx;
+    cparams.n_batch = target_ctx;
+    cparams.n_ubatch = 512;
     cparams.n_threads = n_threads > 0 ? n_threads : 4;
     cparams.n_threads_batch = cparams.n_threads;
 
@@ -61,7 +65,7 @@ Java_com_talkaurelia_karbi_llm_LiteRtKarbiEngineManager_nativeLoadModel(
     handle->model = model;
     handle->ctx = ctx;
     handle->n_threads = cparams.n_threads;
-    LOGI("Loaded Qwen2.5 Karbi GGUF model successfully (threads=%d)", handle->n_threads);
+    LOGI("Loaded Qwen2.5 Karbi GGUF model (ctx=%u, threads=%d)", target_ctx, handle->n_threads);
     return reinterpret_cast<jlong>(handle);
 }
 
@@ -75,7 +79,7 @@ Java_com_talkaurelia_karbi_llm_LiteRtKarbiEngineManager_nativeGenerate(
 ) {
     auto * handle = reinterpret_cast<KarbiLlamaHandle *>(handle_ptr);
     if (!handle || !handle->model || !handle->ctx) {
-        return env->NewStringUTF("ERROR: GGUF engine not initialized");
+        return env->NewStringUTFUTF("ERROR: GGUF engine not initialized");
     }
 
     const char * prompt_cstr = env->GetStringUTFChars(prompt_jstr, nullptr);
@@ -114,21 +118,27 @@ Java_com_talkaurelia_karbi_llm_LiteRtKarbiEngineManager_nativeGenerate(
         return env->NewStringUTF("ERROR: Tokenization buffer mismatch");
     }
 
-    const int n_ctx = static_cast<int>(llama_n_ctx(handle->ctx));
-    if (static_cast<int>(tokens.size()) >= n_ctx - 32) {
-        tokens.resize(n_ctx - 32);
+    const int ctx_limit = static_cast<int>(llama_n_ctx(handle->ctx));
+    const int max_prompt_tokens = std::max(64, ctx_limit - 192);
+    if (static_cast<int>(tokens.size()) > max_prompt_tokens) {
+        tokens.resize(max_prompt_tokens);
     }
 
-    llama_batch batch = llama_batch_get_one(tokens.data(), static_cast<int32_t>(tokens.size()));
-    if (llama_decode(handle->ctx, batch) != 0) {
-        return env->NewStringUTF("ERROR: Prompt decode failed");
+    // Decode prompt in safe 512-token chunks so n_ubatch is never exceeded
+    const int chunk_size = 512;
+    const int total_tokens = static_cast<int>(tokens.size());
+    for (int offset = 0; offset < total_tokens; offset += chunk_size) {
+        const int count = std::min(chunk_size, total_tokens - offset);
+        llama_batch batch = llama_batch_get_one(tokens.data() + offset, count);
+        if (llama_decode(handle->ctx, batch) != 0) {
+            return env->NewStringUTF("ERROR: Prompt decode failed");
+        }
     }
 
     auto sparams = llama_sampler_chain_default_params();
     llama_sampler * smpl = llama_sampler_chain_init(sparams);
     llama_sampler_chain_add(smpl, llama_sampler_init_penalties(64, 1.1f, 0.0f, 0.0f));
-    llama_sampler_chain_add(smpl, llama_sampler_init_temp(0.1f));
-    llama_sampler_chain_add(smpl, llama_sampler_init_dist(42));
+    llama_sampler_chain_add(smpl, llama_sampler_init_greedy());
 
     std::string output;
     const int limit = max_tokens > 0 ? max_tokens : 160;
@@ -140,7 +150,7 @@ Java_com_talkaurelia_karbi_llm_LiteRtKarbiEngineManager_nativeGenerate(
         }
 
         char piece[256];
-        int n_chars = llama_token_to_piece(vocab, new_token, piece, sizeof(piece), 0, true);
+        int n_chars = llama_token_to_piece(vocab, new_token, piece, sizeof(piece), 0, false);
         if (n_chars > 0) {
             output.append(piece, n_chars);
         }
@@ -150,8 +160,8 @@ Java_com_talkaurelia_karbi_llm_LiteRtKarbiEngineManager_nativeGenerate(
             break;
         }
 
-        batch = llama_batch_get_one(&new_token, 1);
-        if (llama_decode(handle->ctx, batch) != 0) {
+        llama_batch next_batch = llama_batch_get_one(&new_token, 1);
+        if (llama_decode(handle->ctx, next_batch) != 0) {
             break;
         }
     }
