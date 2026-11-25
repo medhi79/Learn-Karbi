@@ -65,57 +65,35 @@ class HillsKarbiPromptBuilder(
             )
         }
 
-        // 3. Sub-phrase/word rules for LiteRT-LM prompt grounding
+        // 3. Compact grounded prompt for on-device Qwen2.5-3B GGUF
         val relevantRules = rules.filter { rule ->
             val normKey = repository.normalize(rule.source_text)
             normKey.isNotEmpty() && Regex("\\b${Regex.escape(normKey)}\\b").containsMatchIn(normInput)
         }
 
-        val config = repository.getPromptConfig()
-        val demos = config.few_shot_demos.take(maxFewShotDemos)
+        val directionLabel = when (direction) {
+            "EN_TO_KARBI" -> "English to Hills Karbi"
+            "AS_TO_KARBI" -> "Assamese to Hills Karbi"
+            "KARBI_TO_EN" -> "Hills Karbi to English"
+            "KARBI_TO_AS" -> "Hills Karbi to Assamese"
+            else -> "English to Hills Karbi"
+        }
 
-        val demosSection = if (demos.isEmpty()) {
-            ""
-        } else {
-            val formatted = demos.joinToString("\n") { d ->
-                buildString {
-                    append("- English: \"${d.english}\" -> Hills Karbi (Standard): \"${d.karbi}\"")
-                    if (d.assamese.isNotBlank()) append(" | Assamese: \"${d.assamese}\"")
-                }
+        val hints = relevantRules.take(2).joinToString("; ") { r ->
+            "${r.source_text} -> ${r.karbi_preferred}"
+        }
+
+        val compactPrompt = buildString {
+            append("Translate ($directionLabel): ")
+            append(userInput.trim())
+            if (hints.isNotEmpty()) {
+                append("\nGlossary hints: $hints")
             }
-            "\n\nVerified Hills Karbi (Standard) SOV Examples:\n$formatted"
-        }
-
-        val correctionsSection = if (relevantRules.isEmpty()) {
-            ""
-        } else {
-            val formattedRules = relevantRules.joinToString("\n") { r ->
-                val avoidClause = if (r.karbi_avoid.isNotEmpty()) {
-                    " [NEVER use: ${r.karbi_avoid.joinToString(", ")}]"
-                } else ""
-                val asmClause = if (r.assamese.isNotBlank()) " | Assamese: \"${r.assamese}\"" else ""
-                "- \"${r.source_text}\" MUST translate to Hills Karbi (Standard): \"${r.karbi_preferred}\"$avoidClause$asmClause"
-            }
-            "\n\nMandatory Vocabulary & Correction Overrides:\n$formattedRules"
-        }
-
-        val taskDirective = if (direction == "KARBI_TO_EN") {
-            "Task: Translate the following Standard Hills Karbi input into clear English and Assamese. Format output strictly as:\nEnglish: <english>\nAssamese: <assamese>"
-        } else {
-            "Task: Translate the following input into Standard Hills Karbi (strict SOV word order) and Assamese. Format output strictly as:\nKarbi: <karbi>\nAssamese: <assamese>"
-        }
-
-        val fullPrompt = buildString {
-            append(config.system_instruction.trim())
-            append(demosSection)
-            append(correctionsSection)
-            append("\n\n$taskDirective\n")
-            append("Input: ${userInput.trim()}")
         }
 
         return BuiltKarbiPrompt(
             instantOverride = null,
-            fullPromptForModel = fullPrompt,
+            fullPromptForModel = compactPrompt,
             matchedRules = relevantRules
         )
     }

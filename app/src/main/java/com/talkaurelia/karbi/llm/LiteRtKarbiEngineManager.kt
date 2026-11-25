@@ -124,7 +124,7 @@ class LiteRtKarbiEngineManager(private val context: Context) {
                 error("No .gguf model loaded. Download the offline model in Settings first.")
             }
             val chatMlPrompt = wrapInQwenChatMl(prompt)
-            val raw = nativeGenerate(handle, chatMlPrompt, 160)
+            val raw = nativeGenerate(handle, chatMlPrompt, 48)
             if (raw.startsWith("ERROR:")) {
                 error(raw.removePrefix("ERROR:").trim())
             }
@@ -137,20 +137,8 @@ class LiteRtKarbiEngineManager(private val context: Context) {
     private fun wrapInQwenChatMl(rawPrompt: String): String {
         if (rawPrompt.contains("<|im_start|>")) return rawPrompt
         val systemPrompt =
-            "You are Talk Aurelia, a Hills Karbi (Standard / Rongkhang) translator and tutor. " +
-            "Follow SOV word order. Never substitute Bengali for Assamese (always use Assamese ৰ and ৱ). " +
-            "If a word or sentence is not in your verified Hills Karbi knowledge, reply exactly: " +
-            "'Not verified / needs review.'"
-
-        return buildString {
-            append("<|im_start|>system\n")
-            append(systemPrompt)
-            append("\n<|im_end|>\n")
-            append("<|im_start|>user\n")
-            append(rawPrompt.trim())
-            append("\n<|im_end|>\n")
-            append("<|im_start|>assistant\n")
-        }
+            "You are a Hills Karbi (SOV), Assamese (use Assamese ৰ and ৱ), and English translator. Output only the direct translation."
+        return "<|im_start|>system\n$systemPrompt\n<|im_end|>\n<|im_start|>user\n${rawPrompt.trim()}\n<|im_end|>\n<|im_start|>assistant\n"
     }
 
     private fun closeInternal() {
