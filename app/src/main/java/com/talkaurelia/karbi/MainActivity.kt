@@ -144,6 +144,8 @@ fun TalkAureliaNativeApp(
         }
     }
 
+    val downloadManager = remember { ModelDownloadManager(context.applicationContext) }
+
     Scaffold(
         topBar = {
             TopAppBar(
