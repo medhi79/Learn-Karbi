@@ -79,7 +79,7 @@ Java_com_talkaurelia_karbi_llm_LiteRtKarbiEngineManager_nativeGenerate(
 ) {
     auto * handle = reinterpret_cast<KarbiLlamaHandle *>(handle_ptr);
     if (!handle || !handle->model || !handle->ctx) {
-        return env->NewStringUTFUTF("ERROR: GGUF engine not initialized");
+        return env->NewStringUTF("ERROR: GGUF engine not initialized");
     }
 
     const char * prompt_cstr = env->GetStringUTFChars(prompt_jstr, nullptr);
