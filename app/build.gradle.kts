@@ -15,6 +15,15 @@ android {
         targetSdk = 35
         versionCode = 2
         versionName = "2.0.0"
+        ndk {
+            abiFilters += listOf("arm64-v8a")
+        }
+        externalNativeBuild {
+            cmake {
+                cppFlags += listOf("-std=c++17", "-O3")
+                arguments += listOf("-DANDROID_STL=c++_shared")
+            }
+        }
     }
 
     buildTypes {
@@ -24,6 +33,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+    }
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
         }
     }
     compileOptions {
@@ -54,8 +68,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
 
-    // On-device LiteRT-LM Kotlin Runtime (Google Maven)
-    implementation("com.google.ai.edge.litertlm:litertlm-android:0.18.0")
 }
 
 kotlin {

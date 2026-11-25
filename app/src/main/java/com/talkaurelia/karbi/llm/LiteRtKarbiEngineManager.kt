@@ -2,12 +2,7 @@ package com.talkaurelia.karbi.llm
 
 import android.content.Context
 import android.net.Uri
-import com.google.ai.edge.litertlm.Backend
-import com.google.ai.edge.litertlm.Conversation
-import com.google.ai.edge.litertlm.ConversationConfig
-import com.google.ai.edge.litertlm.Engine
-import com.google.ai.edge.litertlm.EngineConfig
-import com.google.ai.edge.litertlm.Message
+import com.talkaurelia.karbi.KarbiModelCatalog
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,29 +19,42 @@ sealed interface ModelRuntimeState {
 }
 
 /**
- * Manages the on-device LiteRT-LM Engine and Conversation on a dedicated single-thread
- * executor as required by com.google.ai.edge.litertlm:litertlm-android.
- * Model files (.litertlm) live in context.filesDir/models/ (never bundled inside APK assets).
+ * Manages the on-device Qwen2.5-3B Q4_K_M GGUF inference engine via native llama.cpp JNI
+ * on a dedicated single-thread executor.
  */
 class LiteRtKarbiEngineManager(private val context: Context) {
 
-    private val singleThreadExecutor = Executors.newSingleThreadExecutor { r ->
-        Thread(r, "LiteRtLmKarbiThread").apply { isDaemon = true }
+    private val singleThreadExecutor = Executors.newSingleThreadExecutor { runnable ->
+        Thread(runnable, "KarbiGgufEngineThread").apply { isDaemon = true }
     }
     private val llmDispatcher = singleThreadExecutor.asCoroutineDispatcher()
-
-    private var engine: Engine? = null
-    private var conversation: Conversation? = null
 
     private val _state = MutableStateFlow<ModelRuntimeState>(ModelRuntimeState.NotLoaded)
     val state: StateFlow<ModelRuntimeState> = _state.asStateFlow()
 
+    private var nativeHandle: Long = 0L
+    private var nativeLibraryLoaded: Boolean = false
+
     val modelsDir: File = File(context.filesDir, "models").apply { mkdirs() }
 
+    private fun ensureNativeLibrary(): Boolean {
+        if (nativeLibraryLoaded) return true
+        return try {
+            System.loadLibrary("karbi_llama")
+            nativeLibraryLoaded = true
+            true
+        } catch (t: Throwable) {
+            _state.value = ModelRuntimeState.Error("Native GGUF library load failed: ${t.message ?: t.javaClass.simpleName}")
+            false
+        }
+    }
+
     fun findAvailableModelFile(): File? {
-        val preferred = File(modelsDir, "gemma-4-E2B-it.litertlm")
-        if (preferred.exists() && preferred.length() > 0L) return preferred
-        return modelsDir.listFiles()?.firstOrNull { it.extension.equals("litertlm", ignoreCase = true) && it.length() > 0L }
+        val preferred = File(modelsDir, KarbiModelCatalog.DEFAULT_MODEL.fileName)
+        if (preferred.exists() && preferred.length() > 100_000_000L) return preferred
+        return modelsDir.listFiles()?.firstOrNull {
+            it.extension.equals("gguf", ignoreCase = true) && it.length() > 100_000_000L
+        }
     }
 
     suspend fun initializeIfAvailable(useGpu: Boolean = false) {
@@ -58,79 +66,101 @@ class LiteRtKarbiEngineManager(private val context: Context) {
         initializeWithFile(modelFile, useGpu)
     }
 
-    suspend fun importModelFromUri(uri: Uri, fileName: String = "gemma-4-E2B-it.litertlm"): Result<File> =
-        withContext(llmDispatcher) {
-            runCatching {
-                _state.value = ModelRuntimeState.Loading("Copying $fileName into app storage...")
-                val destFile = File(modelsDir, fileName)
-                val tmpFile = File(modelsDir, "$fileName.tmp")
-                context.contentResolver.openInputStream(uri)?.use { input ->
-                    tmpFile.outputStream().use { output ->
-                        input.copyTo(output, bufferSize = 1024 * 1024)
-                    }
-                } ?: error("Cannot open selected .litertlm file.")
-                if (destFile.exists()) destFile.delete()
-                tmpFile.renameTo(destFile)
-                destFile
+    suspend fun importModelFromUri(
+        uri: Uri,
+        fileName: String = KarbiModelCatalog.DEFAULT_MODEL.fileName
+    ): Result<File> = withContext(llmDispatcher) {
+        runCatching {
+            val targetName = if (fileName.endsWith(".gguf", ignoreCase = true)) {
+                fileName
+            } else {
+                KarbiModelCatalog.DEFAULT_MODEL.fileName
             }
+            _state.value = ModelRuntimeState.Loading("Copying $targetName into app storage...")
+            val destFile = File(modelsDir, targetName)
+            val tmpFile = File(modelsDir, "$targetName.tmp")
+            context.contentResolver.openInputStream(uri)?.use { input ->
+                tmpFile.outputStream().use { output ->
+                    input.copyTo(output, bufferSize = 1024 * 1024)
+                }
+            } ?: error("Cannot open selected .gguf file.")
+
+            if (destFile.exists()) destFile.delete()
+            tmpFile.renameTo(destFile)
+            destFile
         }
+    }
 
     suspend fun initializeWithFile(modelFile: File, useGpu: Boolean = false) = withContext(llmDispatcher) {
         closeInternal()
-        _state.value = ModelRuntimeState.Loading("Initializing ${modelFile.name}...")
+        if (!modelFile.exists() || modelFile.length() <= 100_000_000L) {
+            _state.value = ModelRuntimeState.NotLoaded
+            return@withContext
+        }
+        _state.value = ModelRuntimeState.Loading("Loading ${modelFile.name}...")
 
-        val chosenBackend = if (useGpu) Backend.GPU() else Backend.CPU()
-        val backendLabel = if (useGpu) "GPU" else "CPU"
+        if (!ensureNativeLibrary()) return@withContext
 
-        var createdEngine: Engine? = null
         try {
-            val config = EngineConfig(
-                modelPath = modelFile.absolutePath,
-                backend = chosenBackend,
-                cacheDir = context.cacheDir.absolutePath
-            )
-            createdEngine = Engine(config)
-            createdEngine.initialize()
-
-            val conv = createdEngine.createConversation(ConversationConfig())
-            engine = createdEngine
-            conversation = conv
+            val threads = Runtime.getRuntime().availableProcessors().coerceIn(2, 4)
+            val handle = nativeLoadModel(modelFile.absolutePath, 1024, threads)
+            if (handle == 0L) {
+                _state.value = ModelRuntimeState.Error("Failed to initialize GGUF model: ${modelFile.name}")
+                return@withContext
+            }
+            nativeHandle = handle
+            val backendLabel = if (useGpu) "CPU/NEON (4-thread)" else "CPU/NEON"
             _state.value = ModelRuntimeState.Ready(modelFile.name, backendLabel)
         } catch (t: Throwable) {
-            // Never call close() on an Engine whose initialize() threw
-            engine = null
-            conversation = null
-            _state.value = ModelRuntimeState.Error("LiteRT-LM init failed: ${t.message ?: t.javaClass.simpleName}")
+            nativeHandle = 0L
+            _state.value = ModelRuntimeState.Error("GGUF init failed: ${t.message ?: t.javaClass.simpleName}")
         }
     }
 
     suspend fun generateTranslation(prompt: String): Result<String> = withContext(llmDispatcher) {
         runCatching {
-            val activeEngine = engine ?: error("No .litertlm model loaded.")
-            // Recreate stateless conversation per translation turn so previous turns do not pollute SOV context
-            try {
-                conversation?.close()
-            } catch (_: Throwable) {
+            val handle = nativeHandle
+            if (handle == 0L) {
+                error("No .gguf model loaded. Download the offline model in Settings first.")
             }
-            val freshConv = activeEngine.createConversation(ConversationConfig())
-            conversation = freshConv
-            val reply = freshConv.sendMessage(Message.of(prompt))
-            reply.toString().trim()
+            val chatMlPrompt = wrapInQwenChatMl(prompt)
+            val raw = nativeGenerate(handle, chatMlPrompt, 160)
+            if (raw.startsWith("ERROR:")) {
+                error(raw.removePrefix("ERROR:").trim())
+            }
+            raw.substringBefore("<|im_end|>")
+                .substringBefore("<|endoftext|>")
+                .trim()
+        }
+    }
+
+    private fun wrapInQwenChatMl(rawPrompt: String): String {
+        if (rawPrompt.contains("<|im_start|>")) return rawPrompt
+        val systemPrompt =
+            "You are Talk Aurelia, a Hills Karbi (Standard / Rongkhang) translator and tutor. " +
+            "Follow SOV word order. Never substitute Bengali for Assamese (always use Assamese ৰ and ৱ). " +
+            "If a word or sentence is not in your verified Hills Karbi knowledge, reply exactly: " +
+            "'Not verified / needs review.'"
+
+        return buildString {
+            append("<|im_start|>system\n")
+            append(systemPrompt)
+            append("\n<|im_end|>\n")
+            append("<|im_start|>user\n")
+            append(rawPrompt.trim())
+            append("\n<|im_end|>\n")
+            append("<|im_start|>assistant\n")
         }
     }
 
     private fun closeInternal() {
-        try {
-            conversation?.close()
-        } catch (_: Throwable) {
-        } finally {
-            conversation = null
-        }
-        try {
-            engine?.close()
-        } catch (_: Throwable) {
-        } finally {
-            engine = null
+        if (nativeHandle != 0L) {
+            try {
+                nativeFree(nativeHandle)
+            } catch (_: Throwable) {
+            } finally {
+                nativeHandle = 0L
+            }
         }
     }
 
@@ -140,4 +170,8 @@ class LiteRtKarbiEngineManager(private val context: Context) {
         }
         singleThreadExecutor.shutdown()
     }
+
+    private external fun nativeLoadModel(modelPath: String, nCtx: Int, nThreads: Int): Long
+    private external fun nativeGenerate(handle: Long, prompt: String, maxTokens: Int): String
+    private external fun nativeFree(handle: Long)
 }

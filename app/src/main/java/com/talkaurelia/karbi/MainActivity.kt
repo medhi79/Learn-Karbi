@@ -51,11 +51,13 @@ import java.util.UUID
 class MainActivity : ComponentActivity() {
 
     private lateinit var llmManager: LiteRtKarbiEngineManager
+    private lateinit var downloadManager: ModelDownloadManager
     private var tts: TextToSpeech? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         llmManager = LiteRtKarbiEngineManager(applicationContext)
+        downloadManager = ModelDownloadManager(applicationContext)
         tts = TextToSpeech(this) { status ->
             if (status == TextToSpeech.SUCCESS) {
                 tts?.language = Locale("en", "IN")
@@ -320,6 +322,8 @@ fun TalkAureliaNativeApp(
                 )
 
                 3 -> ModelAndRulesScreen(
+                    downloadManager = downloadManager,
+                    onModelFileReady = { file -> scope.launch { llmManager.initializeWithFile(file, useGpu = false) } },
                     configRepo = configRepo,
                     modelState = modelState,
                     onPickModelFile = { modelPickerLauncher.launch(arrayOf("*/*")) },
@@ -717,6 +721,8 @@ private fun HistoryArchiveScreen(
 
 @Composable
 private fun ModelAndRulesScreen(
+    downloadManager: ModelDownloadManager,
+    onModelFileReady: (java.io.File) -> Unit,
     configRepo: HillsKarbiConfigRepository,
     modelState: ModelRuntimeState,
     onPickModelFile: () -> Unit,
@@ -734,13 +740,13 @@ private fun ModelAndRulesScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("On-Device LiteRT-LM Engine", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                Text("On-Device Qwen2.5-3B Karbi Engine (GGUF)", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 Text(
                     text = when (val st = modelState) {
                         is ModelRuntimeState.Ready -> "Active Model: ${st.modelName} (${st.backendName} backend)"
                         is ModelRuntimeState.Loading -> st.label
                         is ModelRuntimeState.Error -> st.message
-                        ModelRuntimeState.NotLoaded -> "Status: No .litertlm model file imported yet. Select gemma-4-E2B-it.litertlm from storage to enable generative translations."
+                        ModelRuntimeState.NotLoaded -> "Status: Offline AI model not downloaded yet. Tap Download below (~1.93 GB) or import a .gguf file from storage."
                     },
                     style = MaterialTheme.typography.bodyMedium
                 )
@@ -751,11 +757,15 @@ private fun ModelAndRulesScreen(
                     })
                     Text("Prefer GPU Backend (OpenCL)", style = MaterialTheme.typography.bodySmall)
                 }
+                ModelDownloadCard(
+                    downloadManager = downloadManager,
+                    onModelReady = onModelFileReady
+                )
                 Button(onClick = onPickModelFile, modifier = Modifier.fillMaxWidth()) {
-                    Text("Select .litertlm Model File from Storage")
+                    Text("Import .gguf Model File from Storage")
                 }
-            }
         }
+            }
 
         Card(
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
